@@ -1,10 +1,16 @@
 <template>
   <a-layout>
     <a-layout-header class="header">
-      <div class="logo" />
-      <a-menu v-model:selectedKeys="selectedKeys1" theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
-        <a-menu-item key="1">nav 1</a-menu-item>
-      </a-menu>
+      <h1 color-white bg-blue>医院管理系统</h1>
+      <div color-white>
+        <a-avatar :size="40" mr-5>
+          <template #icon>
+            <UserOutlined />
+          </template>
+        </a-avatar>
+        <span ml-2 mr-5>管理员: XXX</span>
+        <span class="exit">退出登录</span>
+      </div>
     </a-layout-header>
     <a-layout>
       <a-layout-sider width="200" style="background: #fff">
@@ -33,13 +39,13 @@
   </a-layout>
 </template>
 <script lang="ts">
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons-vue';
+import { PieChartOutlined } from '@ant-design/icons-vue';
 import { defineComponent, ref } from 'vue';
+import { UserOutlined } from '@ant-design/icons-vue';
 export default defineComponent({
   components: {
-    UserOutlined,
-    LaptopOutlined,
-    NotificationOutlined,
+    PieChartOutlined,
+    UserOutlined
   },
   setup() {
     return {
@@ -52,20 +58,14 @@ export default defineComponent({
 });
 </script>
 <style>
-#components-layout-demo-top-side-2 .logo {
-  float: left;
-  width: 120px;
-  height: 31px;
-  margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.3);
+.header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #60A5FA
 }
 
-.ant-row-rtl #components-layout-demo-top-side-2 .logo {
-  float: right;
-  margin: 16px 0 16px 24px;
-}
-
-.site-layout-background {
-  background: #fff;
+.exit:hover {
+  color: red;
+  cursor: pointer;
 }
 </style>
