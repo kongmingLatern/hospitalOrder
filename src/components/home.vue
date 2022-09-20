@@ -32,7 +32,7 @@
       </a-layout-sider>
       <a-layout style="padding: 0 24px 24px">
         <a-layout-content :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
-          Content
+          <List />
         </a-layout-content>
       </a-layout>
     </a-layout>
@@ -42,10 +42,12 @@
 import { PieChartOutlined } from '@ant-design/icons-vue';
 import { defineComponent, ref } from 'vue';
 import { UserOutlined } from '@ant-design/icons-vue';
+import List from '@/views/home/List.vue'
 export default defineComponent({
   components: {
     PieChartOutlined,
-    UserOutlined
+    UserOutlined,
+    List
   },
   setup() {
     return {
