@@ -1,4 +1,7 @@
 <template>
+  <header color-green>
+    header
+  </header>
   <div mb-5>
     <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">查询</a-button>
     <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">删除</a-button>
