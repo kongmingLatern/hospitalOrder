@@ -14,7 +14,7 @@
     </a-layout-header>
     <a-layout>
       <a-layout-sider width="200" style="background: #fff">
-        <a-menu v-model:selectedKeys="selectedKeys2" mode="inline" :style="{ height: '100%', borderRight: 0 }">
+        <a-menu v-model:selectedKeys="selectedKeys1" mode="inline" :style="{ height: '100%', borderRight: 0 }">
           <a-menu-item key="2">
             <pie-chart-outlined />
             <router-link to="/doctor" ml-2>医生管理</router-link>
@@ -37,28 +37,13 @@
     </a-layout>
   </a-layout>
 </template>
-<script lang="ts">
+<script lang="ts" setup>
 import { PieChartOutlined } from '@ant-design/icons-vue';
-import { defineComponent, ref } from 'vue';
+import { ref } from 'vue';
 import { UserOutlined } from '@ant-design/icons-vue';
-import List from '@/views/home/List.vue'
-export default defineComponent({
-  components: {
-    PieChartOutlined,
-    UserOutlined,
-    List
-  },
-  setup() {
-    return {
-      selectedKeys1: ref<string[]>(['3']),
-      selectedKeys2: ref<string[]>(['2']),
-      collapsed: ref<boolean>(false),
-      openKeys: ref<string[]>(['sub1']),
-    };
-  },
-});
+const selectedKeys1 = ref<string[]>(['2'])
 </script>
-<style>
+<style lang="scss" scoped>
 .header {
   display: flex;
   justify-content: space-between;
