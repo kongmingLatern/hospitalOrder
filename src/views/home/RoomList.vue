@@ -1,6 +1,6 @@
 <template>
   <header color-green>
-    医生管理
+    科室管理
   </header>
   <div mb-5>
     <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">查询</a-button>
@@ -36,30 +36,20 @@ import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 
 interface DataItem {
-  id: string;
+  key: string;
   name: string;
-  age: number;
-  position: string;
-  department: string;
+  room: string
 }
 
 const columns = [
   {
+    title: 'room',
+    dataIndex: 'room',
+  },
+  {
     title: 'name',
     dataIndex: 'name',
     width: '30%',
-  },
-  {
-    title: 'age',
-    dataIndex: 'age',
-  },
-  {
-    title: 'position',
-    dataIndex: 'position',
-  },
-  {
-    title: 'department',
-    dataIndex: 'department',
   },
   {
     title: 'operation',
@@ -68,41 +58,36 @@ const columns = [
 ];
 const dataSource: Ref<DataItem[]> = ref([
   {
-    id: '0',
-    name: '医生1',
-    age: 32,
-    position: '牙科',
-    department: '内科',
+    key: '0',
+    name: '内科负责人 —— 张三',
+    room: '内科'
   },
   {
-    id: '1',
-    name: '医生2',
-    age: 30,
-    position: '皮肤',
-    department: '外科',
+    key: '1',
+    name: '外科负责人 —— 李四',
+    room: '外科'
   },
 ]);
 const count = computed(() => dataSource.value.length + 1);
 const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
 
-const edit = (id: string) => {
-  editableData[id] = cloneDeep(dataSource.value.filter(item => id === item.id)[0]);
+const edit = (key: string) => {
+  editableData[key] = cloneDeep(dataSource.value.filter(item => key === item.key)[0]);
 };
-const save = (id: string) => {
-  Object.assign(dataSource.value.filter(item => id === item.id)[0], editableData[id]);
-  delete editableData[id];
+const save = (key: string) => {
+  Object.assign(dataSource.value.filter(item => key === item.key)[0], editableData[key]);
+  delete editableData[key];
 };
 
-const onDelete = (id: string) => {
-  dataSource.value = dataSource.value.filter(item => item.id !== id);
+const onDelete = (key: string) => {
+  dataSource.value = dataSource.value.filter(item => item.key !== key);
 };
 const handleAdd = () => {
   const newData = {
-    id: `${count.value}`,
+    key: `${count.value}`,
     name: `Edward King ${count.value}`,
     age: 32,
-    position: '皮肤科',
-    department: '皮肤科'
+    address: `London, Park Lane no. ${count.value}`,
   };
   dataSource.value.push(newData);
 };

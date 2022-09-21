@@ -18,12 +18,12 @@ const router = createRouter({
         {
           path: 'room',
           name: 'room',
-          component: () => import('@/views/home/List.vue'),
+          component: () => import('@/views/home/RoomList.vue'),
         },
         {
           path: 'order',
           name: 'order',
-          component: () => import('@/views/home/List.vue'),
+          component: () => import('@/views/home/OrderList.vue'),
         },
       ]
     },
