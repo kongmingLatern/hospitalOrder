@@ -30,8 +30,7 @@
   </a-table>
 </template>
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
-import type { Ref, UnwrapRef } from 'vue';
+import { computed, reactive } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 
@@ -56,20 +55,10 @@ const columns = [
     dataIndex: 'operation',
   },
 ];
-let dataSource: RoomType[] = reactive([
-  {
-    id: '0',
-    name: '内科负责人 —— 张三',
-    room: '内科'
-  },
-  {
-    id: '1',
-    name: '外科负责人 —— 李四',
-    room: '外科'
-  },
-]);
+let dataSource: RoomType[] = reactive([]);
+
 const count = computed(() => dataSource.length + 1);
-const editableData: UnwrapRef<Record<string, RoomType>> = reactive({});
+const editableData: Record<string, RoomType> = reactive({});
 
 const edit = (id: string) => {
   editableData[id] = cloneDeep(dataSource.filter(item => id === item.id)[0]);

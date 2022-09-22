@@ -12,7 +12,7 @@
       <template v-if="column.dataIndex === 'name'">
         <div class="editable-cell">
           <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
-            <a-input v-model:value="editableData[record.key].name" @pressEnter="save(record.key)" />
+            <a-input v-model="editableData[record.key].name" @pressEnter="save(record.key)" />
             <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
           </div>
           <div v-else class="editable-cell-text-wrapper">
@@ -30,8 +30,7 @@
   </a-table>
 </template>
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
-import type { Ref, UnwrapRef } from 'vue';
+import { computed, reactive } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 
@@ -40,7 +39,7 @@ interface OrderListType {
   name: string;
   age: number;
   order: string;
-  dateTime: Date;
+  dateTime: string;
 }
 
 const columns = [
@@ -66,45 +65,45 @@ const columns = [
     dataIndex: 'operation',
   },
 ];
-const dataSource: Ref<OrderListType[]> = ref([
+let dataSource: OrderListType[] = reactive([
   {
     id: '0',
     name: '医生1',
     age: 32,
     order: '牙科',
-    dateTime: new Date(),
+    dateTime: new Date().toLocaleString(),
   },
   {
     id: '1',
     name: '医生2',
     age: 30,
     order: '皮肤',
-    dateTime: new Date(),
+    dateTime: new Date().toLocaleString(),
   },
 ]);
-const count = computed(() => dataSource.value.length + 1);
-const editableData: UnwrapRef<Record<string, OrderListType>> = reactive({});
+const count = computed(() => dataSource.length + 1);
+const editableData: Record<string, OrderListType> = reactive({});
 
 const edit = (id: string) => {
-  editableData[id] = cloneDeep(dataSource.value.filter(item => id === item.id)[0]);
+  editableData[id] = cloneDeep(dataSource.filter(item => id === item.id)[0]);
 };
 const save = (id: string) => {
-  Object.assign(dataSource.value.filter(item => id === item.id)[0], editableData[id]);
+  Object.assign(dataSource.filter(item => id === item.id)[0], editableData[id]);
   delete editableData[id];
 };
 
 const onDelete = (id: string) => {
-  dataSource.value = dataSource.value.filter(item => item.id !== id);
+  dataSource = dataSource.filter(item => item.id !== id);
 };
 const handleAdd = () => {
   const newData = {
-    id: `${count.value}`,
-    name: `Edward King ${count.value}`,
+    id: `${count}`,
+    name: `Edward King ${count}`,
     age: 32,
     order: '皮肤科',
     dateTime: new Date()
   };
-  dataSource.value.push(newData);
+  dataSource.push(newData);
 };
 </script>
 <style lang="scss" scoped>
