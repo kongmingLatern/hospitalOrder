@@ -1,4 +1,4 @@
-# Hospotal Order System
+# Hospital Order System
 
 ## Introduction
 
