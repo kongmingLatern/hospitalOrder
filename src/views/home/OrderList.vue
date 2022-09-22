@@ -1,38 +1,41 @@
 <template>
-  <header color-green>
-    医生管理
-  </header>
-  <div mb-5>
-    <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">查询</a-button>
-    <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">删除</a-button>
-    <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">添加</a-button>
-  </div>
-  <a-table bordered :data-source="dataSource" :columns="columns">
-    <template #bodyCell="{ column, text, record }">
-      <template v-if="column.dataIndex === 'name'">
-        <div class="editable-cell">
-          <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
-            <a-input v-model="editableData[record.key].name" @pressEnter="save(record.key)" />
-            <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
+  <a-spin :spinning="spinning">
+    <header color-green>
+      医生管理
+    </header>
+    <div mb-5>
+      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">查询</a-button>
+      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">删除</a-button>
+      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">添加</a-button>
+    </div>
+    <a-table bordered :data-source="dataSource" :columns="columns">
+      <template #bodyCell="{ column, text, record }">
+        <template v-if="column.dataIndex === 'name'">
+          <div class="editable-cell">
+            <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
+              <a-input v-model="editableData[record.key].name" @pressEnter="save(record.key)" />
+              <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
+            </div>
+            <div v-else class="editable-cell-text-wrapper">
+              {{ text || ' ' }}
+              <edit-outlined class="editable-cell-icon" @click="edit(record.key)" />
+            </div>
           </div>
-          <div v-else class="editable-cell-text-wrapper">
-            {{ text || ' ' }}
-            <edit-outlined class="editable-cell-icon" @click="edit(record.key)" />
-          </div>
-        </div>
+        </template>
+        <template v-else-if="column.dataIndex === 'operation'">
+          <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.key)">
+            <a>Delete</a>
+          </a-popconfirm>
+        </template>
       </template>
-      <template v-else-if="column.dataIndex === 'operation'">
-        <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.key)">
-          <a>Delete</a>
-        </a-popconfirm>
-      </template>
-    </template>
-  </a-table>
+    </a-table>
+  </a-spin>
 </template>
 <script lang="ts" setup>
-import { computed, reactive } from 'vue';
+import { computed, getCurrentInstance, onMounted, reactive, ref } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
+import { log } from 'console';
 
 interface OrderListType {
   id: string;
@@ -49,10 +52,6 @@ const columns = [
     width: '30%',
   },
   {
-    title: 'age',
-    dataIndex: 'age',
-  },
-  {
     title: 'order',
     dataIndex: 'order',
   },
@@ -65,22 +64,22 @@ const columns = [
     dataIndex: 'operation',
   },
 ];
-let dataSource: OrderListType[] = reactive([
-  {
-    id: '0',
-    name: '医生1',
-    age: 32,
-    order: '牙科',
-    dateTime: new Date().toLocaleString(),
-  },
-  {
-    id: '1',
-    name: '医生2',
-    age: 30,
-    order: '皮肤',
-    dateTime: new Date().toLocaleString(),
-  },
-]);
+const spinning = ref<Boolean>(true)
+let dataSource: OrderListType[] = reactive([]);
+onMounted(() => {
+  const instance = getCurrentInstance()
+  const request = (instance?.proxy as any).$request!
+
+  request.get('/order').then((res: Record<string, any>) => {
+    spinning.value = false
+    const lists = res.data
+    lists.forEach((list: OrderListType) => {
+      dataSource.push(list)
+    })
+  }).catch((e: any) => {
+    console.log(e.message);
+  })
+})
 const count = computed(() => dataSource.length + 1);
 const editableData: Record<string, OrderListType> = reactive({});
 
@@ -101,7 +100,7 @@ const handleAdd = () => {
     name: `Edward King ${count}`,
     age: 32,
     order: '皮肤科',
-    dateTime: new Date()
+    dateTime: new Date().toLocaleDateString()
   };
   dataSource.push(newData);
 };

@@ -1,39 +1,40 @@
 <template>
-  <header color-green>
-    科室管理
-  </header>
-  <div mb-5>
-    <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">查询</a-button>
-    <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">删除</a-button>
-    <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">添加</a-button>
-  </div>
-  <a-table bordered :data-source="dataSource" :columns="columns">
-    <template #bodyCell="{ column, text, record }">
-      <template v-if="column.dataIndex === 'name'">
-        <div class="editable-cell">
-          <div v-if="editableData[record.id]" class="editable-cell-input-wrapper">
-            <a-input v-model:value="editableData[record.id].name" @pressEnter="save(record.id)" />
-            <check-outlined class="editable-cell-icon-check" @click="save(record.id)" />
+  <a-spin :spinning="spinning">
+    <header color-green>
+      科室管理
+    </header>
+    <div mb-5>
+      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">查询</a-button>
+      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">删除</a-button>
+      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">添加</a-button>
+    </div>
+    <a-table bordered :data-source="dataSource" :columns="columns">
+      <template #bodyCell="{ column, text, record }">
+        <template v-if="column.dataIndex === 'name'">
+          <div class="editable-cell">
+            <div v-if="editableData[record.id]" class="editable-cell-input-wrapper">
+              <a-input v-model:value="editableData[record.id].name" @pressEnter="save(record.id)" />
+              <check-outlined class="editable-cell-icon-check" @click="save(record.id)" />
+            </div>
+            <div v-else class="editable-cell-text-wrapper">
+              {{ text || ' ' }}
+              <edit-outlined class="editable-cell-icon" @click="edit(record.id)" />
+            </div>
           </div>
-          <div v-else class="editable-cell-text-wrapper">
-            {{ text || ' ' }}
-            <edit-outlined class="editable-cell-icon" @click="edit(record.id)" />
-          </div>
-        </div>
+        </template>
+        <template v-else-if="column.dataIndex === 'operation'">
+          <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.id)">
+            <a>Delete</a>
+          </a-popconfirm>
+        </template>
       </template>
-      <template v-else-if="column.dataIndex === 'operation'">
-        <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.id)">
-          <a>Delete</a>
-        </a-popconfirm>
-      </template>
-    </template>
-  </a-table>
+    </a-table>
+  </a-spin>
 </template>
 <script lang="ts" setup>
-import { computed, getCurrentInstance, onMounted, reactive } from 'vue';
+import { computed, getCurrentInstance, onMounted, reactive, ref } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
-import axios from '@/api'
 
 interface RoomType {
   id: string;
@@ -56,6 +57,7 @@ const columns = [
     dataIndex: 'operation',
   },
 ];
+const spinning = ref<Boolean>(true)
 let dataSource: RoomType[] = reactive([]);
 
 onMounted(() => {
@@ -63,6 +65,7 @@ onMounted(() => {
   const request = (instance?.proxy as any).$request!
 
   request.get('/room').then((res: Record<string, any>) => {
+    spinning.value = false
     const lists = res.data
     lists.forEach((list: RoomType) => {
       dataSource.push(list)
