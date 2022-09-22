@@ -35,8 +35,8 @@ import type { Ref, UnwrapRef } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 
-interface DataItem {
-  id: string;
+interface DoctorType {
+  id: string | number;
   name: string;
   age: number;
   position: string;
@@ -66,7 +66,7 @@ const columns = [
     dataIndex: 'operation',
   },
 ];
-const dataSource: Ref<DataItem[]> = ref([
+const dataSource: Ref<DoctorType[]> = ref([
   {
     id: '0',
     name: '医生1',
@@ -83,7 +83,7 @@ const dataSource: Ref<DataItem[]> = ref([
   },
 ]);
 const count = computed(() => dataSource.value.length + 1);
-const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
+const editableData: UnwrapRef<Record<string, DoctorType>> = reactive({});
 
 const edit = (id: string) => {
   editableData[id] = cloneDeep(dataSource.value.filter(item => id === item.id)[0]);

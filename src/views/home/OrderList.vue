@@ -35,12 +35,12 @@ import type { Ref, UnwrapRef } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 
-interface DataItem {
+interface OrderListType {
   id: string;
   name: string;
   age: number;
-  position: string;
-  department: string;
+  order: string;
+  dateTime: Date;
 }
 
 const columns = [
@@ -54,36 +54,36 @@ const columns = [
     dataIndex: 'age',
   },
   {
-    title: 'position',
-    dataIndex: 'position',
+    title: 'order',
+    dataIndex: 'order',
   },
   {
-    title: 'department',
-    dataIndex: 'department',
+    title: 'dateTime',
+    dataIndex: 'dateTime',
   },
   {
     title: 'operation',
     dataIndex: 'operation',
   },
 ];
-const dataSource: Ref<DataItem[]> = ref([
+const dataSource: Ref<OrderListType[]> = ref([
   {
     id: '0',
     name: '医生1',
     age: 32,
-    position: '牙科',
-    department: '内科',
+    order: '牙科',
+    dateTime: new Date(),
   },
   {
     id: '1',
     name: '医生2',
     age: 30,
-    position: '皮肤',
-    department: '外科',
+    order: '皮肤',
+    dateTime: new Date(),
   },
 ]);
 const count = computed(() => dataSource.value.length + 1);
-const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
+const editableData: UnwrapRef<Record<string, OrderListType>> = reactive({});
 
 const edit = (id: string) => {
   editableData[id] = cloneDeep(dataSource.value.filter(item => id === item.id)[0]);
@@ -101,8 +101,8 @@ const handleAdd = () => {
     id: `${count.value}`,
     name: `Edward King ${count.value}`,
     age: 32,
-    position: '皮肤科',
-    department: '皮肤科'
+    order: '皮肤科',
+    dateTime: new Date()
   };
   dataSource.value.push(newData);
 };

@@ -11,18 +11,18 @@
     <template #bodyCell="{ column, text, record }">
       <template v-if="column.dataIndex === 'name'">
         <div class="editable-cell">
-          <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
-            <a-input v-model:value="editableData[record.key].name" @pressEnter="save(record.key)" />
-            <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
+          <div v-if="editableData[record.id]" class="editable-cell-input-wrapper">
+            <a-input v-model:value="editableData[record.id].name" @pressEnter="save(record.id)" />
+            <check-outlined class="editable-cell-icon-check" @click="save(record.id)" />
           </div>
           <div v-else class="editable-cell-text-wrapper">
             {{ text || ' ' }}
-            <edit-outlined class="editable-cell-icon" @click="edit(record.key)" />
+            <edit-outlined class="editable-cell-icon" @click="edit(record.id)" />
           </div>
         </div>
       </template>
       <template v-else-if="column.dataIndex === 'operation'">
-        <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.key)">
+        <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.id)">
           <a>Delete</a>
         </a-popconfirm>
       </template>
@@ -35,8 +35,8 @@ import type { Ref, UnwrapRef } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 
-interface DataItem {
-  key: string;
+interface RoomType {
+  id: string;
   name: string;
   room: string
 }
@@ -56,40 +56,39 @@ const columns = [
     dataIndex: 'operation',
   },
 ];
-const dataSource: Ref<DataItem[]> = ref([
+let dataSource: RoomType[] = reactive([
   {
-    key: '0',
+    id: '0',
     name: '内科负责人 —— 张三',
     room: '内科'
   },
   {
-    key: '1',
+    id: '1',
     name: '外科负责人 —— 李四',
     room: '外科'
   },
 ]);
-const count = computed(() => dataSource.value.length + 1);
-const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
+const count = computed(() => dataSource.length + 1);
+const editableData: UnwrapRef<Record<string, RoomType>> = reactive({});
 
-const edit = (key: string) => {
-  editableData[key] = cloneDeep(dataSource.value.filter(item => key === item.key)[0]);
+const edit = (id: string) => {
+  editableData[id] = cloneDeep(dataSource.filter(item => id === item.id)[0]);
 };
-const save = (key: string) => {
-  Object.assign(dataSource.value.filter(item => key === item.key)[0], editableData[key]);
-  delete editableData[key];
+const save = (id: string) => {
+  Object.assign(dataSource.filter(item => id === item.id)[0], editableData[id]);
+  delete editableData[id];
 };
 
-const onDelete = (key: string) => {
-  dataSource.value = dataSource.value.filter(item => item.key !== key);
+const onDelete = (id: string) => {
+  dataSource = dataSource.filter(item => item.id !== id);
 };
 const handleAdd = () => {
   const newData = {
-    key: `${count.value}`,
+    id: `${count.value}`,
     name: `Edward King ${count.value}`,
-    age: 32,
-    address: `London, Park Lane no. ${count.value}`,
+    room: '外科'
   };
-  dataSource.value.push(newData);
+  dataSource.push(newData);
 };
 </script>
 <style lang="scss" scoped>
