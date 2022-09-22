@@ -1,37 +1,38 @@
 <template>
-  <header color-green>
-    医生管理
-  </header>
-  <div mb-5>
-    <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">查询</a-button>
-    <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">删除</a-button>
-    <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">添加</a-button>
-  </div>
-  <a-table bordered :data-source="dataSource" :columns="columns">
-    <template #bodyCell="{ column, text, record }">
-      <template v-if="column.dataIndex === 'name'">
-        <div class="editable-cell">
-          <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
-            <a-input v-model:value="editableData[record.key].name" @pressEnter="save(record.key)" />
-            <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
+  <a-spin :spinning="spinning">
+    <header color-green>
+      医生管理
+    </header>
+    <div mb-5>
+      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">查询</a-button>
+      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">删除</a-button>
+      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">添加</a-button>
+    </div>
+    <a-table bordered :data-source="dataSource" :columns="columns">
+      <template #bodyCell="{ column, text, record }">
+        <template v-if="column.dataIndex === 'name'">
+          <div class="editable-cell">
+            <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
+              <a-input v-model:value="editableData[record.key].name" @pressEnter="save(record.key)" />
+              <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
+            </div>
+            <div v-else class="editable-cell-text-wrapper">
+              {{ text || ' ' }}
+              <edit-outlined class="editable-cell-icon" @click="edit(record.key)" />
+            </div>
           </div>
-          <div v-else class="editable-cell-text-wrapper">
-            {{ text || ' ' }}
-            <edit-outlined class="editable-cell-icon" @click="edit(record.key)" />
-          </div>
-        </div>
+        </template>
+        <template v-else-if="column.dataIndex === 'operation'">
+          <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.key)">
+            <a>Delete</a>
+          </a-popconfirm>
+        </template>
       </template>
-      <template v-else-if="column.dataIndex === 'operation'">
-        <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.key)">
-          <a>Delete</a>
-        </a-popconfirm>
-      </template>
-    </template>
-  </a-table>
+    </a-table>
+  </a-spin>
 </template>
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
-import type { Ref, UnwrapRef } from 'vue';
+import { computed, getCurrentInstance, onMounted, reactive, ref } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 
@@ -66,45 +67,46 @@ const columns = [
     dataIndex: 'operation',
   },
 ];
-const dataSource: Ref<DoctorType[]> = ref([
-  {
-    id: '0',
-    name: '医生1',
-    age: 32,
-    position: '牙科',
-    department: '内科',
-  },
-  {
-    id: '1',
-    name: '医生2',
-    age: 30,
-    position: '皮肤',
-    department: '外科',
-  },
-]);
-const count = computed(() => dataSource.value.length + 1);
-const editableData: UnwrapRef<Record<string, DoctorType>> = reactive({});
+const spinning = ref<Boolean>(true)
+let dataSource: DoctorType[] = reactive([]);
+onMounted(() => {
+  const instance = getCurrentInstance()
+  const request = (instance?.proxy as any).$request!
+
+  request.get('/doctor').then((res: Record<string, any>) => {
+    spinning.value = false
+    const lists = res.data
+    lists.forEach((list: DoctorType) => {
+      dataSource.push(list)
+    })
+  }).catch((e: any) => {
+    console.log(e.message);
+  })
+
+})
+const count = computed(() => dataSource.length + 1);
+const editableData: Record<string, DoctorType> = reactive({});
 
 const edit = (id: string) => {
-  editableData[id] = cloneDeep(dataSource.value.filter(item => id === item.id)[0]);
+  editableData[id] = cloneDeep(dataSource.filter(item => id === item.id)[0]);
 };
 const save = (id: string) => {
-  Object.assign(dataSource.value.filter(item => id === item.id)[0], editableData[id]);
+  Object.assign(dataSource.filter(item => id === item.id)[0], editableData[id]);
   delete editableData[id];
 };
 
 const onDelete = (id: string) => {
-  dataSource.value = dataSource.value.filter(item => item.id !== id);
+  dataSource = dataSource.filter(item => item.id !== id);
 };
 const handleAdd = () => {
   const newData = {
-    id: `${count.value}`,
-    name: `Edward King ${count.value}`,
+    id: `${count}`,
+    name: `Edward King ${count}`,
     age: 32,
     position: '皮肤科',
     department: '皮肤科'
   };
-  dataSource.value.push(newData);
+  dataSource.push(newData);
 };
 </script>
 <style lang="scss" scoped>
