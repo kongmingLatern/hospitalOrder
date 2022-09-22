@@ -30,9 +30,10 @@
   </a-table>
 </template>
 <script lang="ts" setup>
-import { computed, reactive } from 'vue';
+import { computed, getCurrentInstance, onMounted, reactive } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
+import axios from '@/api'
 
 interface RoomType {
   id: string;
@@ -57,6 +58,28 @@ const columns = [
 ];
 let dataSource: RoomType[] = reactive([]);
 
+onMounted(() => {
+  const instance = getCurrentInstance()
+  const request = (instance?.proxy as any).$request!
+
+  request.get('/room').then((res: Record<string, any>) => {
+    const lists = res.data
+    lists.forEach((list: RoomType) => {
+      dataSource.push(list)
+    })
+  }).catch((e: any) => {
+    console.log(e.message);
+  })
+
+  // axios.get('/room').then(res => {
+  //   console.log(res);
+  //   res.data.forEach((item: RoomType) => {
+  //     dataSource.push(item)
+  //   })
+  // }).catch(e => {
+  //   console.log(e);
+  // })
+})
 const count = computed(() => dataSource.length + 1);
 const editableData: Record<string, RoomType> = reactive({});
 
