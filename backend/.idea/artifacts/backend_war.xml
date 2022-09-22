@@ -7,7 +7,7 @@
         <packaging>war</packaging>
       </options>
     </properties>
-    <root id="archive" name="hospital-order-1.0-SNAPSHOT.war">
+    <root id="archive" name="backend-1.0-SNAPSHOT.war">
       <element id="artifact" artifact-name="backend:war exploded" />
     </root>
   </artifact>

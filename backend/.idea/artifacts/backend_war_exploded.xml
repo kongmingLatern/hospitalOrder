@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="backend:war exploded">
-    <output-path>$PROJECT_DIR$/target/hospital-order-1.0-SNAPSHOT</output-path>
+    <output-path>$PROJECT_DIR$/target/backend-1.0-SNAPSHOT</output-path>
     <properties id="maven-jee-properties">
       <options>
         <exploded>true</exploded>
@@ -14,13 +14,16 @@
           <element id="module-output" name="backend" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.alibaba:fastjson:2.0.13" />
+          <element id="library" level="project" name="Maven: com.alibaba.fastjson2:fastjson2-extension:2.0.13" />
+          <element id="library" level="project" name="Maven: com.alibaba.fastjson2:fastjson2:2.0.13" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.5.9" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.29" />
           <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.19.4" />
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/target/hospital-order-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/target/backend-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="backend/web/Web" />
     </root>
