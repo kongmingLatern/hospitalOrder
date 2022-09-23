@@ -1,23 +1,20 @@
 <template>
   <div w-120 m-auto class="center">
-    <a-card title="Login" :border="false">
+    <a-card :border="false">
+      <template #title>
+        <h3>Login</h3>
+      </template>
       <a-form :model="formState" name="normal_login" class="login-form" @finish="onFinish"
         @finishFailed="onFinishFailed">
         <a-form-item label="Username" name="username"
           :rules="[{ required: true, message: 'Please input your username!' }]">
           <a-input v-model:value="formState.username">
-            <template #prefix>
-              <UserOutlined class="site-form-item-icon" />
-            </template>
           </a-input>
         </a-form-item>
 
         <a-form-item label="Password" name="password"
           :rules="[{ required: true, message: 'Please input your password!' }]">
           <a-input-password v-model:value="formState.password">
-            <template #prefix>
-              <LockOutlined class="site-form-item-icon" />
-            </template>
           </a-input-password>
         </a-form-item>
 
@@ -25,15 +22,14 @@
           <a-form-item name="remember" no-style>
             <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
           </a-form-item>
-          <a class="login-form-forgot" href="">Forgot password</a>
+          <a href="#" float-right>Forgot password</a>
         </a-form-item>
 
-        <a-form-item>
-          <a-button :disabled="disabled" type="primary" html-type="submit" class="login-form-button">
+        <a-form-item text-center>
+          <a-button :disabled="disabled" type="primary" html-type="submit">
             Log in
           </a-button>
-          Or
-          <a href="">register now!</a>
+          <a href="" class="right">Register now!</a>
         </a-form-item>
       </a-form>
     </a-card>
@@ -41,12 +37,12 @@
 </template>
 <script lang="ts" setup>
 import { reactive, computed, onBeforeMount } from 'vue';
-import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
 interface FormState {
   username: string;
   password: string;
   remember: boolean;
-}const formState = reactive<FormState>({
+}
+const formState = reactive<FormState>({
   username: '',
   password: '',
   remember: true,
@@ -64,13 +60,8 @@ const onFinishFailed = (errorInfo: any) => {
 const disabled = computed(() => {
   return !(formState.username && formState.password);
 });
-
 </script>
 <style lang="scss" scoped>
-v:deep body {
-  background-color: antiquewhite;
-}
-
 #components-form-demo-normal-login .login-form {
   max-width: 300px;
 }
@@ -83,11 +74,31 @@ v:deep body {
   width: 100%;
 }
 
+:deep(.ant-card-head-title) {
+  text-align: center;
+}
+
 .center {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+
+.right {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.right:hover {
+  color: red;
+}
+
+:deep(.ant-form-item-control-input-content) {
+  position: relative;
 }
 </style>
 
