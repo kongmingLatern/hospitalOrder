@@ -7,4 +7,5 @@ import java.util.List;
 public interface UserService {
     public List<User> selectAll();
     public void add(User user);
+    public User selectByUsername(String username);
 }

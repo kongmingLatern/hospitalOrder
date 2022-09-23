@@ -27,4 +27,13 @@ public class UserServiceImpl implements UserService{
         sqlSession.commit();
         sqlSession.close();
     }
+
+    @Override
+    public User selectByUsername(String username) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        User user = mapper.selectUserByUsername(username);
+        sqlSession.close();
+        return user;
+    }
 }
