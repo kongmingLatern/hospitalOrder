@@ -37,7 +37,7 @@ import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 
 interface DoctorType {
-  id: string | number;
+  doctorId: string | number;
   doctorName: string;
   age: number;
   position: string;
@@ -48,7 +48,7 @@ const columns = [
   {
     title: 'doctorName',
     dataIndex: 'doctorName',
-    width: '30%',
+    wdoctorIdth: '30%',
   },
   {
     title: 'age',
@@ -99,20 +99,20 @@ onMounted(() => {
 const count = computed(() => dataSource.length + 1);
 const editableData: Record<string, DoctorType> = reactive({});
 
-const edit = (id: string) => {
-  editableData[id] = cloneDeep(dataSource.filter(item => id === item.id)[0]);
+const edit = (doctorId: string) => {
+  editableData[doctorId] = cloneDeep(dataSource.filter(item => doctorId === item.doctorId)[0]);
 };
-const save = (id: string) => {
-  Object.assign(dataSource.filter(item => id === item.id)[0], editableData[id]);
-  delete editableData[id];
+const save = (doctorId: string) => {
+  Object.assign(dataSource.filter(item => doctorId === item.doctorId)[0], editableData[doctorId]);
+  delete editableData[doctorId];
 };
 
-const onDelete = (id: string) => {
-  dataSource = dataSource.filter(item => item.id !== id);
+const onDelete = (doctorId: string) => {
+  dataSource = dataSource.filter(item => item.doctorId !== doctorId);
 };
 const handleAdd = () => {
   const newData = {
-    id: `${count}`,
+    doctorId: `${count}`,
     doctorName: `Edward King ${count}`,
     age: 32,
     position: '皮肤科',
