@@ -28,4 +28,10 @@ public class UserServlet extends BaseServlet {
         User user = JSON.parseObject(json, User.class);
         userService.add(user);
     }
+    public void Login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    {
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        User user = userService.selectByUsername(username);
+    }
 }

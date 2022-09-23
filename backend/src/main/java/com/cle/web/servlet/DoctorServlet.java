@@ -23,6 +23,7 @@ public class DoctorServlet extends BaseServlet{
     public void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BufferedReader reader = req.getReader();
         String json = reader.readLine();
+        System.out.println(json);
         Doctor doctor = JSON.parseObject(json, Doctor.class);
         doctorService.add(doctor);
     }
