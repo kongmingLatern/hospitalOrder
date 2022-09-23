@@ -2,7 +2,6 @@ package com.cle.web.servlet;
 
 import com.alibaba.fastjson.JSON;
 import com.cle.pojo.Doctor;
-import com.cle.pojo.User;
 import com.cle.service.DoctorServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

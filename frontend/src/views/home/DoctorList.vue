@@ -10,10 +10,10 @@
     </div>
     <a-table bordered :data-source="dataSource" :columns="columns">
       <template #bodyCell="{ column, text, record }">
-        <template v-if="column.dataIndex === 'name'">
+        <template v-if="column.dataIndex === 'doctorName'">
           <div class="editable-cell">
             <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
-              <a-input v-model:value="editableData[record.key].name" @pressEnter="save(record.key)" />
+              <a-input v-model:value="editableData[record.key].doctorName" @pressEnter="save(record.key)" />
               <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
             </div>
             <div v-else class="editable-cell-text-wrapper">
@@ -38,7 +38,7 @@ import { cloneDeep } from 'lodash-es';
 
 interface DoctorType {
   id: string | number;
-  name: string;
+  doctorName: string;
   age: number;
   position: string;
   department: string;
@@ -46,8 +46,8 @@ interface DoctorType {
 
 const columns = [
   {
-    title: 'name',
-    dataIndex: 'name',
+    title: 'doctorName',
+    dataIndex: 'doctorName',
     width: '30%',
   },
   {
@@ -83,6 +83,18 @@ onMounted(() => {
     console.log(e.message);
   })
 
+  // request.get('api/doctor/selectAll').then((res: Record<string, any>) => {
+  //   spinning.value = false
+  //   const lists = res.data
+  //   lists.forEach((list: DoctorType) => {
+  //     dataSource.push(list)
+  //   })
+  // }).catch((e: any) => {
+  //   console.log(e.message);
+  // })
+
+
+
 })
 const count = computed(() => dataSource.length + 1);
 const editableData: Record<string, DoctorType> = reactive({});
@@ -101,7 +113,7 @@ const onDelete = (id: string) => {
 const handleAdd = () => {
   const newData = {
     id: `${count}`,
-    name: `Edward King ${count}`,
+    doctorName: `Edward King ${count}`,
     age: 32,
     position: '皮肤科',
     department: '皮肤科'
