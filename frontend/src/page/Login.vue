@@ -37,6 +37,7 @@
 </template>
 <script lang="ts" setup>
 import { reactive, computed, onBeforeMount } from 'vue';
+import router from '../router';
 interface FormState {
   username: string;
   password: string;
@@ -52,6 +53,7 @@ onBeforeMount(() => {
 })
 const onFinish = (values: any) => {
   console.log('Success:', values);
+  router.push('/doctor')
 };
 
 const onFinishFailed = (errorInfo: any) => {
