@@ -1,18 +1,20 @@
 package com.cle.pojo;
 
 public class Doctor {
-    int doctorId;
+    String doctorId;
     String doctorName;
     int age;
     String position;
     String department;
+
     public Doctor() {
     }
-    public int getDoctorId() {
+
+    public String getDoctorId() {
         return doctorId;
     }
 
-    public void setDoctorId(int doctorId) {
+    public void setDoctorId(String doctorId) {
         this.doctorId = doctorId;
     }
 
