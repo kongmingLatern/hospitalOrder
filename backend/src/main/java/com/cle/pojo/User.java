@@ -1,55 +1,61 @@
 package com.cle.pojo;
 
-/**
- * 用户实体
- */
 public class User {
-private int userId;//用户id
-private String username;//用户名
-private String password;
-private String name;
-private String sex;
+    private String uid;//用户Id
+    private String userName;//用户名字
+    private int age;//用户年龄
+    private String realName;//用户真实名字
+    private int cancelCount;//取消次数
+    private int isAllow;//是否违规
 
     public User() {
     }
 
-    public int getUserId() {
-        return userId;
+    public String getUid() {
+        return uid;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getPassword() {
-        return password;
+    public int getAge() {
+        return age;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public String getName() {
-        return name;
+    public String getRealName() {
+        return realName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
-    public String getSex() {
-        return sex;
+    public int getCancelCount() {
+        return cancelCount;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setCancelCount(int cancelCount) {
+        this.cancelCount = cancelCount;
+    }
+
+    public int getIsAllow() {
+        return isAllow;
+    }
+
+    public void setIsAllow(int isAllow) {
+        this.isAllow = isAllow;
     }
 }
