@@ -3,11 +3,6 @@
     <header color-green>
       医生管理
     </header>
-    <div mb-5>
-      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">查询</a-button>
-      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">删除</a-button>
-      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">添加</a-button>
-    </div>
     <a-table bordered :data-source="dataSource" :columns="columns">
       <template #bodyCell="{ column, text, record }">
         <template v-if="column.dataIndex === 'doctorName'">
@@ -24,7 +19,8 @@
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
           <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.key)">
-            <a>Delete</a>
+            <a-button class="editable-add-btn" @click="handleAdd" mr-5>删除</a-button>
+            <a-button class="editable-add-btn" @click="handleAdd">修改</a-button>
           </a-popconfirm>
         </template>
       </template>

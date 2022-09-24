@@ -38,14 +38,10 @@
   </div>
 </template>
 <script lang="ts" setup>
+import type { LoginType } from '@/type';
 import { reactive, computed } from 'vue';
 import router from '../router';
-interface FormState {
-  username: string;
-  password: string;
-  remember: boolean;
-}
-const formState = reactive<FormState>({
+const formState = reactive<LoginType>({
   username: '',
   password: '',
   remember: true,

@@ -42,14 +42,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive, computed, onBeforeMount, onUnmounted } from 'vue';
+import type { RegistType } from '@/type';
+import { reactive, computed } from 'vue';
 import router from '../router';
-interface FormState {
-  username: string;
-  password: string;
-  name: string
-}
-const formState = reactive<FormState>({
+const formState = reactive<RegistType>({
   username: '',
   password: '',
   name: ''
