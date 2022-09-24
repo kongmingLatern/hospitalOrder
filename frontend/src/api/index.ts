@@ -6,7 +6,8 @@ import axios from 'axios';
 // import { ElMessage } from 'element-plus'
 // import { IResponse, ILogin } from './type';
 const instance = axios.create({
-  baseURL: 'https://www.fastmock.site/mock/9bbe2ba655977b9b564d9bfa05371dcc/api'
+  baseURL: 'https://www.fastmock.site/mock/9bbe2ba655977b9b564d9bfa05371dcc/api',
+  // baseURL: 'http://localhost:8080'
 });
 
 export default instance

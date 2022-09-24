@@ -35,7 +35,6 @@
 import { computed, getCurrentInstance, onMounted, reactive, ref } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
-import { log } from 'console';
 
 interface OrderListType {
   id: string;
@@ -79,6 +78,18 @@ onMounted(() => {
   }).catch((e: any) => {
     console.log(e.message);
   })
+
+  // request.get('api/doctor/selectAll').then((res: Record<string, any>) => {
+  //   // dataSource.push(res.data[0])
+  //   const lists = res.data
+  //   lists.forEach((list: OrderListType) => {
+  //     dataSource.push(list)
+  //   })
+  // }).catch((e: any) => {
+  //   console.log(e.message);
+  // })
+  // console.log(dataSource);
+
 })
 const count = computed(() => dataSource.length + 1);
 const editableData: Record<string, OrderListType> = reactive({});
