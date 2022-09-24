@@ -2,7 +2,7 @@
   <div w-120 m-auto class="center">
     <a-card :border="false">
       <template #title>
-        <h3>Login</h3>
+        <h3>Regist</h3>
       </template>
       <a-form :model="formState" name="normal_login" class="login-form" @finish="onFinish"
         @finishFailed="onFinishFailed">
@@ -18,18 +18,16 @@
           </a-input-password>
         </a-form-item>
 
-        <a-form-item>
-          <a-form-item name="remember" no-style>
-            <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
-          </a-form-item>
-          <a href="#" float-right>Forgot password</a>
+        <a-form-item label="Realname" name="name" :rules="[{ required: true, message: 'Please input your real-name' }]">
+          <a-input v-model:value="formState.name">
+          </a-input>
         </a-form-item>
 
         <a-form-item text-center>
           <a-button :disabled="disabled" type="primary" html-type="submit">
-            Log in
+            Regist
           </a-button>
-          <router-link to="/regist" class="right">Register now!</router-link>
+          <router-link to="/login" class="right">Go Login</router-link>
         </a-form-item>
       </a-form>
     </a-card>
@@ -41,19 +39,19 @@ import router from '../router';
 interface FormState {
   username: string;
   password: string;
-  remember: boolean;
+  name: string
 }
 const formState = reactive<FormState>({
   username: '',
   password: '',
-  remember: true,
+  name: ''
 });
 onBeforeMount(() => {
   document.querySelector('body')?.setAttribute('style', 'background-color: skyblue');
 })
 const onFinish = (values: any) => {
   console.log('Success:', values);
-  router.push('/doctor')
+  router.push('/login')
 };
 
 const onFinishFailed = (errorInfo: any) => {
