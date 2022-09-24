@@ -4,7 +4,10 @@ export interface LoginType {
   remember: boolean;
 }
 export interface RegistType {
-  username: string;
+  userName: string;
+  age: number | string,
   password: string;
-  name: string
+  realName: string
+  cancelCount?: number,
+  isAllow?: number
 }
