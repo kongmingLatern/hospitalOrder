@@ -1,42 +1,44 @@
 <template>
-  <div w-120 m-auto class="center">
-    <a-card :border="false">
-      <template #title>
-        <h3>Login</h3>
-      </template>
-      <a-form :model="formState" name="normal_login" class="login-form" @finish="onFinish"
-        @finishFailed="onFinishFailed">
-        <a-form-item label="Username" name="username"
-          :rules="[{ required: true, message: 'Please input your username!' }]">
-          <a-input v-model:value="formState.username">
-          </a-input>
-        </a-form-item>
-
-        <a-form-item label="Password" name="password"
-          :rules="[{ required: true, message: 'Please input your password!' }]">
-          <a-input-password v-model:value="formState.password">
-          </a-input-password>
-        </a-form-item>
-
-        <a-form-item>
-          <a-form-item name="remember" no-style>
-            <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
+  <div class="login-container">
+    <div w-120 m-auto class="center">
+      <a-card :border="false">
+        <template #title>
+          <h3>Login</h3>
+        </template>
+        <a-form :model="formState" name="normal_login" class="login-form" @finish="onFinish"
+          @finishFailed="onFinishFailed">
+          <a-form-item label="Username" name="username"
+            :rules="[{ required: true, message: 'Please input your username!' }]">
+            <a-input v-model:value="formState.username">
+            </a-input>
           </a-form-item>
-          <a href="#" float-right>Forgot password</a>
-        </a-form-item>
 
-        <a-form-item text-center>
-          <a-button :disabled="disabled" type="primary" html-type="submit">
-            Log in
-          </a-button>
-          <router-link to="/regist" class="right">Register now!</router-link>
-        </a-form-item>
-      </a-form>
-    </a-card>
+          <a-form-item label="Password" name="password"
+            :rules="[{ required: true, message: 'Please input your password!' }]">
+            <a-input-password v-model:value="formState.password">
+            </a-input-password>
+          </a-form-item>
+
+          <a-form-item>
+            <a-form-item name="remember" no-style>
+              <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
+            </a-form-item>
+            <a href="#" float-right>Forgot password</a>
+          </a-form-item>
+
+          <a-form-item text-center>
+            <a-button :disabled="disabled" type="primary" html-type="submit">
+              Log in
+            </a-button>
+            <router-link to="/regist" class="right">Register now!</router-link>
+          </a-form-item>
+        </a-form>
+      </a-card>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive, computed, onBeforeMount } from 'vue';
+import { reactive, computed } from 'vue';
 import router from '../router';
 interface FormState {
   username: string;
@@ -48,9 +50,7 @@ const formState = reactive<FormState>({
   password: '',
   remember: true,
 });
-onBeforeMount(() => {
-  document.querySelector('body')?.setAttribute('style', 'background-color: skyblue');
-})
+
 const onFinish = (values: any) => {
   console.log('Success:', values);
   router.push('/doctor')
@@ -64,6 +64,11 @@ const disabled = computed(() => {
 });
 </script>
 <style lang="scss" scoped>
+.login-container {
+  height: 100vh;
+  background-color: skyblue;
+}
+
 #components-form-demo-normal-login .login-form {
   max-width: 300px;
 }
