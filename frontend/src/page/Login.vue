@@ -39,7 +39,7 @@
 </template>
 <script lang="ts" setup>
 import type { LoginType } from '@/type';
-import { reactive, computed } from 'vue';
+import { reactive, computed, ref, getCurrentInstance } from 'vue';
 import router from '../router';
 const formState = reactive<LoginType>({
   username: '',
@@ -47,9 +47,20 @@ const formState = reactive<LoginType>({
   remember: true,
 });
 
+const spinning = ref<Boolean>(false)
+const instance = getCurrentInstance()
+const request = (instance?.proxy as any).$request!
+
 const onFinish = (values: any) => {
   console.log('Success:', values);
-  router.push('/doctor')
+  request.post('/api/user/Login', values, ((res: Record<string, any>) => {
+    console.log(res);
+    if (res.data.length === 1) {
+      setTimeout(() => {
+        router.push('/doctor')
+      }, 1000)
+    }
+  }))
 };
 
 const onFinishFailed = (errorInfo: any) => {
