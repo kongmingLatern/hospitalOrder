@@ -4,5 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cle.mapper.DoctorMapper">
     <resultMap id="doctorResultMap" type="Doctor">
+        <collection property="position" column="position"></collection>
     </resultMap>
 </mapper>

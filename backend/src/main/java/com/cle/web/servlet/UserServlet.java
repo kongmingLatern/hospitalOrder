@@ -21,8 +21,8 @@ public class UserServlet extends BaseServlet {
         resp.setContentType("text/json;charset=utf-8");
         resp.getWriter().write(jsonString);
     }
-
     public void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("utf-8");
         BufferedReader reader = req.getReader();
         String json = reader.readLine();
         User user = JSON.parseObject(json, User.class);

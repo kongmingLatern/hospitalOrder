@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.cle.pojo.Doctor;
 import com.cle.pojo.User;
 import com.cle.service.DoctorServiceImpl;
+import com.cle.util.UuidUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 @WebServlet("/doctor/*")
 public class DoctorServlet extends BaseServlet{
@@ -22,10 +25,13 @@ public class DoctorServlet extends BaseServlet{
         resp.getWriter().write(jsonString);
     }
     public void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("utf-8");
         BufferedReader reader = req.getReader();
         String json = reader.readLine();
-        System.out.println(json);
         Doctor doctor = JSON.parseObject(json, Doctor.class);
+        String uuid = UuidUtils.generateShortUuid();
+        doctor.setDoctorId(uuid);
+        System.out.println(uuid);
         doctorService.add(doctor);
     }
 }
