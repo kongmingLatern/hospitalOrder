@@ -1,11 +1,12 @@
 package com.cle.pojo;
-
 public class Doctor {
-    String doctorId;
-    String doctorName;
-    int age;
-    String position;
-    String department;
+    private String doctorId;//医生Id
+    private String doctorName;//医生名字
+    private int doctorAge;//医生年龄
+    private String rid;//房间Id
+    private String position;//职位
+    private String info;//简要介绍
+    private int limitCount;//限制人数
 
     public Doctor() {
     }
@@ -26,12 +27,20 @@ public class Doctor {
         this.doctorName = doctorName;
     }
 
-    public int getAge() {
-        return age;
+    public int getDoctorAge() {
+        return doctorAge;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setDoctorAge(int doctorAge) {
+        this.doctorAge = doctorAge;
+    }
+
+    public String getRid() {
+        return rid;
+    }
+
+    public void setRid(String rid) {
+        this.rid = rid;
     }
 
     public String getPosition() {
@@ -42,11 +51,19 @@ public class Doctor {
         this.position = position;
     }
 
-    public String getDepartment() {
-        return department;
+    public String getInfo() {
+        return info;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public int getLimitCount() {
+        return limitCount;
+    }
+
+    public void setLimitCount(int limitCount) {
+        this.limitCount = limitCount;
     }
 }

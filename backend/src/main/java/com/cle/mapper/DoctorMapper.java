@@ -10,6 +10,6 @@ public interface DoctorMapper {
 
     @Select("SELECT * from doctor ")
     public List<Doctor> selectAll();
-    @Insert("insert into doctor values (#{doctorId},#{doctorName},#{age},#{position},#{department})")
+    @Insert("insert into doctor values (#{doctorId},#{doctorName},#{doctorAge},#{rid},#{position},#{info},#{limitCount})")
     public void add(Doctor doctor);
 }

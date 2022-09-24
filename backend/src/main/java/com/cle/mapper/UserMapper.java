@@ -1,5 +1,4 @@
 package com.cle.mapper;
-
 import com.cle.pojo.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
@@ -16,16 +15,17 @@ public interface UserMapper {
 
     /**
      * 根据用户名查询用户
-     * @param username
+     *
+     * @param userName
      * @return
      */
-    @Select("SELECT  * FROM USER WHERE username = #{username}")
-    public User selectUserByUsername(String username);
+    @Select("SELECT  * FROM USER WHERE userName = #{userName}")
+    public User selectUserByUsername(String userName);
 
     /**
      * 添加用户
      * @param user
      */
-    @Insert("insert into user values (null,#{user.username},#{user.password},#{user.name},#{user.sex})")
+    @Insert("insert into user values (#{uid},#{userName},#{password},#{age},#{realName},#{cancelCount},#{isAllow})")
     public void add(User user);
 }
