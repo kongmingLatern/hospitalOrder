@@ -1,69 +1,78 @@
 <template>
   <div class="regist-container">
     <div w-120 m-auto class="center">
-      <a-card :border="false">
-        <template #title>
-          <h3>Regist</h3>
-        </template>
-        <a-form :model="formState" name="normal_login" class="login-form" @finish="onFinish"
-          @finishFailed="onFinishFailed">
-          <a-form-item label="Username" name="username"
-            :rules="[{ required: true, message: 'Please input your username!' }]">
-            <a-input v-model:value="formState.username">
-            </a-input>
-          </a-form-item>
+      <a-spin :spinning="spinning">
+        <a-card :border="false">
+          <template #title>
+            <h3>Regist</h3>
+          </template>
+          <a-form :model="formState" name="normal_login" class="login-form" @finish="onFinish"
+            @finishFailed="onFinishFailed">
+            <a-form-item label="Username" name="userName">
+              <a-input v-model:value="formState.userName">
+              </a-input>
+            </a-form-item>
 
-          <a-form-item label="Password" name="password"
-            :rules="[{ required: true, message: 'Please input your password!' }]">
-            <a-input-password v-model:value="formState.password">
-            </a-input-password>
-          </a-form-item>
+            <a-form-item label="Password" name="password">
+              <a-input-password v-model:value="formState.password">
+              </a-input-password>
+            </a-form-item>
 
-          <a-form-item label="Realname" name="name"
-            :rules="[{ required: true, message: 'Please input your real-name' }]">
-            <a-input v-model:value="formState.name">
-            </a-input>
-          </a-form-item>
+            <a-form-item label="Realname" name="realName">
+              <a-input v-model:value="formState.realName">
+              </a-input>
+            </a-form-item>
 
-          <a-form-item label="Age" name="age" :rules="[{ required: true, message: 'Please input your Age' }]">
-            <a-input v-model:value="formState.name">
-            </a-input>
-          </a-form-item>
+            <a-form-item label="Age" name="age">
+              <a-input v-model:value="formState.age">
+              </a-input>
+            </a-form-item>
 
-          <a-form-item text-center>
-            <a-button :disabled="disabled" type="primary" html-type="submit">
-              Regist
-            </a-button>
-            <router-link to="/login" class="right">Go Login</router-link>
-          </a-form-item>
-        </a-form>
-      </a-card>
+            <a-form-item text-center>
+              <a-button :disabled="disabled" type="primary" html-type="submit">
+                Regist
+              </a-button>
+              <router-link to="/login" class="right">Go Login</router-link>
+            </a-form-item>
+          </a-form>
+        </a-card>
+      </a-spin>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive, computed, onBeforeMount, onUnmounted } from 'vue';
+import type { RegistType } from '@/type';
+import { reactive, computed, getCurrentInstance, ref } from 'vue';
 import router from '../router';
-interface FormState {
-  username: string;
-  password: string;
-  name: string
-}
-const formState = reactive<FormState>({
-  username: '',
+const formState = reactive<RegistType>({
+  userName: '',
   password: '',
-  name: ''
+  age: '',
+  realName: ''
 });
+const spinning = ref<Boolean>(false)
+const instance = getCurrentInstance()
+const request = (instance?.proxy as any).$request!
+
 const onFinish = (values: any) => {
   console.log('Success:', values);
-  router.push('/login')
+  request.post('api/user/register', values).then((res: Record<string, any>) => {
+    if ((res.data as string) === '') {
+      spinning.value = true
+      setTimeout(() => {
+        router.push('/login')
+      }, 1000)
+    }
+  }).catch((e: any) => {
+    console.log(e.message);
+  })
 };
 
 const onFinishFailed = (errorInfo: any) => {
   console.log('Failed:', errorInfo);
 };
 const disabled = computed(() => {
-  return !(formState.username && formState.password);
+  return !(formState.userName && formState.password);
 });
 </script>
 <style lang="scss" scoped>

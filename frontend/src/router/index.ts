@@ -6,7 +6,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      redirect: '/login',
+      redirect: '/index',
       component: () => import('@/page/Home.vue'),
       children: [
         {
@@ -34,8 +34,13 @@ const router = createRouter({
     },
     {
       path: '/regist',
-      name: 'Regist',
+      name: 'regist',
       component: () => import('@/page/Regist.vue'),
+    },
+    {
+      path: '/index',
+      name: 'index',
+      component: () => import('@/page/Index.vue'),
     }
   ],
 })

@@ -1,59 +1,94 @@
 <template>
   <div class="login-container">
     <div w-120 m-auto class="center">
-      <a-card :border="false">
-        <template #title>
-          <h3>Login</h3>
-        </template>
-        <a-form :model="formState" name="normal_login" class="login-form" @finish="onFinish"
-          @finishFailed="onFinishFailed">
-          <a-form-item label="Username" name="username"
-            :rules="[{ required: true, message: 'Please input your username!' }]">
-            <a-input v-model:value="formState.username">
-            </a-input>
-          </a-form-item>
-
-          <a-form-item label="Password" name="password"
-            :rules="[{ required: true, message: 'Please input your password!' }]">
-            <a-input-password v-model:value="formState.password">
-            </a-input-password>
-          </a-form-item>
-
-          <a-form-item>
-            <a-form-item name="remember" no-style>
-              <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
+      <a-spin :spinning="spinning">
+        <a-card :border="false">
+          <template #title>
+            <h3>Login</h3>
+          </template>
+          <a-form :model="formState" name="normal_login" class="login-form" @finish="onFinish"
+            @finishFailed="onFinishFailed">
+            <a-form-item label="Username" name="username"
+              :rules="[{ required: true, message: 'Please input your username!' }]">
+              <a-input v-model:value="formState.username">
+              </a-input>
             </a-form-item>
-            <a href="#" float-right>Forgot password</a>
-          </a-form-item>
 
-          <a-form-item text-center>
-            <a-button :disabled="disabled" type="primary" html-type="submit">
-              Log in
-            </a-button>
-            <router-link to="/regist" class="right">Register now!</router-link>
-          </a-form-item>
-        </a-form>
-      </a-card>
+            <a-form-item label="Password" name="password"
+              :rules="[{ required: true, message: 'Please input your password!' }]">
+              <a-input-password v-model:value="formState.password">
+              </a-input-password>
+            </a-form-item>
+
+            <a-form-item>
+              <a-form-item name="remember" no-style>
+                <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
+              </a-form-item>
+              <a href="#" float-right>Forgot password</a>
+            </a-form-item>
+
+            <a-form-item text-center>
+              <a-button :disabled="disabled" type="primary" html-type="submit">
+                Log in
+              </a-button>
+              <router-link to="/regist" class="right">Register now!</router-link>
+            </a-form-item>
+          </a-form>
+        </a-card>
+      </a-spin>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive, computed } from 'vue';
+import type { LoginType } from '@/type';
+import { message } from 'ant-design-vue';
+import { reactive, computed, ref, getCurrentInstance } from 'vue';
 import router from '../router';
-interface FormState {
-  username: string;
-  password: string;
-  remember: boolean;
-}
-const formState = reactive<FormState>({
+const formState = reactive<LoginType>({
   username: '',
   password: '',
   remember: true,
 });
 
+const spinning = ref<Boolean>(false)
+const instance = getCurrentInstance()
+const request = (instance?.proxy as any).$request!
+
 const onFinish = (values: any) => {
   console.log('Success:', values);
-  router.push('/doctor')
+  request.get('/api/user/Login', {
+    params: {
+      username: formState.username,
+      password: formState.password
+    }
+  }).then((res: any) => {
+    console.log(res);
+    if (res.status === 200) {
+      message.success('登录成功，即将跳转到首页');
+      setTimeout(() => {
+        router.push('/index');
+      }, 1000)
+    }
+  }).catch((err: Record<string, any>) => {
+    const { status } = err.response
+    if (status === 400) {
+      console.log(err.response);
+      const { message: msg } = err.response.data
+      message.error(msg);
+    }
+  })
+  // request.get('/api/user/Login', {
+  //   params: values
+  // }, res => {
+  //   console.log(res);
+  //   spinning.value = true
+  //   if (res.data.length === 1) {
+  //     setTimeout(() => {
+  //       router.push('/doctor')
+  //     }, 1000)
+  //   }
+  // }
+  // )
 };
 
 const onFinishFailed = (errorInfo: any) => {

@@ -3,11 +3,6 @@
     <header color-green>
       医生管理
     </header>
-    <div mb-5>
-      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">查询</a-button>
-      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">删除</a-button>
-      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">添加</a-button>
-    </div>
     <a-table bordered :data-source="dataSource" :columns="columns">
       <template #bodyCell="{ column, text, record }">
         <template v-if="column.dataIndex === 'doctorName'">
@@ -24,7 +19,8 @@
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
           <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.key)">
-            <a>Delete</a>
+            <a-button class="editable-add-btn" @click="handleAdd" mr-5>删除</a-button>
+            <a-button class="editable-add-btn" @click="handleAdd">修改</a-button>
           </a-popconfirm>
         </template>
       </template>
@@ -39,28 +35,37 @@ import { cloneDeep } from 'lodash-es';
 interface DoctorType {
   doctorId: string | number;
   doctorName: string;
-  age: number;
+  doctorAge: number;
+  rid: string,
   position: string;
-  department: string;
+  info: string,
+  limitCount: number
 }
 
 const columns = [
   {
     title: 'doctorName',
-    dataIndex: 'doctorName',
-    wdoctorIdth: '30%',
+    dataIndex: 'doctorName'
   },
   {
-    title: 'age',
-    dataIndex: 'age',
+    title: 'doctorAge',
+    dataIndex: 'doctorAge',
+  },
+  {
+    title: 'rid',
+    dataIndex: 'rid',
   },
   {
     title: 'position',
     dataIndex: 'position',
   },
   {
-    title: 'department',
-    dataIndex: 'department',
+    title: 'info',
+    dataIndex: 'info',
+  },
+  {
+    title: 'limitCount',
+    dataIndex: 'limitCount',
   },
   {
     title: 'operation',
@@ -73,17 +78,7 @@ onMounted(() => {
   const instance = getCurrentInstance()
   const request = (instance?.proxy as any).$request!
 
-  request.get('/doctor').then((res: Record<string, any>) => {
-    spinning.value = false
-    const lists = res.data
-    lists.forEach((list: DoctorType) => {
-      dataSource.push(list)
-    })
-  }).catch((e: any) => {
-    console.log(e.message);
-  })
-
-  // request.get('api/doctor/selectAll').then((res: Record<string, any>) => {
+  // request.get('/doctor').then((res: Record<string, any>) => {
   //   spinning.value = false
   //   const lists = res.data
   //   lists.forEach((list: DoctorType) => {
@@ -92,9 +87,16 @@ onMounted(() => {
   // }).catch((e: any) => {
   //   console.log(e.message);
   // })
-
-
-
+  request.get('api/doctor/selectAll').then((res: Record<string, any>) => {
+    spinning.value = false
+    const lists = res.data
+    console.log(res.data);
+    lists.forEach((list: DoctorType) => {
+      dataSource.push(list)
+    })
+  }).catch((e: any) => {
+    console.log(e.message);
+  })
 })
 const count = computed(() => dataSource.length + 1);
 const editableData: Record<string, DoctorType> = reactive({});
@@ -114,9 +116,11 @@ const handleAdd = () => {
   const newData = {
     doctorId: `${count}`,
     doctorName: `Edward King ${count}`,
-    age: 32,
+    doctorAge: 32,
+    rid: '123',
     position: '皮肤科',
-    department: '皮肤科'
+    info: '简单的介绍',
+    limitCount: 10,
   };
   dataSource.push(newData);
 };
