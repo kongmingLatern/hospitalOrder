@@ -41,6 +41,7 @@
 </template>
 <script lang="ts" setup>
 import type { LoginType } from '@/type';
+import { message } from 'ant-design-vue';
 import { reactive, computed, ref, getCurrentInstance } from 'vue';
 import router from '../router';
 const formState = reactive<LoginType>({
@@ -55,15 +56,39 @@ const request = (instance?.proxy as any).$request!
 
 const onFinish = (values: any) => {
   console.log('Success:', values);
-  request.post('/api/user/Login', values, ((res: Record<string, any>) => {
+  request.get('/api/user/Login', {
+    params: {
+      username: formState.username,
+      password: formState.password
+    }
+  }).then((res: any) => {
     console.log(res);
-    spinning.value = true
-    if (res.data.length === 1) {
+    if (res.status === 200) {
+      message.success('登录成功，即将跳转到首页');
       setTimeout(() => {
-        router.push('/doctor')
+        router.push('/index');
       }, 1000)
     }
-  }))
+  }).catch((err: Record<string, any>) => {
+    const { status } = err.response
+    if (status === 400) {
+      console.log(err.response);
+      const { message: msg } = err.response.data
+      message.error(msg);
+    }
+  })
+  // request.get('/api/user/Login', {
+  //   params: values
+  // }, res => {
+  //   console.log(res);
+  //   spinning.value = true
+  //   if (res.data.length === 1) {
+  //     setTimeout(() => {
+  //       router.push('/doctor')
+  //     }, 1000)
+  //   }
+  // }
+  // )
 };
 
 const onFinishFailed = (errorInfo: any) => {
