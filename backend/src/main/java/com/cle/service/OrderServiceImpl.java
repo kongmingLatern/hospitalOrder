@@ -21,7 +21,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void add() {
-
+    public int add() {
+        return 0;
     }
 }

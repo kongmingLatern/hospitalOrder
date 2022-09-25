@@ -18,7 +18,6 @@ public class OrderServlet extends BaseServlet {
     public void selectAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Order> list = orderService.selectAll();
         String jsonString = JSON.toJSONString(list);
-        resp.setContentType("text/json;charset=utf-8");
         resp.getWriter().write(jsonString);
     }
 }

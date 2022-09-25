@@ -1,6 +1,7 @@
 package com.cle.service;
 
 import com.cle.mapper.UserMapper;
+import com.cle.pojo.PageBean;
 import com.cle.pojo.User;
 import com.cle.util.SqlSessionFactoryUtil;
 import org.apache.ibatis.session.SqlSession;
@@ -19,12 +20,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void add(User user) {
+    public int add(User user) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-        mapper.add(user);
+        int count = mapper.add(user);
         sqlSession.commit();
         sqlSession.close();
+        return count;
     }
 
     @Override
@@ -34,5 +36,30 @@ public class UserServiceImpl implements UserService{
         User user = mapper.selectUserByUsername(username);
         sqlSession.close();
         return user;
+    }
+
+    @Override
+    public PageBean<User> selectByPage(int currentPage, int pageSize) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        int begin = (currentPage - 1) * pageSize;
+        int size = pageSize;
+        List<User> users = mapper.selectByPage(begin, size);
+        int count = mapper.count();
+        PageBean<User> pageBean = new PageBean<>();
+        pageBean.setRows(users);
+        pageBean.setTotalCount(count);
+        sqlSession.close();
+        return pageBean;
+    }
+
+    @Override
+    public int delete(String uid) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        int delete = mapper.delete(uid);
+        sqlSession.commit();
+        sqlSession.close();
+        return delete;
     }
 }

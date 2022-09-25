@@ -11,5 +11,5 @@ public interface OrderMapper {
     public List<Order> selectAll();
 
     @Insert("insert into `order` values (#{orderId},#{uid},#{orderTime},#{orderRoom},#{isCancel},#{isFinish})")
-    public void add(Order order);
+    int add(Order order);
 }

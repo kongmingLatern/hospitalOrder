@@ -7,5 +7,6 @@ import java.util.List;
 public interface OrderService {
     List<Order> selectAll();
 
-    void add();
+    int add();
+
 }

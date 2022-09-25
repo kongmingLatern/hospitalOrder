@@ -2,6 +2,8 @@ package com.cle.service;
 
 import com.cle.mapper.DoctorMapper;
 import com.cle.pojo.Doctor;
+import com.cle.pojo.PageBean;
+import com.cle.pojo.User;
 import com.cle.util.SqlSessionFactoryUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -19,20 +21,37 @@ public class DoctorServiceImpl implements DoctorService{
     }
 
     @Override
-    public void add(Doctor doctor) {
+    public int add(Doctor doctor) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         DoctorMapper mapper = sqlSession.getMapper(DoctorMapper.class);
-        mapper.add(doctor);
+        int count = mapper.add(doctor);
         sqlSession.commit();
         sqlSession.close();
+        return count;
     }
 
     @Override
-    public void delete(String doctorId) {
+    public int delete(String doctorId) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         DoctorMapper mapper = sqlSession.getMapper(DoctorMapper.class);
-        mapper.delete(doctorId);
+        int count = mapper.delete(doctorId);
         sqlSession.commit();
         sqlSession.close();
+        return count;
+    }
+
+    @Override
+    public PageBean<Doctor> selectByPage(int currentPage, int pageSize) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        DoctorMapper mapper = sqlSession.getMapper(DoctorMapper.class);
+        int begin = (currentPage - 1) * pageSize;
+        int size = pageSize;
+        List<Doctor> doctors = mapper.selectByPage(begin, size);
+        int count = mapper.count();
+        PageBean<Doctor> pageBean = new PageBean<>();
+        pageBean.setRows(doctors);
+        pageBean.setTotalCount(count);
+        sqlSession.close();
+        return pageBean;
     }
 }
