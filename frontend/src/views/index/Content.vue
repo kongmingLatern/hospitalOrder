@@ -1,7 +1,7 @@
 <template>
   <div class="content-container" flex justify-around p-5>
     <div flex-1>
-      <h1>医院介绍</h1>
+      <img src='@/assets/content/hospital.png' mb-3 />
       <p>
         常熟理工学院（Changshu Institute of
         Technology），位于江苏省常熟市，是一所江苏省省属全日制普通本科院校，是教育部组织的新一轮本科教学合格评估的首所试点高校、“国家教育体制改革”试点高校、教育部“卓越工程师教育培养计划”试点高校、教育部信息化建设试点高校、“国家级新工科研究与实践项目”入选高校、江苏省首所省市共建试点高校。2017年，学校成为江苏省省级硕士立项建设单位。

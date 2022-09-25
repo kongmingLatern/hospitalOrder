@@ -1,7 +1,9 @@
 <template>
-  <Header />
-  <Carousel />
-  <Content />
+  <div class="index-container">
+    <Header />
+    <Carousel />
+    <Content />
+  </div>
 </template>
 
 <script setup lang='ts'>
@@ -11,5 +13,7 @@ import Content from '../views/index/Content.vue'
 </script>
 
 <style scoped lang="scss">
-
+.index-container {
+  width: 100%;
+}
 </style>
