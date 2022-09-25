@@ -26,4 +26,13 @@ public class DoctorServiceImpl implements DoctorService{
         sqlSession.commit();
         sqlSession.close();
     }
+
+    @Override
+    public void delete(String doctorId) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        DoctorMapper mapper = sqlSession.getMapper(DoctorMapper.class);
+        mapper.delete(doctorId);
+        sqlSession.commit();
+        sqlSession.close();
+    }
 }

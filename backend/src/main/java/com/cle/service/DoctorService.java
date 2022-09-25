@@ -6,4 +6,6 @@ import java.util.List;
 public interface DoctorService {
     public List<Doctor> selectAll();
     public void add(Doctor doctor);
+
+    public void delete(String doctorId);
 }

@@ -17,16 +17,20 @@ public class DoctorServlet extends BaseServlet{
     public void selectAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Doctor> list = doctorService.selectAll();
         String jsonString = JSON.toJSONString(list);
-       resp.setContentType("text/json;charset=utf-8");
+        resp.setContentType("text/json;charset=utf-8");
         resp.getWriter().write(jsonString);
     }
+
     public void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
         BufferedReader reader = req.getReader();
         String json = reader.readLine();
-        System.out.println(json);
         Doctor doctor = JSON.parseObject(json, Doctor.class);
         doctor.setDoctorId(UidUtil.getUUID());
         doctorService.add(doctor);
+    }
+
+    public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
     }
 }

@@ -16,6 +16,7 @@ public class OrderServiceImpl implements OrderService {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
         List<Order> orders = mapper.selectAll();
+        sqlSession.close();
         return orders;
     }
 

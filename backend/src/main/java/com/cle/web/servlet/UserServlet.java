@@ -38,9 +38,15 @@ public class UserServlet extends BaseServlet {
 
     public void Login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
+        String password = req.getParameter("password");
         User user = userService.selectByUsername(username);
-        String jsonString = JSON.toJSONString(user);
         resp.setCharacterEncoding("utf-8");
-        resp.getWriter().write(jsonString);
+        if (user == null) {
+            resp.getWriter().write("没有该用户");
+        } else if (!password.equals(user.getPassword())) {
+            resp.getWriter().write("密码错误");
+        } else {
+            resp.getWriter().write("登录成功");
+        }
     }
 }
