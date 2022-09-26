@@ -25,6 +25,11 @@ const router = createRouter({
           name: 'order',
           component: () => import('@/views/home/OrderList.vue'),
         },
+        {
+          path: 'user',
+          name: 'user',
+          component: () => import('@/views/home/UserList.vue'),
+        },
       ]
     },
     {
