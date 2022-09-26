@@ -1,4 +1,5 @@
 <template>
+  <Form :visible="visible" @ok="changeStatus" />
   <a-spin :spinning="spinning">
     <header color-green>
       用户管理
@@ -32,9 +33,10 @@
   </a-spin>
 </template>
 <script lang="ts" setup>
-import { computed, getCurrentInstance, onMounted, reactive, ref } from 'vue';
+import { computed, getCurrentInstance, onMounted, provide, reactive, ref } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
+import Form from '@/views/home/Form.vue'
 
 interface UserType {
   uid: string;
@@ -87,10 +89,12 @@ const columns = [
 ];
 const spinning = ref<Boolean>(true)
 let dataSource: UserType[] = reactive([]);
+const visible = ref<Boolean>(false)
 
 onMounted(() => {
   const instance = getCurrentInstance()
   const request = (instance?.proxy as any).$request!
+
 
   request.get('/api/user/selectAll').then((res: Record<string, any>) => {
     console.log(res.data);
@@ -122,11 +126,14 @@ const save = (uid: string) => {
   Object.assign(dataSource.filter(item => uid === item.uid)[0], editableData[uid]);
   delete editableData[uid];
 };
-
 const onDelete = (uid: string) => {
   dataSource = dataSource.filter(item => item.uid !== uid);
 };
+const changeStatus = (status: boolean) => {
+  visible.value = status
+}
 const handleAdd = () => {
+  visible.value = true
   const newData: UserType = {
     uid: `${count.value}`,
     userName: `陈楷豪${count.value}`,
