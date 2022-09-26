@@ -17,6 +17,7 @@ public class DoctorServiceImpl implements DoctorService{
         SqlSession sqlSession = sqlSessionFactory.openSession();
         DoctorMapper mapper = sqlSession.getMapper(DoctorMapper.class);
         List<Doctor> list = mapper.selectAll();
+        sqlSession.close();
         return list;
     }
 

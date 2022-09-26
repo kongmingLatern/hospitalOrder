@@ -7,8 +7,17 @@ public class User {
     private String realName;//用户真实名字
     private int cancelCount;//取消次数
     private int isAllow;//是否违规
+    private int isAuth;//是否管理员
 
     public User() {
+    }
+
+    public int getIsAuth() {
+        return isAuth;
+    }
+
+    public void setIsAuth(int isAuth) {
+        this.isAuth = isAuth;
     }
 
     public String getPassword() {

@@ -43,7 +43,16 @@ public class DoctorServlet extends BaseServlet{
 
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uid = req.getParameter("uid");
-
+        Message message = new Message();
+        int count = doctorService.delete(uid);
+        if (count != 0) {
+            message.setMessage("删除成功");
+        } else {
+            message.setMessage("删除失败");
+            resp.setStatus(400);
+        }
+        String jsonString = JSON.toJSONString(message);
+        resp.getWriter().write(jsonString);
     }
 
     public void selectByPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

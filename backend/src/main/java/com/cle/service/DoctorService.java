@@ -7,10 +7,27 @@ import com.cle.pojo.User;
 import java.util.List;
 
 public interface DoctorService {
+    /**
+     * 查询所有
+     *
+     * @return
+     */
     List<Doctor> selectAll();
 
+    /**
+     * 添加医生
+     *
+     * @param doctor
+     * @return
+     */
     int add(Doctor doctor);
 
+    /**
+     * 删除医生
+     *
+     * @param doctorId
+     * @return
+     */
     int delete(String doctorId);
 
     /**

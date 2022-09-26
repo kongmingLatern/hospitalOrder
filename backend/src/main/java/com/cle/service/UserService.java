@@ -6,10 +6,27 @@ import com.cle.pojo.User;
 import java.util.List;
 
 public interface UserService {
+    /**
+     * 查询所有用户
+     *
+     * @return
+     */
     List<User> selectAll();
 
+    /**
+     * 添加用户
+     *
+     * @param user
+     * @return
+     */
     int add(User user);
 
+    /**
+     * 根据用户名查询用户
+     *
+     * @param username
+     * @return
+     */
     User selectByUsername(String username);
 
     /**

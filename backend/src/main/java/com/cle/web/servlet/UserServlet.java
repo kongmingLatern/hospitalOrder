@@ -5,9 +5,9 @@ import com.cle.pojo.PageBean;
 import com.cle.pojo.User;
 import com.cle.service.UserServiceImpl;
 import com.cle.util.UidUtil;
-import com.cle.pojo.Message;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -17,7 +17,26 @@ import java.util.List;
 
 @WebServlet("/api/user/*")
 public class UserServlet extends BaseServlet {
+    private class Message {
+        private String message;
+        private boolean isAuth;
 
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public boolean isAuth() {
+            return isAuth;
+        }
+
+        public void setAuth(boolean auth) {
+            isAuth = auth;
+        }
+    }
     UserServiceImpl userService = new UserServiceImpl();
 
     public void selectAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -33,6 +52,7 @@ public class UserServlet extends BaseServlet {
         user.setUid(UidUtil.getUUID());
         user.setCancelCount(0);
         user.setIsAllow(0);
+        user.setIsAuth(0);
         Message message = new Message();
         int count = userService.add(user);
         if (count != 0) {
@@ -48,8 +68,11 @@ public class UserServlet extends BaseServlet {
     public void Login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        String _remeber = req.getParameter("remeber");
+        boolean remeber = Boolean.parseBoolean(_remeber);
         User user = userService.selectByUsername(username);
         Message message = new Message();
+        message.setAuth(false);
         if (user == null) {
             message.setMessage("没有该用户");
             resp.setStatus(400);
@@ -57,7 +80,18 @@ public class UserServlet extends BaseServlet {
             message.setMessage("密码错误");
             resp.setStatus(400);
         } else {
+            if (user.getIsAuth() == 1) {
+                message.setAuth(true);
+            }
             message.setMessage("登录成功");
+            if (remeber) {
+                Cookie c_username = new Cookie("username", username);
+                Cookie c_password = new Cookie("password", password);
+                c_username.setMaxAge(7 * 60 * 60 * 24);
+                c_password.setMaxAge(7 * 60 * 60 * 24);
+                resp.addCookie(c_username);
+                resp.addCookie(c_password);
+            }
         }
         String jsonString = JSON.toJSONString(message);
         resp.getWriter().write(jsonString);
