@@ -19,6 +19,10 @@
             <pie-chart-outlined />
             <router-link to="/doctor" ml-2>医生管理</router-link>
           </a-menu-item>
+          <a-menu-item key="5">
+            <pie-chart-outlined />
+            <router-link to="/user" ml-2>用户管理</router-link>
+          </a-menu-item>
           <a-menu-item key="3">
             <pie-chart-outlined />
             <router-link to="/room" ml-2>科室管理</router-link>
