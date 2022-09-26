@@ -72,7 +72,7 @@ const onFinishFailed = (errorInfo: any) => {
   console.log('Failed:', errorInfo);
 };
 const disabled = computed(() => {
-  return !(formState.userName && formState.password);
+  return !(formState.userName && formState.password && formState.realName && formState.age);
 });
 </script>
 <style lang="scss" scoped>
