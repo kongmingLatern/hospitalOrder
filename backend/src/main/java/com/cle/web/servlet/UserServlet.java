@@ -131,4 +131,23 @@ public class UserServlet extends BaseServlet {
         String jsonString = JSON.toJSONString(message);
         resp.getWriter().write(jsonString);
     }
+
+    public void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        BufferedReader reader = req.getReader();
+        String json = reader.readLine();
+        User user = JSON.parseObject(json, User.class);
+        user.setUid(UidUtil.getUUID());
+        user.setCancelCount(0);
+        user.setIsAllow(0);
+        Message message = new Message();
+        int count = userService.add(user);
+        if (count != 0) {
+            message.setMessage("添加成功");
+        } else {
+            message.setMessage("添加失败");
+            resp.setStatus(400);
+        }
+        String jsonString = JSON.toJSONString(message);
+        resp.getWriter().write(jsonString);
+    }
 }
