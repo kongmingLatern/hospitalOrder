@@ -22,7 +22,7 @@ img {
 }
 
 .ant-carousel :deep(.slick-slide) {
-  height: 350px;
+  height: 400px;
   overflow: hidden;
 }
 </style>
