@@ -1,6 +1,6 @@
 <template>
   <div class="content-container" flex justify-around p-5>
-    <div flex-1>
+    <div class="flex-2">
       <img src='@/assets/content/hospital.png' mb-3 />
       <p>
         常熟理工学院（Changshu Institute of
@@ -9,19 +9,23 @@
       </p>
     </div>
 
-    <div flex-1>
-      <h1>预约挂号</h1>
+    <div flex-1 flex justify-around items-center>
+      <Icon />
     </div>
   </div>
 </template>
 
 <script setup lang='ts'>
-
+import Icon from '@/views/index/icon/Icon.vue'
 </script>
 
 <style scoped lang="scss">
 p {
   text-indent: 2em;
   line-height: 1.5;
+}
+
+.flex-2 {
+  flex: 2
 }
 </style>
