@@ -64,9 +64,9 @@ const onFinish = (values: any) => {
   }).then((res: any) => {
     console.log(res);
     if (res.status === 200) {
-      message.success('登录成功，即将跳转到首页');
+      message.success('登录成功，即将跳转到后台管理');
       setTimeout(() => {
-        router.push('/index');
+        router.push('/doctor');
       }, 1000)
     }
   }).catch((err: Record<string, any>) => {
