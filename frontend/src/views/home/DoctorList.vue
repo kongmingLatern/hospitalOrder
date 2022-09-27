@@ -68,7 +68,6 @@ const visible = ref<Boolean>(false)
 onMounted(() => {
   const instance = getCurrentInstance()
   const request = (instance?.proxy as any).$request!
-
   // request.get('/doctor').then((res: Record<string, any>) => {
   //   spinning.value = false
   //   const lists = res.data
@@ -81,7 +80,6 @@ onMounted(() => {
   request.get('api/doctor/selectAll').then((res: Record<string, any>) => {
     spinning.value = false
     const lists = res.data
-    console.log(res.data);
     lists.forEach((list: DoctorType) => {
       dataSource.push(list)
     })
@@ -103,20 +101,8 @@ const onDelete = (doctorId: string) => {
 };
 const handleAdd = () => {
   visible.value = true
-  // const newData = {
-  //   doctorId: `${count}`,
-  //   doctorName: `Edward King ${count}`,
-  //   doctorAge: 32,
-  //   rid: '123',
-  //   position: '皮肤科',
-  //   info: '简单的介绍',
-  //   limitCount: 10,
-  // };
-  // dataSource.push(newData);
 };
-// const handleOk = (e: MouseEvent) => {
-//   visible.value = false
-// }
+
 </script>
 <style lang="scss" scoped>
 .editable-cell {
