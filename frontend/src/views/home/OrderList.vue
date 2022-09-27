@@ -35,14 +35,8 @@
 import { computed, getCurrentInstance, onMounted, reactive, ref } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
+import type { OrderListType } from '@/type';
 
-interface OrderListType {
-  id: string;
-  name: string;
-  age: number;
-  order: string;
-  dateTime: string;
-}
 
 const columns = [
   {

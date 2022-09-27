@@ -35,12 +35,8 @@
 import { computed, getCurrentInstance, onMounted, reactive, ref } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
+import type { RoomType } from '@/type';
 
-interface RoomType {
-  id: string;
-  name: string;
-  room: string
-}
 
 const columns = [
   {
