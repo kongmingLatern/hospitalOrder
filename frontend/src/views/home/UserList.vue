@@ -1,5 +1,5 @@
 <template>
-  <FormState />
+  <UserForm />
   <a-spin :spinning="spinning">
     <header color-green>
       用户管理
@@ -33,7 +33,7 @@ import { getCurrentInstance, onMounted, reactive, ref, watchEffect } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 import type { UserType } from '@/type';
-import FormState from './FormState.vue';
+import UserForm from './UserForm.vue';
 
 const columns = [
   {
