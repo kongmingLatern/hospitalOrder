@@ -25,7 +25,7 @@
 </template>
 <script lang="ts" setup>
 import { getCurrentInstance, reactive, ref, toRaw } from 'vue';
-import type { FormInstance } from 'ant-design-vue';
+import { message, type FormInstance } from 'ant-design-vue';
 import type { UserType } from '@/type';
 
 const layout = {
@@ -59,7 +59,9 @@ const onOk = () => {
       console.log('Received values of form: ', values);
       console.log('formState: ', toRaw(formState));
       request.post('/api/user/add', toRaw(formState)).then((res: any) => {
-        console.log('res: ', res);
+        message.success(res.data.message)
+      }).catch((err: any) => {
+        message.error(err.data.message)
       })
       visible.value = false;
     })
