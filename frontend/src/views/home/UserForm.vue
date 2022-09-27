@@ -51,6 +51,9 @@ const formState: UserType = reactive({
   isAuth: undefined,
 });
 
+const emit = defineEmits<{
+  (msg: string, formStaet: UserType): void
+}>()
 
 const onOk = () => {
   (formRef as any)?.value
@@ -59,6 +62,7 @@ const onOk = () => {
       console.log('Received values of form: ', values);
       console.log('formState: ', toRaw(formState));
       request.post('/api/user/add', toRaw(formState)).then((res: any) => {
+        emit('addUser', toRaw(formState));
         message.success(res.data.message)
       }).catch((err: any) => {
         message.error(err.data.message)

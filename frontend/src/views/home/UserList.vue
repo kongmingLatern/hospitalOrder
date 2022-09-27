@@ -1,10 +1,9 @@
 <template>
-  <UserForm />
+  <UserForm @addUser="add" />
   <a-spin :spinning="spinning">
     <header color-green>
       用户管理
     </header>
-
     <a-table bordered :data-source="dataSource" :columns="columns">
       <template #bodyCell="{ column, text, record }">
         <template v-if="column.dataIndex === 'name'">
@@ -75,11 +74,6 @@ const columns = [
 ];
 const spinning = ref<Boolean>(true)
 let dataSource: UserType[] = reactive([]);
-const visible = ref<Boolean>(false)
-
-watchEffect(() => {
-  console.log(visible.value);
-})
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 onMounted(() => {
@@ -93,7 +87,6 @@ onMounted(() => {
   }).catch((e: any) => {
     console.log(e.message);
   })
-
 })
 const editableData: Record<string, UserType> = reactive({});
 
@@ -107,6 +100,12 @@ const save = (uid: string) => {
 const onDelete = (uid: string) => {
   dataSource = dataSource.filter(item => item.uid !== uid);
 };
+
+const add = (formState: UserType) => {
+  dataSource.push(formState)
+  console.log(dataSource);
+
+}
 </script>
 <style lang="scss" scoped>
 .editable-cell {
