@@ -28,7 +28,7 @@
   </a-spin>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, onMounted, reactive, ref, watchEffect } from 'vue';
+import { getCurrentInstance, onMounted, reactive, ref } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 import type { UserType } from '@/type';
@@ -105,8 +105,9 @@ const onDelete = (uid: string) => {
       uid
     }
   }).then((res: Record<string, any>) => {
+    const { message } = res.data
     dataSource = dataSource.filter(item => item.uid !== uid)
-    message.success(res.data.message)
+    message.success(message)
     setTimeout(() => {
       router.go(0)
     }, 0)
