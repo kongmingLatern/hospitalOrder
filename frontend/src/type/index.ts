@@ -42,3 +42,8 @@ export interface UserType {
   isAllow?: number,
   isAuth: number | undefined
 }
+export interface TabType {
+  tab: string;
+  key: string;
+  content: string
+}
