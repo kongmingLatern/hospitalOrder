@@ -9,17 +9,17 @@
         <template v-if="column.dataIndex === 'name'">
           <div class="editable-cell">
             <div v-if="editableData[record.uid]" class="editable-cell-input-wrapper">
-              <a-input v-model:value="editableData[record.id].userName" @pressEnter="save(record.id)" />
-              <check-outlined class="editable-cell-icon-check" @click="save(record.id)" />
+              <a-input v-model:value="editableData[record.uid].userName" @pressEnter="save(record.uid)" />
+              <check-outlined class="editable-cell-icon-check" @click="save(record.uid)" />
             </div>
             <div v-else class="editable-cell-text-wrapper">
               {{ text || ' ' }}
-              <edit-outlined class="editable-cell-icon" @click="edit(record.id)" />
+              <edit-outlined class="editable-cell-icon" @click="edit(record.uid)" />
             </div>
           </div>
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
-          <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.id)">
+          <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.uid)">
             <a>Delete</a>
           </a-popconfirm>
         </template>
@@ -33,6 +33,7 @@ import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 import type { UserType } from '@/type';
 import UserForm from './UserForm.vue';
+import { message } from 'ant-design-vue';
 
 const columns = [
   {
@@ -98,13 +99,22 @@ const save = (uid: string) => {
   delete editableData[uid];
 };
 const onDelete = (uid: string) => {
-  dataSource = dataSource.filter(item => item.uid !== uid);
+  console.log(uid);
+
+  request.get('api/user/delete', {
+    params: {
+      uid
+    }
+  }).then((res: Record<string, any>) => {
+    message.success(res.data.message)
+    dataSource = dataSource.filter(item => item.uid !== uid)
+  }).catch((err: Record<string, any>) => {
+    message.error(err.message)
+  })
 };
 
 const add = (formState: UserType) => {
   dataSource.push(formState)
-  console.log(dataSource);
-
 }
 </script>
 <style lang="scss" scoped>

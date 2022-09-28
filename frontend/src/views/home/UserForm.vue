@@ -26,6 +26,7 @@
 <script lang="ts" setup>
 import { getCurrentInstance, reactive, ref, toRaw } from 'vue';
 import { message, type FormInstance } from 'ant-design-vue';
+import { randomString } from '../../utils';
 import type { UserType } from '@/type';
 
 const layout = {
@@ -43,7 +44,8 @@ const formRef = ref<FormInstance>();
 const visible = ref<Boolean>(false);
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
-const formState: UserType = reactive({
+let formState: UserType = reactive({
+  uid: '',
   userName: '',
   age: undefined,
   password: '',
@@ -62,6 +64,12 @@ const onOk = () => {
       console.log('Received values of form: ', values);
       console.log('formState: ', toRaw(formState));
       request.post('/api/user/add', toRaw(formState)).then((res: any) => {
+        formState = {
+          ...formState,
+          uid: randomString(),
+          cancelCount: 0,
+          isAllow: 0,
+        }
         emit('addUser', toRaw(formState));
         message.success(res.data.message)
       }).catch((err: any) => {
