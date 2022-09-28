@@ -1,14 +1,15 @@
 <template>
   <div class="order-container">
-    <aside>
+    <aside mr-2>
       <UserCard :userInfo="userInfo" class="card-container" />
+      <MenuCard />
     </aside>
-    <main>
+    <main mr-2>
       <Search class="search" />
       <Tabs :tabs="tabs" />
     </main>
     <aside>
-      <UserCard :userInfo="userInfo" class="card-container" />
+      <NoticeCard />
     </aside>
   </div>
 </template>
@@ -19,7 +20,9 @@ import UserCard from '@/views/order/UserCard.vue';
 import { reactive } from 'vue';
 import Search from '../views/order/Search.vue';
 import Tabs from '../views/order/Tabs.vue';
-import { TabType } from '../type';
+import type { TabType } from '../type';
+import NoticeCard from '../views/order/NoticeCard.vue';
+import MenuCard from '../views/order/MenuCard.vue';
 const userInfo = reactive<UserType>({
   uid: '',
   userName: 'ccccle',
@@ -34,17 +37,17 @@ const userInfo = reactive<UserType>({
 const tabs = reactive<TabType[]>([
   {
     tab: '眼科',
-    key: 'all',
+    key: '1',
     content: '眼科醫生'
   },
   {
     tab: '骨科',
-    key: 'finish',
+    key: '2',
     content: '骨科醫生'
   },
   {
     tab: '呼吸科',
-    key: 'unfinish',
+    key: '3',
     content: '呼吸科醫生'
   },
 ]);
@@ -53,13 +56,17 @@ const tabs = reactive<TabType[]>([
 <style lang='scss' scoped>
 .order-container {
   display: flex;
-  width: 1000px;
+  width: 820px;
   margin: 0 auto;
   padding: 10px;
 }
 
+.card-container {
+  margin-bottom: 10px;
+}
+
 .search {
-  width: 300px;
+  width: 400px;
   margin-bottom: 20px;
 }
 </style>
