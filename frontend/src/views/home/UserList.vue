@@ -1,30 +1,26 @@
 <template>
+  <UserForm @addUser="add" text-right />
   <a-spin :spinning="spinning">
-    <header color-green>
-      用户管理
-    </header>
-    <div mb-5>
-      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">查询</a-button>
-      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">删除</a-button>
-      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">添加</a-button>
-    </div>
     <a-table bordered :data-source="dataSource" :columns="columns">
       <template #bodyCell="{ column, text, record }">
         <template v-if="column.dataIndex === 'name'">
           <div class="editable-cell">
             <div v-if="editableData[record.uid]" class="editable-cell-input-wrapper">
-              <a-input v-model:value="editableData[record.id].userName" @pressEnter="save(record.id)" />
-              <check-outlined class="editable-cell-icon-check" @click="save(record.id)" />
+              <a-input v-model:value="editableData[record.uid].userName" @pressEnter="save(record.uid)" />
+              <check-outlined class="editable-cell-icon-check" @click="save(record.uid)" />
             </div>
             <div v-else class="editable-cell-text-wrapper">
               {{ text || ' ' }}
-              <edit-outlined class="editable-cell-icon" @click="edit(record.id)" />
+              <edit-outlined class="editable-cell-icon" @click="edit(record.uid)" />
             </div>
           </div>
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
-          <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.id)">
-            <a>Delete</a>
+          <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.uid)">
+            <a-button>删除</a-button>
+          </a-popconfirm>
+          <a-popconfirm v-if="dataSource.length" title="Sure to change?" @confirm="onDelete(record.uid)">
+            <a-button>修改</a-button>
           </a-popconfirm>
         </template>
       </template>
@@ -32,20 +28,13 @@
   </a-spin>
 </template>
 <script lang="ts" setup>
-import { computed, getCurrentInstance, onMounted, reactive, ref } from 'vue';
+import { getCurrentInstance, onMounted, reactive, ref } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
-
-interface UserType {
-  uid: string;
-  userName: string,
-  age: number,
-  password: string,
-  realName: string,
-  cancelCount: number,
-  isAllow: number,
-  isAuth: number
-}
+import type { UserType } from '@/type';
+import UserForm from './UserForm.vue';
+import { message } from 'ant-design-vue';
+import router from '@/router';
 
 const columns = [
   {
@@ -87,11 +76,9 @@ const columns = [
 ];
 const spinning = ref<Boolean>(true)
 let dataSource: UserType[] = reactive([]);
-
+const instance = getCurrentInstance()
+const request = (instance?.proxy as any).$request!
 onMounted(() => {
-  const instance = getCurrentInstance()
-  const request = (instance?.proxy as any).$request!
-
   request.get('/api/user/selectAll').then((res: Record<string, any>) => {
     console.log(res.data);
     spinning.value = false
@@ -102,17 +89,7 @@ onMounted(() => {
   }).catch((e: any) => {
     console.log(e.message);
   })
-
-  // axios.get('/room').then(res => {
-  //   console.log(res);
-  //   res.data.forEach((item: RoomType) => {
-  //     dataSource.push(item)
-  //   })
-  // }).catch(e => {
-  //   console.log(e);
-  // })
 })
-const count = computed(() => dataSource.length + 1);
 const editableData: Record<string, UserType> = reactive({});
 
 const edit = (uid: string) => {
@@ -122,23 +99,26 @@ const save = (uid: string) => {
   Object.assign(dataSource.filter(item => uid === item.uid)[0], editableData[uid]);
   delete editableData[uid];
 };
-
 const onDelete = (uid: string) => {
-  dataSource = dataSource.filter(item => item.uid !== uid);
+  request.get('api/user/delete', {
+    params: {
+      uid
+    }
+  }).then((res: Record<string, any>) => {
+    const { message } = res.data
+    dataSource = dataSource.filter(item => item.uid !== uid)
+    message.success(message)
+    setTimeout(() => {
+      router.go(0)
+    }, 0)
+  }).catch((err: Record<string, any>) => {
+    message.error(err.message)
+  })
 };
-const handleAdd = () => {
-  const newData: UserType = {
-    uid: `${count.value}`,
-    userName: `陈楷豪${count.value}`,
-    password: '123',
-    age: 10,
-    realName: '陈楷豪',
-    cancelCount: 0,
-    isAllow: 0,
-    isAuth: 0,
-  };
-  dataSource.push(newData);
-};
+
+const add = (formState: UserType) => {
+  dataSource.push(formState)
+}
 </script>
 <style lang="scss" scoped>
 .editable-cell {

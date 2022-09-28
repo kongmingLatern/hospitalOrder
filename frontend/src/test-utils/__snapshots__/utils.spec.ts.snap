@@ -1,0 +1,3 @@
+// Vitest Snapshot v1
+
+exports[`randomString > Random string length = 32 1`] = `"4ykfsP8SNGKMfZGyRmkXF8yWTNCirjiA"`;

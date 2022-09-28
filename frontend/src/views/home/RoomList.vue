@@ -3,11 +3,6 @@
     <header color-green>
       科室管理
     </header>
-    <div mb-5>
-      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">查询</a-button>
-      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">删除</a-button>
-      <a-button class="editable-add-btn" float-right ml-2 @click="handleAdd">添加</a-button>
-    </div>
     <a-table bordered :data-source="dataSource" :columns="columns">
       <template #bodyCell="{ column, text, record }">
         <template v-if="column.dataIndex === 'name'">
@@ -35,12 +30,8 @@
 import { computed, getCurrentInstance, onMounted, reactive, ref } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
+import type { RoomType } from '@/type';
 
-interface RoomType {
-  id: string;
-  name: string;
-  room: string
-}
 
 const columns = [
   {
