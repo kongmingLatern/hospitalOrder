@@ -9,7 +9,7 @@
           </template>
         </a-avatar>
         <span ml-2 mr-5>管理员: XXX</span>
-        <span class="exit">退出登录</span>
+        <span class="exit" @click="exitLogin">退出登录</span>
       </div>
     </a-layout-header>
     <a-layout>
@@ -45,7 +45,11 @@
 import { PieChartOutlined } from '@ant-design/icons-vue';
 import { ref } from 'vue';
 import { UserOutlined } from '@ant-design/icons-vue';
+import router from '@/router';
 const selectedKeys1 = ref<string[]>(['2'])
+const exitLogin = () => {
+  router.push('/login')
+}
 </script>
 <style lang="scss" scoped>
 .header {

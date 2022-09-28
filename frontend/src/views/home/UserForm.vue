@@ -63,13 +63,14 @@ const onOk = () => {
     .then((values: any) => {
       console.log('Received values of form: ', values);
       console.log('formState: ', toRaw(formState));
+      formState = {
+        ...formState,
+        uid: randomString(),
+        cancelCount: 0,
+        isAllow: 0,
+      }
       request.post('/api/user/add', toRaw(formState)).then((res: any) => {
-        formState = {
-          ...formState,
-          uid: randomString(),
-          cancelCount: 0,
-          isAllow: 0,
-        }
+        console.log(formState);
         emit('addUser', toRaw(formState));
         message.success(res.data.message)
       }).catch((err: any) => {

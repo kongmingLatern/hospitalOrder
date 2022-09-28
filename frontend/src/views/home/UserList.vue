@@ -1,9 +1,6 @@
 <template>
-  <UserForm @addUser="add" />
+  <UserForm @addUser="add" text-right />
   <a-spin :spinning="spinning">
-    <header color-green>
-      用户管理
-    </header>
     <a-table bordered :data-source="dataSource" :columns="columns">
       <template #bodyCell="{ column, text, record }">
         <template v-if="column.dataIndex === 'name'">
@@ -20,7 +17,10 @@
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
           <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.uid)">
-            <a>Delete</a>
+            <a-button>删除</a-button>
+          </a-popconfirm>
+          <a-popconfirm v-if="dataSource.length" title="Sure to change?" @confirm="onDelete(record.uid)">
+            <a-button>修改</a-button>
           </a-popconfirm>
         </template>
       </template>
@@ -34,6 +34,7 @@ import { cloneDeep } from 'lodash-es';
 import type { UserType } from '@/type';
 import UserForm from './UserForm.vue';
 import { message } from 'ant-design-vue';
+import router from '@/router';
 
 const columns = [
   {
@@ -99,15 +100,16 @@ const save = (uid: string) => {
   delete editableData[uid];
 };
 const onDelete = (uid: string) => {
-  console.log(uid);
-
   request.get('api/user/delete', {
     params: {
       uid
     }
   }).then((res: Record<string, any>) => {
-    message.success(res.data.message)
     dataSource = dataSource.filter(item => item.uid !== uid)
+    message.success(res.data.message)
+    setTimeout(() => {
+      router.go(0)
+    }, 0)
   }).catch((err: Record<string, any>) => {
     message.error(err.message)
   })
