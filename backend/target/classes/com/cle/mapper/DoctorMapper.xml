@@ -6,4 +6,13 @@
     <resultMap id="doctorResultMap" type="Doctor">
         <collection property="position" column="position"></collection>
     </resultMap>
+    <select id="selectDoctorBylike" resultType="com.cle.pojo.Doctor">
+        select * from doctor,room where 1=1 and doctor.rid=room.rid
+        <if test="doctorName != null and doctorName != ''">
+            and doctorName like #{doctorName}
+        </if>
+        <if test="rname != null and rname >= 0">
+            and rname like #{rname}
+        </if>
+    </select>
 </mapper>

@@ -56,5 +56,7 @@ public class DoctorServiceImpl implements DoctorService{
         return pageBean;
     }
 
-    public List<Doctor> selectDoctorBylike()
+    public List<Doctor> selectDoctorBylike() {
+        return null;
+    }
 }
