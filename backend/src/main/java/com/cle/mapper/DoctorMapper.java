@@ -2,11 +2,9 @@ package com.cle.mapper;
 
 import com.cle.pojo.Doctor;
 import com.cle.pojo.User;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
+import javax.print.Doc;
 import java.util.List;
 
 public interface DoctorMapper {
@@ -53,4 +51,32 @@ public interface DoctorMapper {
      */
     @Delete("DELETE FROM DOCTOR WHERE DOCTORID = #{uid}")
     int delete(@Param("uid") String uid);
+
+    /**
+     * 根据rid查询医生
+     *
+     * @param rid
+     * @return
+     */
+    @Select("SELECT * FROM DOCTOR WHERE RID = #{rid}}")
+    List<Doctor> selectDoctorByRid(String rid);
+
+    /**
+     * 根据uid查询医生
+     *
+     * @param uid
+     * @return
+     */
+    @Select("SELECT * FROM DOCTOR WHERE DOCTORID = #{uid}")
+    Doctor selectDoctorByUid(@Param("uid") String uid);
+
+    /**
+     * 根据uid更新医生数据
+     *
+     * @param doctor
+     * @return
+     */
+    @Update("UPDATE DOCTOR SET doctorName=#{doctorName},doctorAge=#{doctorAge},rid=#{rid},`position`=#{position},info=#{info},limitCount=#{limitCount} where doctorId=#{doctorId}")
+    int change(Doctor doctor);
+
 }

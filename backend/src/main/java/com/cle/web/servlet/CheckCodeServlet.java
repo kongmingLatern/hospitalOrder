@@ -12,8 +12,12 @@ import java.io.IOException;
 @WebServlet("/api/CheckCode/*")
 public class CheckCodeServlet extends BaseServlet {
     public void getCheckCode(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String code = CheckCodeUtil.outputVerifyImage(1000, 500, resp.getOutputStream(), 4);
+        String _width = req.getParameter("width");
+        String _height = req.getParameter("height");
         HttpSession session = req.getSession();
+        int width = Integer.parseInt(_width);
+        int height = Integer.parseInt(_height);
+        String code = CheckCodeUtil.outputVerifyImage(width, height, resp.getOutputStream(), 4);
         session.setAttribute("checkCode", code);
     }
 }

@@ -1,17 +1,19 @@
-package com.cle.service;
+package com.cle.service.Imlp;
 
 import com.cle.mapper.DoctorMapper;
 import com.cle.pojo.Doctor;
 import com.cle.pojo.PageBean;
 import com.cle.pojo.User;
+import com.cle.service.DoctorService;
 import com.cle.util.SqlSessionFactoryUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
 
-public class DoctorServiceImpl implements DoctorService{
+public class DoctorServiceImpl implements DoctorService {
     SqlSessionFactory sqlSessionFactory = SqlSessionFactoryUtil.getSqlSessionFactory();
+
     @Override
     public List<Doctor> selectAll() {
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -56,7 +58,22 @@ public class DoctorServiceImpl implements DoctorService{
         return pageBean;
     }
 
-    public List<Doctor> selectDoctorBylike() {
-        return null;
+    @Override
+    public List<Doctor> selectDoctorByRid(String rid) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        DoctorMapper mapper = sqlSession.getMapper(DoctorMapper.class);
+        List<Doctor> doctors = mapper.selectDoctorByRid(rid);
+        sqlSession.close();
+        return doctors;
+    }
+
+    @Override
+    public int change(Doctor doctor) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        DoctorMapper mapper = sqlSession.getMapper(DoctorMapper.class);
+        int count = mapper.change(doctor);
+        sqlSession.commit();
+        sqlSession.close();
+        return count;
     }
 }

@@ -1,10 +1,11 @@
 package com.cle.pojo;
+import com.alibaba.fastjson.annotation.JSONField;
 
 import java.util.Date;
-
 public class Order {
     private String orderId;
     private String uid;
+    @JSONField(format = "yyyy-MM-dd hh:mm:ss")
     private Date orderTime;
     private String orderRoom;
     private int isCancel;

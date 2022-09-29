@@ -1,15 +1,17 @@
-package com.cle.service;
+package com.cle.service.Imlp;
 
 import com.cle.mapper.UserMapper;
 import com.cle.pojo.PageBean;
 import com.cle.pojo.User;
+import com.cle.service.UserService;
 import com.cle.util.SqlSessionFactoryUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import java.util.List;
 
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     SqlSessionFactory sqlSessionFactory = SqlSessionFactoryUtil.getSqlSessionFactory();
+
     @Override
     public List<User> selectAll() {
         SqlSession sqlSession = sqlSessionFactory.openSession();

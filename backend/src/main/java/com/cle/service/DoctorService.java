@@ -36,4 +36,20 @@ public interface DoctorService {
      * @return
      */
     PageBean<Doctor> selectByPage(int currentPage, int pageSize);
+
+    /**
+     * 根据rid查询医生
+     *
+     * @param rid
+     * @return
+     */
+    List<Doctor> selectDoctorByRid(String rid);
+
+    /**
+     * 根据uid更新医生信息
+     *
+     * @param doctor
+     * @return
+     */
+    int change(Doctor doctor);
 }

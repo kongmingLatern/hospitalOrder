@@ -3,7 +3,7 @@ import com.alibaba.fastjson.JSON;
 import com.cle.pojo.Doctor;
 import com.cle.pojo.Message;
 import com.cle.pojo.PageBean;
-import com.cle.service.DoctorServiceImpl;
+import com.cle.service.Imlp.DoctorServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -59,6 +59,29 @@ public class DoctorServlet extends BaseServlet{
         int pageSize = Integer.parseInt(_pageSize);
         PageBean<Doctor> pageBean = doctorService.selectByPage(currentPage, pageSize);
         String jsonString = JSON.toJSONString(pageBean);
+        resp.getWriter().write(jsonString);
+    }
+
+    public void selectDoctorByRid(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String rid = req.getParameter("rid");
+        List<Doctor> doctors = doctorService.selectDoctorByRid(rid);
+        String jsonString = JSON.toJSONString(doctors);
+        resp.getWriter().write(jsonString);
+    }
+
+    public void change(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Message message = new Message();
+        BufferedReader reader = req.getReader();
+        String json = reader.readLine();
+        Doctor doctor = JSON.parseObject(json, Doctor.class);
+        int count = doctorService.change(doctor);
+        if (count != 0) {
+            message.setMessage("修改成功");
+        } else {
+            message.setMessage("修改失败");
+            resp.setStatus(400);
+        }
+        String jsonString = JSON.toJSONString(message);
         resp.getWriter().write(jsonString);
     }
 }
