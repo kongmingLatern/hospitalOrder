@@ -1,5 +1,5 @@
 <template>
-  <a-avatar :size="size">
+  <a-avatar :size="size" :shape="shape">
     <template #icon>
       <slot name="icon"></slot>
     </template>
@@ -8,7 +8,8 @@
 
 <script setup lang='ts'>
 const props = defineProps<{
-  size: string | number
+  size: string | number,
+  shape?: string
 }>()
 </script>
 

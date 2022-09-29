@@ -51,6 +51,13 @@ const router = createRouter({
       path: '/order',
       name: 'order',
       component: () => import('@/page/Order.vue'),
+      children: [
+        {
+          path: ':roomId',
+          name: 'roomId',
+          component: () => import('@/views/order/RoomInfo.vue'),
+        }
+      ]
     }
   ],
 })
