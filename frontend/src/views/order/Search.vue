@@ -5,8 +5,11 @@
 <script setup lang='ts'>
 import { ref } from 'vue';
 const value = ref<string>('')
+const emit = defineEmits<{
+  (event: 'search', value: string): void
+}>()
 const onSearch = (value: string) => {
-  console.log(value);
+  emit('search', value)
 }
 </script>
 
