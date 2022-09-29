@@ -32,8 +32,8 @@ interface DataItem {
 let data: DataItem[] = [
   {
     roomId: 'roomId1',
-    name: '政治1',
-    description: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
+    name: '医生1',
+    description: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
     img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
   },
   {
@@ -63,7 +63,8 @@ console.log(data);
 
 <style lang='scss' scoped >
 .ant-list-item {
-  height: 190px;
+  overflow: hidden;
+  height: 140px;
 }
 
 .ant-list-item-meta {
@@ -75,11 +76,19 @@ console.log(data);
 }
 
 .ant-avatar-lg.ant-avatar-icon {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
 }
 
-// .ant-list-split .ant-list-item:last-child {
-//   height: 100%;
-// }
+.ant-avatar {
+  background-color: #fff;
+}
+
+:deep(.ant-list-item-meta-avatar) {
+  margin-right: 0;
+}
+
+:deep(.ant-list-item-meta-description) {
+  -webkit-line-clamp: 2;
+}
 </style>
