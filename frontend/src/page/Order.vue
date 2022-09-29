@@ -5,7 +5,7 @@
       <MenuCard />
     </aside>
     <main mr-2>
-      <Search class="search" />
+      <Search class="search" @search="getValue" />
       <Tabs :tabs="tabs" />
     </main>
     <aside>
@@ -48,22 +48,54 @@ const tabs = reactive<TabType[]>([
     key: '3',
   },
 ]);
+const getValue = (value: string) => {
+  console.log('getValue', value);
+}
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss'>
+.ant-tabs>.ant-tabs-nav,
+.ant-tabs>div>.ant-tabs-nav {
+  margin: unset;
+}
+
+body {
+  // background-image: url('https://img2.baidu.com/it/u=2037147439,3680943017&fm=253&fmt=auto&app=138&f=JPG?w=889&h=500');
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  background-color: skyblue;
+}
+
 .order-container {
   display: flex;
-  width: 820px;
+  width: 830px;
+  overflow: hidden;
   margin: 0 auto;
-  padding: 10px;
+  padding-top: 10px;
+}
+
+aside {
+  background-color: skyblue;
+}
+
+.ant-list {
+  background-color: #fff;
 }
 
 .card-container {
   margin-bottom: 10px;
 }
 
+.ant-spin-container {
+  background-color: #fff;
+}
+
 .search {
   width: 400px;
   margin-bottom: 20px;
+}
+
+.ant-card-head {
+  padding: 0 10px;
 }
 </style>
