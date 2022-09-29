@@ -21,7 +21,31 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int add() {
-        return 0;
+    public int add(Order order) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
+        int count = mapper.add(order);
+        sqlSession.commit();
+        sqlSession.close();
+        return count;
+    }
+
+    @Override
+    public int delete(String uid) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
+        int count = mapper.delete(uid);
+        sqlSession.commit();
+        sqlSession.close();
+        return count;
+    }
+
+    @Override
+    public List<Order> selectByUid(String uid) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
+        List<Order> orders = mapper.selectByUid(uid);
+        sqlSession.close();
+        return orders;
     }
 }

@@ -17,6 +17,21 @@ public interface OrderService {
      *
      * @return
      */
-    int add();
+    int add(Order order);
 
+    /**
+     * 删除预约单
+     *
+     * @param uid
+     * @return
+     */
+    int delete(String uid);
+
+    /**
+     * 根据uid查询orders
+     *
+     * @param uid
+     * @return
+     */
+    List<Order> selectByUid(String uid);
 }

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.cle.pojo.PageBean;
 import com.cle.pojo.User;
 import com.cle.service.UserServiceImpl;
-import com.cle.util.UidUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
@@ -49,7 +48,6 @@ public class UserServlet extends BaseServlet {
         BufferedReader reader = req.getReader();
         String json = reader.readLine();
         User user = JSON.parseObject(json, User.class);
-        user.setUid(UidUtil.getUUID());
         user.setCancelCount(0);
         user.setIsAllow(0);
         user.setIsAuth(0);
@@ -136,7 +134,6 @@ public class UserServlet extends BaseServlet {
         BufferedReader reader = req.getReader();
         String json = reader.readLine();
         User user = JSON.parseObject(json, User.class);
-        user.setUid(UidUtil.getUUID());
         user.setCancelCount(0);
         user.setIsAllow(0);
         Message message = new Message();

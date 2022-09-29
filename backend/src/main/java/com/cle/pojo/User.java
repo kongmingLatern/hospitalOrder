@@ -9,6 +9,7 @@ public class User {
     private int isAllow;//是否违规
     private int isAuth;//是否管理员
 
+
     public User() {
     }
 

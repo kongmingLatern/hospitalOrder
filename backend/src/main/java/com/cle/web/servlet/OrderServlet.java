@@ -1,6 +1,7 @@
 package com.cle.web.servlet;
 
 import com.alibaba.fastjson.JSON;
+import com.cle.pojo.Message;
 import com.cle.pojo.Order;
 import com.cle.service.OrderServiceImpl;
 import jakarta.servlet.ServletException;
@@ -8,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
@@ -18,6 +20,43 @@ public class OrderServlet extends BaseServlet {
     public void selectAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Order> list = orderService.selectAll();
         String jsonString = JSON.toJSONString(list);
+        resp.getWriter().write(jsonString);
+    }
+
+    public void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Message message = new Message();
+        BufferedReader reader = req.getReader();
+        String json = reader.readLine();
+        Order order = JSON.parseObject(json, Order.class);
+        int count = orderService.add(order);
+        if (count != 0) {
+            message.setMessage("添加成功");
+        } else {
+            message.setMessage("添加失败");
+            resp.setStatus(400);
+        }
+        String jsonString = JSON.toJSONString(message);
+        resp.getWriter().write(jsonString);
+    }
+
+    public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Message message = new Message();
+        String uid = req.getParameter("uid");
+        int count = orderService.delete(uid);
+        if (count != 0) {
+            message.setMessage("删除成功");
+        } else {
+            message.setMessage("删除失败");
+            resp.setStatus(400);
+        }
+        String jsonString = JSON.toJSONString(message);
+        resp.getWriter().write(jsonString);
+    }
+
+    public void selectByUid(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String uid = req.getParameter("uid");
+        List<Order> orders = orderService.selectByUid(uid);
+        String jsonString = JSON.toJSONString(orders);
         resp.getWriter().write(jsonString);
     }
 }

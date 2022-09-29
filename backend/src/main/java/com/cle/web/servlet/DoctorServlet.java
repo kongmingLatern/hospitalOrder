@@ -3,9 +3,7 @@ import com.alibaba.fastjson.JSON;
 import com.cle.pojo.Doctor;
 import com.cle.pojo.Message;
 import com.cle.pojo.PageBean;
-import com.cle.pojo.User;
 import com.cle.service.DoctorServiceImpl;
-import com.cle.util.UidUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +26,6 @@ public class DoctorServlet extends BaseServlet{
         BufferedReader reader = req.getReader();
         String json = reader.readLine();
         Doctor doctor = JSON.parseObject(json, Doctor.class);
-        doctor.setDoctorId(UidUtil.getUUID());
         int count = doctorService.add(doctor);
         Message message = new Message();
         if (count != 0) {

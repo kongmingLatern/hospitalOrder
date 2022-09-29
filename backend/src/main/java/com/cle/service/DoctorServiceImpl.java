@@ -55,4 +55,6 @@ public class DoctorServiceImpl implements DoctorService{
         sqlSession.close();
         return pageBean;
     }
+
+    public List<Doctor> selectDoctorBylike()
 }

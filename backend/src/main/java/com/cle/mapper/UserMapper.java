@@ -31,7 +31,7 @@ public interface UserMapper {
      * @param user
      * @return int 添加的用户条数
      */
-    @Insert("insert into user values (#{uid},#{userName},#{password},#{age},#{realName},#{cancelCount},#{isAllow},#{#isAuth})")
+    @Insert("insert into user values (#{uid},#{userName},#{password},#{age},#{realName},#{cancelCount},#{isAllow},#{isAuth})")
     int add(User user);
 
     /**
