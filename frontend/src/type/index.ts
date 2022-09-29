@@ -45,5 +45,11 @@ export interface UserType {
 export interface TabType {
   tab: string;
   key: string;
-  content: string
+  path?: string
+}
+export interface RoomInfoType {
+  roomId: string
+  name: string,
+  description: string
+  img: string
 }
