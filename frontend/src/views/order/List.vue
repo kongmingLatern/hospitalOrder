@@ -31,8 +31,11 @@ const data: DataItem[] = [
 
 <style lang='scss'>
 .ant-card-body {
-  padding: unset;
   padding: 10px 0 10px 10px;
+}
+
+.ant-spin-container {
+  padding: unset;
 }
 
 .ant-list-item-meta-title {
