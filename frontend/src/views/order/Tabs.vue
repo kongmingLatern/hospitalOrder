@@ -4,7 +4,8 @@
       <template #tab>
         <div @click="goTab(item.key)">{{item.tab}}</div>
       </template>
-      <router-view />
+      <!-- 展示内容 -->
+      <router-view class="view" />
     </a-tab-pane>
   </a-tabs>
 </template>
@@ -24,4 +25,10 @@ const goTab = (key: string) => {
   router.push('/order/roomId' + key)
 }
 </script>
+
+<style lang='scss' scoped>
+.view {
+  padding: 10px;
+}
+</style>
 
