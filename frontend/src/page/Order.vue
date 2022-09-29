@@ -38,17 +38,14 @@ const tabs = reactive<TabType[]>([
   {
     tab: '眼科',
     key: '1',
-    content: '眼科醫生'
   },
   {
     tab: '骨科',
     key: '2',
-    content: '骨科醫生'
   },
   {
     tab: '呼吸科',
     key: '3',
-    content: '呼吸科醫生'
   },
 ]);
 </script>
