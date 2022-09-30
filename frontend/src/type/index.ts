@@ -29,9 +29,8 @@ export interface OrderListType {
   dateTime: string;
 }
 export interface RoomType {
-  id: string;
-  name: string;
-  room: string
+  rid: string;
+  rname: string;
 }
 export interface UserType {
   uid?: string;
