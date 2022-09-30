@@ -98,9 +98,9 @@ const onDelete = (doctorId: string) => {
       doctorId
     }
   }).then((res: Record<string, any>) => {
-    const { message } = res.data
+    const { message: msg } = res.data
     dataSource = dataSource.filter(item => item.doctorId !== doctorId)
-    message.success(message)
+    message.success(msg)
     setTimeout(() => {
       router.go(0)
     }, 0)
