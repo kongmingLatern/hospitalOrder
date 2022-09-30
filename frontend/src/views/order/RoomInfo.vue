@@ -5,11 +5,11 @@
         <a-list-item-meta>
           <!-- 姓名 -->
           <template #title>
-            <a href="https://www.antdv.com/">{{ item.name }}</a>
+            <a href="https://www.antdv.com/">{{ item.doctorName }}</a>
           </template>
           <!-- 描述 -->
           <template #description class="description">
-            <p>{{item.description}}</p>
+            <p>{{item.info}}</p>
             <OrderTime />
           </template>
           <!-- 照片 -->
@@ -30,83 +30,73 @@ import { watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import Avatar from './Avatar.vue';
 import OrderTime from '@/views/order/OrderTime.vue'
-import type { RoomInfoType } from '../../type';
+import type { DoctorType } from '../../type';
+import { randomString } from '../../utils';
 
-let data: RoomInfoType[] = [
+let data: DoctorType[] = [
   {
-    roomId: 'roomId1',
-    name: '医生1',
-    description: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
+    rid: 'rid1',
+    doctorId: randomString(),
+    doctorName: '医生1',
+    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
     img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
   },
   {
-    roomId: 'roomId1',
-    name: '医生1 - roomId1',
-    description: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
+    rid: 'rid1',
+    doctorId: randomString(),
+    doctorName: '医生2',
+    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
     img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
   },
   {
-    roomId: 'roomId1',
-    name: '医生1 - roomId2',
-    description: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
+    rid: 'rid1',
+    doctorId: randomString(),
+    doctorName: '医生2',
+    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
     img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
   },
   {
-    roomId: 'roomId1',
-    name: '医生1 - roomId2',
-    description: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
+    rid: 'rid1',
+    doctorId: randomString(),
+    doctorName: '医生2',
+    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
     img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
   },
   {
-    roomId: 'roomId1',
-    name: '医生1 - roomId2',
-    description: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
+    rid: 'rid1',
+    doctorId: randomString(),
+    doctorName: '医生2',
+    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
     img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
   },
   {
-    roomId: 'roomId1',
-    name: '医生1 - roomId2',
-    description: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
+    rid: 'rid1',
+    doctorId: randomString(),
+    doctorName: '医生2',
+    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
     img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
   },
   {
-    roomId: 'roomId1',
-    name: '医生1 - roomId2',
-    description: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
+    rid: 'rid3',
+    doctorId: randomString(),
+    doctorName: '医生2',
+    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
     img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
   },
   {
-    roomId: 'roomId2',
-    name: '郑志2',
-    description: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
+    rid: 'rid3',
+    doctorId: randomString(),
+    doctorName: '医生2',
+    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
     img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
   },
   {
-    roomId: 'roomId3',
-    name: '郑志3',
-    description: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
+    rid: 'rid3',
+    doctorId: randomString(),
+    doctorName: '医生2',
+    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
     img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
   },
-  {
-    roomId: 'roomId3',
-    name: '医生1 - roomId3',
-    description: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
-    img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
-  },
-  {
-    roomId: 'roomId3',
-    name: '医生2 - roomId3',
-    description: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
-    img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
-  },
-  {
-    roomId: 'roomId3',
-    name: '医生3 - roomId3',
-    description: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
-    img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
-  }
-
-
 ];
 const pagination = {
   onChange: (page: number) => {
@@ -117,7 +107,7 @@ const pagination = {
 const { params } = useRoute()
 watchEffect(() => {
   console.log(params);
-  data = data.filter(item => item.roomId === params.roomId)
+  data = data.filter(item => item.rid === params.rid)
 })
 
 console.log(data);
@@ -129,6 +119,7 @@ console.log(data);
 <style lang='scss' scoped >
 .ant-list-item {
   overflow: hidden;
+  padding: 10px;
 }
 
 .ant-list-item-meta {
