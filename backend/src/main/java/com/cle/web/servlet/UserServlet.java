@@ -35,14 +35,31 @@ public class UserServlet extends BaseServlet {
             isAuth = auth;
         }
     }
+
     UserServiceImpl userService = new UserServiceImpl();
 
+    /**
+     * 查询所有用户
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void selectAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<User> users = userService.selectAll();
         String jsonString = JSON.toJSONString(users);
         resp.getWriter().write(jsonString);
     }
 
+    /**
+     * 注册
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void register(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BufferedReader reader = req.getReader();
         String json = reader.readLine();
@@ -62,6 +79,14 @@ public class UserServlet extends BaseServlet {
         resp.getWriter().write(jsonString);
     }
 
+    /**
+     * 登录
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void Login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
@@ -129,6 +154,14 @@ public class UserServlet extends BaseServlet {
         resp.getWriter().write(jsonString);
     }
 
+    /**
+     * 后台的添加用户
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BufferedReader reader = req.getReader();
         String json = reader.readLine();

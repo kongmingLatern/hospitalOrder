@@ -5,6 +5,7 @@ import com.cle.pojo.Message;
 import com.cle.pojo.Room;
 import com.cle.service.Imlp.RoomServiceImpl;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -12,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
+@WebServlet("/api/room/*")
 public class RoomServlet extends BaseServlet {
     RoomServiceImpl roomService = new RoomServiceImpl();
 
@@ -49,6 +51,8 @@ public class RoomServlet extends BaseServlet {
             message.setMessage("添加失败");
             resp.setStatus(400);
         }
+        String jsonString = JSON.toJSONString(message);
+        resp.getWriter().write(jsonString);
     }
 
     /**

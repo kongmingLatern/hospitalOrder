@@ -58,7 +58,7 @@ public interface DoctorMapper {
      * @param rid
      * @return
      */
-    @Select("SELECT * FROM DOCTOR WHERE RID = #{rid}}")
+    @Select("SELECT * FROM DOCTOR WHERE RID = #{rid}")
     List<Doctor> selectDoctorByRid(String rid);
 
     /**

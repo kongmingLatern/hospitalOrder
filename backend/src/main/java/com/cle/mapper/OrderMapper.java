@@ -1,10 +1,7 @@
 package com.cle.mapper;
 
 import com.cle.pojo.Order;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -29,15 +26,21 @@ public interface OrderMapper {
     /**
      * 删除预约
      *
+     * @param orderId
+     * @return
+     */
+    @Delete("delete from `order` where orderId = #{orderId}")
+    int delete(String orderId);
+
+    /**
+     * 根据uid查询订单
+     *
      * @param uid
      * @return
      */
-    @Delete("delete from `order` where rid = #{rid}")
-    int delete(@Param("rid") String uid);
+    @Select("select * from `order` where uid=#{uid}")
+    List<Order> selectByUid(String uid);
 
-    /**
-     *
-     */
-    @Select("select * from `order` where rid=#{rid}")
-    List<Order> selectByUid(@Param("rid") String uid);
+    @Update("UPDATE `ORDER` SET uid = #{uid} , orderTime=#{orderTime},orderRoom=#{orderRoom},isCancel=#{isCancel},isFinish=#{isFinish}")
+    int change(String orderId);
 }

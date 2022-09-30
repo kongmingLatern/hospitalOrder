@@ -11,6 +11,14 @@ import java.io.IOException;
 
 @WebServlet("/api/CheckCode/*")
 public class CheckCodeServlet extends BaseServlet {
+    /**
+     * 验证码
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void getCheckCode(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String _width = req.getParameter("width");
         String _height = req.getParameter("height");

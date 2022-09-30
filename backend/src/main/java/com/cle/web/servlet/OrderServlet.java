@@ -17,12 +17,28 @@ import java.util.List;
 public class OrderServlet extends BaseServlet {
     OrderServiceImpl orderService = new OrderServiceImpl();
 
+    /**
+     * 查询预约单
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void selectAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Order> list = orderService.selectAll();
         String jsonString = JSON.toJSONString(list);
         resp.getWriter().write(jsonString);
     }
 
+    /**
+     * 添加预约
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Message message = new Message();
         BufferedReader reader = req.getReader();
@@ -39,6 +55,14 @@ public class OrderServlet extends BaseServlet {
         resp.getWriter().write(jsonString);
     }
 
+    /**
+     * 删除预约
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Message message = new Message();
         String uid = req.getParameter("uid");
@@ -53,6 +77,14 @@ public class OrderServlet extends BaseServlet {
         resp.getWriter().write(jsonString);
     }
 
+    /**
+     * 通过uid查询当前用户的预约
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void selectByUid(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uid = req.getParameter("uid");
         List<Order> orders = orderService.selectByUid(uid);

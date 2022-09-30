@@ -11,17 +11,35 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 @WebServlet("/api/doctor/*")
-public class DoctorServlet extends BaseServlet{
+public class DoctorServlet extends BaseServlet {
     DoctorServiceImpl doctorService = new DoctorServiceImpl();
+
+    /**
+     * 查询所有医生
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void selectAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Doctor> list = doctorService.selectAll();
         String jsonString = JSON.toJSONString(list);
         resp.getWriter().write(jsonString);
     }
 
+    /**
+     * 添加医生
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BufferedReader reader = req.getReader();
         String json = reader.readLine();
@@ -38,6 +56,14 @@ public class DoctorServlet extends BaseServlet{
         resp.getWriter().write(jsonString);
     }
 
+    /**
+     * 删除医生
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uid = req.getParameter("uid");
         Message message = new Message();
@@ -52,6 +78,14 @@ public class DoctorServlet extends BaseServlet{
         resp.getWriter().write(jsonString);
     }
 
+    /**
+     * 医生分页查询
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void selectByPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String _currentPage = req.getParameter("currentPage");
         String _pageSize = req.getParameter("pageSize");
@@ -62,6 +96,14 @@ public class DoctorServlet extends BaseServlet{
         resp.getWriter().write(jsonString);
     }
 
+    /**
+     * 通过科室的rid查询医生
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void selectDoctorByRid(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String rid = req.getParameter("rid");
         List<Doctor> doctors = doctorService.selectDoctorByRid(rid);
@@ -69,6 +111,14 @@ public class DoctorServlet extends BaseServlet{
         resp.getWriter().write(jsonString);
     }
 
+    /**
+     * 修改医生
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void change(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Message message = new Message();
         BufferedReader reader = req.getReader();
