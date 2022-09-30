@@ -1,4 +1,5 @@
 <template>
+  <DoctorForm @addDoctor="add" text-right />
   <a-spin :spinning="spinning">
     <header color-green>
       医生管理
@@ -18,9 +19,11 @@
           </div>
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
-          <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.key)">
-            <a-button class="editable-add-btn" @click="handleAdd" mr-5>删除</a-button>
-            <a-button class="editable-add-btn" @click="handleAdd">修改</a-button>
+          <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.doctorId)">
+            <a-button>删除</a-button>
+          </a-popconfirm>
+          <a-popconfirm v-if="dataSource.length" title="Sure to change?" @confirm="onDelete(record.doctorId)">
+            <a-button>修改</a-button>
           </a-popconfirm>
         </template>
       </template>
@@ -32,7 +35,14 @@ import { getCurrentInstance, onMounted, reactive, ref } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 import type { DoctorType } from '@/type';
+import DoctorForm from './DoctorForm.vue';
+import router from '@/router';
+import { message } from 'ant-design-vue';
 const columns = [
+  {
+    title: 'doctorId',
+    dataIndex: 'doctorId'
+  },
   {
     title: 'doctorName',
     dataIndex: 'doctorName'
@@ -40,10 +50,6 @@ const columns = [
   {
     title: 'doctorAge',
     dataIndex: 'doctorAge',
-  },
-  {
-    title: 'rid',
-    dataIndex: 'rid',
   },
   {
     title: 'position',
@@ -64,19 +70,9 @@ const columns = [
 ];
 const spinning = ref<Boolean>(true)
 let dataSource: DoctorType[] = reactive([]);
-const visible = ref<Boolean>(false)
+const instance = getCurrentInstance()
+const request = (instance?.proxy as any).$request!
 onMounted(() => {
-  const instance = getCurrentInstance()
-  const request = (instance?.proxy as any).$request!
-  // request.get('/doctor').then((res: Record<string, any>) => {
-  //   spinning.value = false
-  //   const lists = res.data
-  //   lists.forEach((list: DoctorType) => {
-  //     dataSource.push(list)
-  //   })
-  // }).catch((e: any) => {
-  //   console.log(e.message);
-  // })
   request.get('api/doctor/selectAll').then((res: Record<string, any>) => {
     spinning.value = false
     const lists = res.data
@@ -97,12 +93,25 @@ const save = (doctorId: string) => {
 };
 
 const onDelete = (doctorId: string) => {
-  dataSource = dataSource.filter(item => item.doctorId !== doctorId);
-};
-const handleAdd = () => {
-  visible.value = true
+  request.get('api/doctor/delete', {
+    params: {
+      doctorId
+    }
+  }).then((res: Record<string, any>) => {
+    const { message } = res.data
+    dataSource = dataSource.filter(item => item.doctorId !== doctorId)
+    message.success(message)
+    setTimeout(() => {
+      router.go(0)
+    }, 0)
+  }).catch((err: Record<string, any>) => {
+    message.error(err.message)
+  })
 };
 
+const add = (formState: DoctorType) => {
+  dataSource.push(formState)
+}
 </script>
 <style lang="scss" scoped>
 .editable-cell {
