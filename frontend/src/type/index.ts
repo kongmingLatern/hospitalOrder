@@ -14,11 +14,12 @@ export interface RegistType {
 export interface DoctorType {
   doctorId: string | number;
   doctorName: string;
-  doctorAge: number;
+  doctorAge?: number;
   rid: string,
-  position: string;
+  position?: string;
   info: string,
-  limitCount: number
+  limitCount?: number
+  img?: string
 }
 export interface OrderListType {
   id: string;
@@ -28,9 +29,8 @@ export interface OrderListType {
   dateTime: string;
 }
 export interface RoomType {
-  id: string;
-  name: string;
-  room: string
+  rid: string;
+  rname: string;
 }
 export interface UserType {
   uid?: string;
@@ -43,8 +43,8 @@ export interface UserType {
   isAuth: number | undefined
 }
 export interface TabType {
-  tab: string;
-  key: string;
+  rid: string;
+  rname: string;
   path?: string
 }
 export interface RoomInfoType {

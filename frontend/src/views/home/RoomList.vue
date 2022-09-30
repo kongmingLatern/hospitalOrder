@@ -1,4 +1,5 @@
 <template>
+  <RoomForm @addRoom="add" text-right />
   <a-spin :spinning="spinning">
     <header color-green>
       科室管理
@@ -8,17 +9,17 @@
         <template v-if="column.dataIndex === 'name'">
           <div class="editable-cell">
             <div v-if="editableData[record.id]" class="editable-cell-input-wrapper">
-              <a-input v-model:value="editableData[record.id].name" @pressEnter="save(record.id)" />
-              <check-outlined class="editable-cell-icon-check" @click="save(record.id)" />
+              <a-input v-model:value="editableData[record.rid].rname" @pressEnter="save(record.id)" />
+              <check-outlined class="editable-cell-icon-check" @click="save(record.rid)" />
             </div>
             <div v-else class="editable-cell-text-wrapper">
               {{ text || ' ' }}
-              <edit-outlined class="editable-cell-icon" @click="edit(record.id)" />
+              <edit-outlined class="editable-cell-icon" @click="edit(record.rid)" />
             </div>
           </div>
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
-          <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.id)">
+          <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.rid)">
             <a>Delete</a>
           </a-popconfirm>
         </template>
@@ -27,20 +28,23 @@
   </a-spin>
 </template>
 <script lang="ts" setup>
-import { computed, getCurrentInstance, onMounted, reactive, ref } from 'vue';
+import { getCurrentInstance, onMounted, reactive, ref } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 import type { RoomType } from '@/type';
+import { message } from 'ant-design-vue';
+import router from '@/router';
+import RoomForm from './RoomForm.vue';
 
 
 const columns = [
   {
-    title: 'room',
-    dataIndex: 'room',
+    title: 'rid',
+    dataIndex: 'rid',
   },
   {
-    title: 'name',
-    dataIndex: 'name',
+    title: 'rname',
+    dataIndex: 'rname',
     width: '30%',
   },
   {
@@ -50,52 +54,53 @@ const columns = [
 ];
 const spinning = ref<Boolean>(true)
 let dataSource: RoomType[] = reactive([]);
+const instance = getCurrentInstance()
+const request = (instance?.proxy as any).$request!
 
 onMounted(() => {
-  const instance = getCurrentInstance()
-  const request = (instance?.proxy as any).$request!
 
-  request.get('/room').then((res: Record<string, any>) => {
+  request.get('api/room/selectAll').then((res: Record<string, any>) => {
     spinning.value = false
     const lists = res.data
+    console.log(res);
     lists.forEach((list: RoomType) => {
       dataSource.push(list)
     })
   }).catch((e: any) => {
     console.log(e.message);
   })
-
-  // axios.get('/room').then(res => {
-  //   console.log(res);
-  //   res.data.forEach((item: RoomType) => {
-  //     dataSource.push(item)
-  //   })
-  // }).catch(e => {
-  //   console.log(e);
-  // })
 })
-const count = computed(() => dataSource.length + 1);
 const editableData: Record<string, RoomType> = reactive({});
 
-const edit = (id: string) => {
-  editableData[id] = cloneDeep(dataSource.filter(item => id === item.id)[0]);
+const edit = (rid: string) => {
+  editableData[rid] = cloneDeep(dataSource.filter(item => rid === item.rid)[0]);
 };
-const save = (id: string) => {
-  Object.assign(dataSource.filter(item => id === item.id)[0], editableData[id]);
-  delete editableData[id];
+const save = (rid: string) => {
+  Object.assign(dataSource.filter(item => rid === item.rid)[0], editableData[rid]);
+  delete editableData[rid];
 };
 
-const onDelete = (id: string) => {
-  dataSource = dataSource.filter(item => item.id !== id);
+const onDelete = (rid: string) => {
+  request.get('api/room/delete', {
+    params: {
+      rid
+    }
+  }).then((res: Record<string, any>) => {
+    const { message: msg } = res.data
+    dataSource = dataSource.filter(item => item.rid !== rid)
+    message.success(msg)
+    setTimeout(() => {
+      router.go(0)
+    }, 0)
+  }).catch((err: Record<string, any>) => {
+    message.error(err.message)
+  })
 };
-const handleAdd = () => {
-  const newData = {
-    id: `${count.value}`,
-    name: `Edward King ${count.value}`,
-    room: '外科'
-  };
-  dataSource.push(newData);
-};
+
+const add = (formState: RoomType) => {
+  dataSource.push(formState)
+  console.log(dataSource);
+}
 </script>
 <style lang="scss" scoped>
 .editable-cell {

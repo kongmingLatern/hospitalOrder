@@ -11,7 +11,9 @@
           p-id="4313" fill="#8a8a8a"></path>
       </svg>
     </template>
-    <template #desc>预约</template>
+    <template #desc>
+      <router-link to="/order/rid1">预约</router-link>
+    </template>
   </IconTemp>
   <IconTemp>
     <template #svg>

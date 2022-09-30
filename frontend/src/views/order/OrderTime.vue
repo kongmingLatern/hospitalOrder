@@ -1,5 +1,5 @@
 <template>
-  <a-table :columns="columns" :data-source="data">
+  <a-table :columns="columns" :data-source="data" :pagination="false">
     <template #headerCell="{ column }">
       <template v-if="column.key === 'time'">
         <span>
@@ -16,7 +16,7 @@
       </template>
       <template v-else-if="column.key === 'action'">
         <span>
-          <a>Delete</a>
+          <a>预约</a>
         </span>
       </template>
     </template>
@@ -39,8 +39,19 @@ const data = [
   {
     key: '1',
     time: '8:00 - 12:00',
+  },
+  {
+    key: '2',
+    time: '13:00 - 18:00',
   }
 ];
 
 </script>
 
+
+<style lang='scss' scoped>
+:deep(.ant-table-cell) {
+  padding: 5px;
+  text-align: center;
+}
+</style>
