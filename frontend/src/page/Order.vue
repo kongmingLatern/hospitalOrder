@@ -6,7 +6,9 @@
     </aside>
     <main mr-2>
       <Search class="search" @search="getValue" />
-      <Tabs :tabs="tabs" />
+      <a-spin :spinning="spinning">
+        <Tabs :tabs="tabs" />
+      </a-spin>
     </main>
     <aside>
       <NoticeCard />
@@ -17,7 +19,7 @@
 <script lang='ts' setup>
 import type { UserType } from '@/type';
 import UserCard from '@/views/order/UserCard.vue';
-import { reactive } from 'vue';
+import { getCurrentInstance, reactive, ref } from 'vue';
 import Search from '../views/order/Search.vue';
 import Tabs from '../views/order/Tabs.vue';
 import type { TabType } from '../type';
@@ -34,20 +36,20 @@ const userInfo = reactive<UserType>({
   isAuth: 0,
 });
 
-const tabs = reactive<TabType[]>([
-  {
-    tab: '眼科',
-    key: '1',
-  },
-  {
-    tab: '骨科',
-    key: '2',
-  },
-  {
-    tab: '呼吸科',
-    key: '3',
-  },
-]);
+const tabs = reactive<TabType[]>([]);
+const spinning = ref<Boolean>(false);
+const instance = getCurrentInstance()
+const request = (instance?.proxy as any).$request!
+request.get('api/room/selectAll').then((res: Record<string, any>) => {
+  spinning.value = false
+  console.log(res);
+  const lists = res.data
+  lists.forEach((list: TabType) => {
+    tabs.push(list)
+  })
+}).catch((e: any) => {
+  console.log(e.message);
+})
 const getValue = (value: string) => {
   console.log('getValue', value);
 }
