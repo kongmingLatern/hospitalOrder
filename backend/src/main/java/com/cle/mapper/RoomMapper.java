@@ -1,10 +1,8 @@
 package com.cle.mapper;
 
+import com.cle.pojo.Order;
 import com.cle.pojo.Room;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -17,9 +15,39 @@ public interface RoomMapper {
     @Select("select * from ROOM")
     List<Room> selectAll();
 
+    /**
+     * 插入科室
+     *
+     * @param room
+     * @return
+     */
     @Insert("INSERT INTO ROOM VALUES (#{rid},#{rname})")
     int add(Room room);
 
-    @Delete("delete from ROOM where rid = #{uid}")
-    int delete(@Param("uid") String uid);
+    /**
+     * 删除科室
+     *
+     * @param rid
+     * @return
+     */
+    @Delete("delete from ROOM where rid = #{rid}")
+    int delete(String rid);
+
+    /**
+     * 根据rid查询科室
+     *
+     * @param rid
+     * @return
+     */
+    @Select("select * from `order` where rid = #{rid}")
+    Room selectByRid(String rid);
+
+    /**
+     * 修改科室
+     *
+     * @param room
+     * @return
+     */
+    @Update("UPDATE `ORDER` SET RNAME=#{rname} where rid = #{rid}")
+    int change(Room room);
 }

@@ -49,4 +49,13 @@ public class OrderServiceImpl implements OrderService {
         sqlSession.close();
         return orders;
     }
+
+    @Override
+    public Order selectByOrderId(String orderId) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
+        Order order = mapper.selectByOrderId(orderId);
+        sqlSession.close();
+        return order;
+    }
 }

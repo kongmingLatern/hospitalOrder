@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.cle.pojo.PageBean;
 import com.cle.pojo.User;
 import com.cle.service.Imlp.UserServiceImpl;
+import com.cle.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
@@ -36,7 +37,7 @@ public class UserServlet extends BaseServlet {
         }
     }
 
-    UserServiceImpl userService = new UserServiceImpl();
+    UserService userService = new UserServiceImpl();
 
     /**
      * 查询所有用户

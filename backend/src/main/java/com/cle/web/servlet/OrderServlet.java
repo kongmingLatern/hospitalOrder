@@ -4,18 +4,18 @@ import com.alibaba.fastjson.JSON;
 import com.cle.pojo.Message;
 import com.cle.pojo.Order;
 import com.cle.service.Imlp.OrderServiceImpl;
+import com.cle.service.OrderService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/api/order/*")
 public class OrderServlet extends BaseServlet {
-    OrderServiceImpl orderService = new OrderServiceImpl();
+    OrderService orderService = new OrderServiceImpl();
 
     /**
      * 查询预约单
@@ -65,7 +65,7 @@ public class OrderServlet extends BaseServlet {
      */
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Message message = new Message();
-        String uid = req.getParameter("uid");
+        String uid = req.getParameter("orderId");
         int count = orderService.delete(uid);
         if (count != 0) {
             message.setMessage("删除成功");

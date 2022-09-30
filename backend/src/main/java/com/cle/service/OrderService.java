@@ -34,4 +34,12 @@ public interface OrderService {
      * @return
      */
     List<Order> selectByUid(String uid);
+
+    /**
+     * 根据orderId查询预约
+     *
+     * @param orderId
+     * @return
+     */
+    Order selectByOrderId(String orderId);
 }

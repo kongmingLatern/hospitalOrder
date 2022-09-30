@@ -46,10 +46,18 @@ public interface DoctorService {
     List<Doctor> selectDoctorByRid(String rid);
 
     /**
-     * 根据uid更新医生信息
+     * 更新医生信息
      *
      * @param doctor
      * @return
      */
     int change(Doctor doctor);
+
+    /**
+     * 根据doctorId查询医生
+     *
+     * @param doctorId
+     * @return
+     */
+    Doctor selectByDoctorId(String doctorId);
 }

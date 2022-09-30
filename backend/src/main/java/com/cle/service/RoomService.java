@@ -27,4 +27,12 @@ public interface RoomService {
      * @return
      */
     int delete(String uid);
+
+    /**
+     * 根据rid查询科室
+     *
+     * @param rid
+     * @return
+     */
+    Room selectByRid(String rid);
 }

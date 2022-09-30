@@ -37,7 +37,18 @@ public interface UserService {
     PageBean<User> selectByPage(int currentPage, int pageSize);
 
     /**
-     * 删除用户
+     * 根据uid删除用户
+     *
+     * @param uid
+     * @return
      */
     int delete(String uid);
+
+    /**
+     * 根据uid查询用户
+     *
+     * @param uid
+     * @return
+     */
+    User selectByUid(String uid);
 }

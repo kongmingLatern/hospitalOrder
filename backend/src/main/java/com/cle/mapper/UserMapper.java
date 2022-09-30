@@ -1,9 +1,6 @@
 package com.cle.mapper;
 import com.cle.pojo.User;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -60,4 +57,16 @@ public interface UserMapper {
      */
     @Delete("delete from user where uid = #{uid}")
     int delete(@Param("uid") String uid);
+
+    /**
+     * 根据uid查询用户
+     *
+     * @param uid
+     * @return
+     */
+    @Select("select * from user where uid=#{uid}")
+    User selectByUid(String uid);
+
+    @Update("UPDATE USER SET userName=#{userName},password=#{password},age=#{age},realName=#{realName},cancelCount=#{cancelCount},isAllow==#{isAllow},isAuth=#{isAuth} WHERE uid=#{uid}")
+    int change(User user);
 }

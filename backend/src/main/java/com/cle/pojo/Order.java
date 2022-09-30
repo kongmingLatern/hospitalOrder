@@ -7,11 +7,28 @@ public class Order {
     private String uid;
     @JSONField(format = "yyyy-MM-dd hh:mm:ss")
     private Date orderTime;
-    private String orderRoom;
+    private String rid;
+    private String doctorId;
     private int isCancel;
     private int isFinish;
 
     public Order() {
+    }
+
+    public String getRid() {
+        return rid;
+    }
+
+    public void setRid(String rid) {
+        this.rid = rid;
+    }
+
+    public String getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(String doctorId) {
+        this.doctorId = doctorId;
     }
 
     public String getOrderId() {
@@ -38,14 +55,6 @@ public class Order {
         this.orderTime = orderTime;
     }
 
-    public String getOrderRoom() {
-        return orderRoom;
-    }
-
-    public void setOrderRoom(String orderRoom) {
-        this.orderRoom = orderRoom;
-    }
-
     public int getIsCancel() {
         return isCancel;
     }
@@ -62,15 +71,4 @@ public class Order {
         this.isFinish = isFinish;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "orderId='" + orderId + '\'' +
-                ", uid='" + uid + '\'' +
-                ", orderTime=" + orderTime +
-                ", orderRoom='" + orderRoom + '\'' +
-                ", isCancel=" + isCancel +
-                ", isFinish=" + isFinish +
-                '}';
-    }
 }

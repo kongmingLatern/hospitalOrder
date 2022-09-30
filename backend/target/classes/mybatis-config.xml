@@ -13,7 +13,7 @@
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql:///hospital_order?useSSL=false&amp;useServerPrepStmts=true"/>
+                <property name="url" value="jdbc:mysql:///hospital_order?useSSL=true&amp;useServerPrepStmts=true"/>
                 <property name="username" value="root"/>
                 <property name="password" value="98735521"/>
             </dataSource>

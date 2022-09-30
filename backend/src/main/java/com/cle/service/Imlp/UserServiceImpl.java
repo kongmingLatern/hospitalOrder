@@ -64,4 +64,13 @@ public class UserServiceImpl implements UserService {
         sqlSession.close();
         return delete;
     }
+
+    @Override
+    public User selectByUid(String uid) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        User user = mapper.selectByUid(uid);
+        sqlSession.close();
+        return user;
+    }
 }

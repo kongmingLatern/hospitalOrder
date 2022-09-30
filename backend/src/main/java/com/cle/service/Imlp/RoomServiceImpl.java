@@ -1,6 +1,7 @@
 package com.cle.service.Imlp;
 
 import com.cle.mapper.RoomMapper;
+import com.cle.pojo.Order;
 import com.cle.pojo.Room;
 import com.cle.service.RoomService;
 import com.cle.util.SqlSessionFactoryUtil;
@@ -44,5 +45,14 @@ public class RoomServiceImpl implements RoomService {
         sqlSession.commit();
         sqlSession.close();
         return count;
+    }
+
+    @Override
+    public Room selectByRid(String rid) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        RoomMapper mapper = sqlSession.getMapper(RoomMapper.class);
+        Room room = mapper.selectByRid(rid);
+        sqlSession.close();
+        return room;
     }
 }

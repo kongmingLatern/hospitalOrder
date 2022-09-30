@@ -20,7 +20,7 @@ public interface OrderMapper {
      * @param order
      * @return int 预约条数
      */
-    @Insert("insert into `order` values (#{orderId},#{uid},#{orderTime},#{orderRoom},#{isCancel},#{isFinish})")
+    @Insert("insert into `order` values (#{orderId},#{uid},#{orderTime},#{isFinish},#{isCancel},#{rid},#{doctorId})")
     int add(Order order);
 
     /**
@@ -41,6 +41,21 @@ public interface OrderMapper {
     @Select("select * from `order` where uid=#{uid}")
     List<Order> selectByUid(String uid);
 
-    @Update("UPDATE `ORDER` SET uid = #{uid} , orderTime=#{orderTime},orderRoom=#{orderRoom},isCancel=#{isCancel},isFinish=#{isFinish}")
+    /**
+     * 修改订单
+     *
+     * @param orderId
+     * @return
+     */
+    @Update("UPDATE `ORDER` SET uid = #{uid} , orderTime=#{orderTime},rid=#{#rid},doctorId=#{doctorId},isCancel=#{isCancel},isFinish=#{isFinish}")
     int change(String orderId);
+
+    /**
+     * 根据orderid查询预约
+     *
+     * @param orderId
+     * @return
+     */
+    @Select("SELECT * FROM `ORDER` WHERE ORDERID=#{orderId}")
+    Order selectByOrderId(String orderId);
 }

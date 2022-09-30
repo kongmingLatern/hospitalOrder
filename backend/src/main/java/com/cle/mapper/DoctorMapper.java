@@ -46,11 +46,11 @@ public interface DoctorMapper {
     /**
      * 删除医生
      *
-     * @param uid 医生uid
+     * @param doctorId
      * @return int 删除条数
      */
-    @Delete("DELETE FROM DOCTOR WHERE DOCTORID = #{uid}")
-    int delete(@Param("uid") String uid);
+    @Delete("DELETE FROM DOCTOR WHERE DOCTORID = #{doctorId}")
+    int delete(String doctorId);
 
     /**
      * 根据rid查询医生
@@ -62,16 +62,16 @@ public interface DoctorMapper {
     List<Doctor> selectDoctorByRid(String rid);
 
     /**
-     * 根据uid查询医生
+     * 根据doctorId查询医生
      *
-     * @param uid
+     * @param doctorId
      * @return
      */
-    @Select("SELECT * FROM DOCTOR WHERE DOCTORID = #{uid}")
-    Doctor selectDoctorByUid(@Param("uid") String uid);
+    @Select("SELECT * FROM DOCTOR WHERE DOCTORID = #{doctorId}")
+    Doctor selectDoctorByDoctorId(String doctorId);
 
     /**
-     * 根据uid更新医生数据
+     * 根据doctorId更新医生数据
      *
      * @param doctor
      * @return

@@ -3,20 +3,19 @@ import com.alibaba.fastjson.JSON;
 import com.cle.pojo.Doctor;
 import com.cle.pojo.Message;
 import com.cle.pojo.PageBean;
+import com.cle.service.DoctorService;
 import com.cle.service.Imlp.DoctorServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 @WebServlet("/api/doctor/*")
 public class DoctorServlet extends BaseServlet {
-    DoctorServiceImpl doctorService = new DoctorServiceImpl();
+    DoctorService doctorService = new DoctorServiceImpl();
 
     /**
      * 查询所有医生
@@ -27,8 +26,8 @@ public class DoctorServlet extends BaseServlet {
      * @throws IOException
      */
     public void selectAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Doctor> list = doctorService.selectAll();
-        String jsonString = JSON.toJSONString(list);
+        List<Doctor> doctors = doctorService.selectAll();
+        String jsonString = JSON.toJSONString(doctors);
         resp.getWriter().write(jsonString);
     }
 
@@ -47,10 +46,10 @@ public class DoctorServlet extends BaseServlet {
         int count = doctorService.add(doctor);
         Message message = new Message();
         if (count != 0) {
+            message.setMessage("添加成功");
+        } else {
             message.setMessage("添加失败");
             resp.setStatus(400);
-        } else {
-            message.setMessage("添加成功");
         }
         String jsonString = JSON.toJSONString(message);
         resp.getWriter().write(jsonString);
@@ -65,7 +64,7 @@ public class DoctorServlet extends BaseServlet {
      * @throws IOException
      */
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String uid = req.getParameter("uid");
+        String uid = req.getParameter("doctorId");
         Message message = new Message();
         int count = doctorService.delete(uid);
         if (count != 0) {
@@ -98,7 +97,6 @@ public class DoctorServlet extends BaseServlet {
 
     /**
      * 通过科室的rid查询医生
-     *
      * @param req
      * @param resp
      * @throws ServletException

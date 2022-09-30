@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.cle.pojo.Message;
 import com.cle.pojo.Room;
 import com.cle.service.Imlp.RoomServiceImpl;
+import com.cle.service.RoomService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @WebServlet("/api/room/*")
 public class RoomServlet extends BaseServlet {
-    RoomServiceImpl roomService = new RoomServiceImpl();
+    RoomService roomService = new RoomServiceImpl();
 
     /**
      * 查询所有
@@ -65,7 +66,7 @@ public class RoomServlet extends BaseServlet {
      */
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Message message = new Message();
-        String uid = req.getParameter("uid");
+        String uid = req.getParameter("rid");
         int count = roomService.delete(uid);
         if (count != 0) {
             message.setMessage("删除成功");
@@ -73,6 +74,8 @@ public class RoomServlet extends BaseServlet {
             message.setMessage("删除失败");
             resp.setStatus(400);
         }
+        String jsonString = JSON.toJSONString(message);
+        resp.getWriter().write(jsonString);
     }
 
 }

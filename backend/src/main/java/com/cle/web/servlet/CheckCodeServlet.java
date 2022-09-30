@@ -13,7 +13,6 @@ import java.io.IOException;
 public class CheckCodeServlet extends BaseServlet {
     /**
      * 验证码
-     *
      * @param req
      * @param resp
      * @throws ServletException
