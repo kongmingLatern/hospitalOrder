@@ -80,7 +80,6 @@ const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 onMounted(() => {
   request.get('/api/user/selectAll').then((res: Record<string, any>) => {
-    console.log(res.data);
     spinning.value = false
     const lists = res.data
     lists.forEach((list: UserType) => {
