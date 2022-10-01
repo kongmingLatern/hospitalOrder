@@ -197,4 +197,11 @@ public class UserServlet extends BaseServlet {
         String jsonString = JSON.toJSONString(message);
         resp.getWriter().write(jsonString);
     }
+
+    public void selectByUid(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String uid = req.getParameter("uid");
+        User user = userService.selectByUid(uid);
+        String jsonString = JSON.toJSONString(user);
+        resp.getWriter().write(jsonString);
+    }
 }

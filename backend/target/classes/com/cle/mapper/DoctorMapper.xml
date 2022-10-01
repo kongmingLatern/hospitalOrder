@@ -6,6 +6,7 @@
     <resultMap id="doctorResultMap" type="Doctor">
         <collection property="position" column="position"></collection>
     </resultMap>
+    <!--    未完成-->
     <select id="selectDoctorBylike" resultType="com.cle.pojo.Doctor">
         select * from doctor,room where 1=1 and doctor.rid=room.rid
         <if test="doctorName != null and doctorName != ''">
@@ -15,4 +16,28 @@
             and rname like #{rname}
         </if>
     </select>
+
+
+    <update id="change">
+        UPDATE DOCTOR SET doctorId=#{doctorId}
+        <if test="doctorName!=null and doctorName!=''">
+            ,doctorName=#{doctorName}
+        </if>
+        <if test="doctorAge!=null and doctorAge!=''">
+            ,doctorAge=#{doctorAge},rid=#{rid}
+        </if>
+        <if test="rid!=null and rid!=''">
+            ,rid=#{rid}
+        </if>
+        <if test="position!=null and position!=''">
+            ,`position`=#{position}
+        </if>
+        <if test="info!=null and info!=''">
+            ,info=#{info}
+        </if>
+        <if test="limitCount!=null and limitCount!=''">
+            ,limitCount=#{limitCount}
+        </if>
+        <where>doctorId=#{doctorId}</where>
+    </update>
 </mapper>
