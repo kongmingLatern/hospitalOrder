@@ -4,7 +4,10 @@
     <a-modal v-model:visible="visible" title="Add" ok-text="Create" cancel-text="Cancel" @ok="onOk">
       <a-form ref="formRef" :model="formState" v-bind="layout" userName="nest-messages" @finish="onFinish" flex
         flex-wrap flex-col content-start>
-        <a-form-item name="rid" label="rname">
+        <a-form-item name="rid" label="rid">
+          <a-input v-model:value="formState.rid" />
+        </a-form-item>
+        <a-form-item name="rname" label="rname">
           <a-input v-model:value="formState.rname" />
         </a-form-item>
       </a-form>
@@ -28,7 +31,7 @@ const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 
 let formState: RoomType = reactive({
-  rid: randomString(),
+  rid: '',
   rname: ''
 });
 
@@ -40,6 +43,7 @@ const onOk = () => {
   (formRef as any)?.value
     .validateFields()
     .then((values: any) => {
+      // TODO: 表单不为空 判断
       request.post('/api/room/add', toRaw(formState)).then((res: any) => {
         emit('addRoom', toRaw(formState));
         message.success(res.data.message)
