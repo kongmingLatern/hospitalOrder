@@ -23,7 +23,12 @@ const props = defineProps<{
 const activeKey = ref('1')
 
 const goTab = (key: string) => {
-  router.push('/order/rid' + key)
+  router.push({
+    name: 'rid',
+    params: {
+      rid: key
+    }
+  })
 }
 
 const callback: TabsProps['onTabScroll'] = val => {
