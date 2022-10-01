@@ -1,10 +1,13 @@
 <template>
   <a-card title="快捷菜单" style="width: 200px">
-    <a-button type="primary">个人中心</a-button>
+    <router-link to="/personal">
+      <a-button type="primary">个人中心</a-button>
+    </router-link>
   </a-card>
 </template>
 
 <script setup lang='ts'>
+
 </script>
 
 <style scoped>
