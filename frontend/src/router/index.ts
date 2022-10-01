@@ -64,6 +64,18 @@ const router = createRouter({
         }
       ]
     },
+    {
+      path: '/personal',
+      name: 'personal',
+      component: () => import('@/page/Personal.vue'),
+      children: [
+        {
+          path: ':orderid',
+          name: 'orderid',
+          component: () => import('@/views/personal/OrderInfo.vue'),
+        }
+      ]
+    }
   ],
 })
 
