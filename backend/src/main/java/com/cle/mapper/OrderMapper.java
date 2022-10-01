@@ -44,11 +44,10 @@ public interface OrderMapper {
     /**
      * 修改订单
      *
-     * @param orderId
+     * @param order
      * @return
      */
-    @Update("UPDATE `ORDER` SET uid = #{uid} , orderTime=#{orderTime},rid=#{#rid},doctorId=#{doctorId},isCancel=#{isCancel},isFinish=#{isFinish}")
-    int change(String orderId);
+    int change(Order order);
 
     /**
      * 根据orderid查询预约

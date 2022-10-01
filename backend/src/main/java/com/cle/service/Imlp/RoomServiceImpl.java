@@ -55,4 +55,14 @@ public class RoomServiceImpl implements RoomService {
         sqlSession.close();
         return room;
     }
+
+    @Override
+    public int change(Room room) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        RoomMapper mapper = sqlSession.getMapper(RoomMapper.class);
+        int count = mapper.change(room);
+        sqlSession.commit();
+        sqlSession.close();
+        return count;
+    }
 }

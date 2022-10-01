@@ -19,12 +19,6 @@ public class CheckCodeUtil {
     public static final String VERIFY_CODES = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static Random random = new Random();
 
-//    public static void main(String[] args) throws IOException {
-//        OutputStream fos = new FileOutputStream("d://a.jpg");
-//        String s = CheckCodeUtil.outputVerifyImage(100, 50, fos, 4);
-//        System.out.println(s);
-//    }
-
 
     /**
      * 输出随机验证码图片流,并返回验证码值（一般传入输出流，响应response页面端，Web项目用的较多）

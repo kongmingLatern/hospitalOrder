@@ -7,6 +7,7 @@ import com.cle.service.UserService;
 import com.cle.util.SqlSessionFactoryUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -72,5 +73,15 @@ public class UserServiceImpl implements UserService {
         User user = mapper.selectByUid(uid);
         sqlSession.close();
         return user;
+    }
+
+    @Override
+    public int change(User user) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        int count = mapper.change(user);
+        sqlSession.commit();
+        sqlSession.close();
+        return count;
     }
 }

@@ -1,7 +1,9 @@
 package com.cle.pojo;
+
 import com.alibaba.fastjson.annotation.JSONField;
 
 import java.util.Date;
+
 public class Order {
     private String orderId;
     private String uid;

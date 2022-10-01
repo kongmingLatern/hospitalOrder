@@ -1,4 +1,5 @@
 package com.cle.mapper;
+
 import com.cle.pojo.User;
 import org.apache.ibatis.annotations.*;
 
@@ -67,6 +68,11 @@ public interface UserMapper {
     @Select("select * from user where uid=#{uid}")
     User selectByUid(String uid);
 
-    @Update("UPDATE USER SET userName=#{userName},password=#{password},age=#{age},realName=#{realName},cancelCount=#{cancelCount},isAllow==#{isAllow},isAuth=#{isAuth} WHERE uid=#{uid}")
+    /**
+     * 修改用户
+     *
+     * @param user
+     * @return
+     */
     int change(User user);
 }

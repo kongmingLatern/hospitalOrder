@@ -58,4 +58,14 @@ public class OrderServiceImpl implements OrderService {
         sqlSession.close();
         return order;
     }
+
+    @Override
+    public int change(Order order) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
+        int count = mapper.change(order);
+        sqlSession.commit();
+        sqlSession.close();
+        return count;
+    }
 }

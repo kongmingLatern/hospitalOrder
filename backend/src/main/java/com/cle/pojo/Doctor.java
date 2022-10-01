@@ -1,4 +1,5 @@
 package com.cle.pojo;
+
 public class Doctor {
     private String doctorId;//医生Id
     private String doctorName;//医生名字

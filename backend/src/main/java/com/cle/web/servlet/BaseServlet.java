@@ -19,7 +19,7 @@ public class BaseServlet extends HttpServlet {
         String uri = req.getRequestURI();
         //2. 获取最后一段路径，方法名
         int index = uri.lastIndexOf("/");
-        String methodName = uri.substring(index+1);
+        String methodName = uri.substring(index + 1);
         System.out.println(methodName);
         //2.1 获取字节码对象
         Class<? extends BaseServlet> cls = this.getClass();
@@ -28,7 +28,7 @@ public class BaseServlet extends HttpServlet {
             Method method = cls.getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
             //2.3执行方法
             try {
-                method.invoke(this,req,resp);
+                method.invoke(this, req, resp);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {

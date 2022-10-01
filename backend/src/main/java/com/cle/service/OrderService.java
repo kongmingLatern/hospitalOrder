@@ -42,4 +42,13 @@ public interface OrderService {
      * @return
      */
     Order selectByOrderId(String orderId);
+
+    /**
+     * 修改预约
+     *
+     * @param order
+     * @return
+     */
+    int change(Order order);
+
 }

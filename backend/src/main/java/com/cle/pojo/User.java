@@ -1,4 +1,5 @@
 package com.cle.pojo;
+
 public class User {
     private String uid;//用户Id
     private String userName;//用户名字

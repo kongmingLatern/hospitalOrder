@@ -35,4 +35,12 @@ public interface RoomService {
      * @return
      */
     Room selectByRid(String rid);
+
+    /**
+     * 修改科室
+     *
+     * @param room
+     * @return
+     */
+    int change(Room room);
 }

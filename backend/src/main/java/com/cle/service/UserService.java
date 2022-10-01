@@ -51,4 +51,12 @@ public interface UserService {
      * @return
      */
     User selectByUid(String uid);
+
+    /**
+     * 修改用户
+     *
+     * @param user
+     * @return
+     */
+    int change(User user);
 }

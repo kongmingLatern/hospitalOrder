@@ -39,7 +39,7 @@ public interface RoomMapper {
      * @param rid
      * @return
      */
-    @Select("select * from `order` where rid = #{rid}")
+    @Select("select * from ROOM where rid = #{rid}")
     Room selectByRid(String rid);
 
     /**
@@ -48,6 +48,6 @@ public interface RoomMapper {
      * @param room
      * @return
      */
-    @Update("UPDATE `ORDER` SET RNAME=#{rname} where rid = #{rid}")
+    @Update("UPDATE ROOM SET RNAME=#{rname} where rid = #{rid}")
     int change(Room room);
 }

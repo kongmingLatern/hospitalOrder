@@ -78,4 +78,19 @@ public class RoomServlet extends BaseServlet {
         resp.getWriter().write(jsonString);
     }
 
+    public void change(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Message message = new Message();
+        BufferedReader reader = req.getReader();
+        String json = reader.readLine();
+        Room room = JSON.parseObject(json, Room.class);
+        int count = roomService.change(room);
+        if (count != 0) {
+            message.setMessage("修改成功");
+        } else {
+            message.setMessage("修改失败");
+            resp.setStatus(400);
+        }
+        String jsonString = JSON.toJSONString(message);
+        resp.getWriter().write(jsonString);
+    }
 }

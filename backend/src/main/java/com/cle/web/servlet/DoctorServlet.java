@@ -1,21 +1,29 @@
 package com.cle.web.servlet;
+
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.cle.pojo.Doctor;
 import com.cle.pojo.Message;
 import com.cle.pojo.PageBean;
 import com.cle.service.DoctorService;
 import com.cle.service.Imlp.DoctorServiceImpl;
+import com.cle.service.Imlp.RoomServiceImpl;
+import com.cle.service.RoomService;
+import com.cle.util.AddNameUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("/api/doctor/*")
 public class DoctorServlet extends BaseServlet {
     DoctorService doctorService = new DoctorServiceImpl();
+    RoomService roomService = new RoomServiceImpl();
 
     /**
      * 查询所有医生
@@ -27,7 +35,12 @@ public class DoctorServlet extends BaseServlet {
      */
     public void selectAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Doctor> doctors = doctorService.selectAll();
-        String jsonString = JSON.toJSONString(doctors);
+        String json = JSON.toJSONString(doctors);
+        List<Map<String, String>> list = (List<Map<String, String>>) JSONArray.parse(json);
+        for (Map<String, String> map : list) {
+            AddNameUtil.mapAddRname(map);
+        }
+        String jsonString = JSON.toJSONString(list);
         resp.getWriter().write(jsonString);
     }
 
@@ -97,6 +110,7 @@ public class DoctorServlet extends BaseServlet {
 
     /**
      * 通过科室的rid查询医生
+     *
      * @param req
      * @param resp
      * @throws ServletException

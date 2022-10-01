@@ -10,6 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
@@ -175,6 +176,22 @@ public class UserServlet extends BaseServlet {
             message.setMessage("添加成功");
         } else {
             message.setMessage("添加失败");
+            resp.setStatus(400);
+        }
+        String jsonString = JSON.toJSONString(message);
+        resp.getWriter().write(jsonString);
+    }
+
+    public void change(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Message message = new Message();
+        BufferedReader reader = req.getReader();
+        String json = reader.readLine();
+        User user = JSON.parseObject(json, User.class);
+        int count = userService.change(user);
+        if (count != 0) {
+            message.setMessage("修改成功");
+        } else {
+            message.setMessage("修改失败");
             resp.setStatus(400);
         }
         String jsonString = JSON.toJSONString(message);

@@ -76,7 +76,6 @@ public interface DoctorMapper {
      * @param doctor
      * @return
      */
-    @Update("UPDATE DOCTOR SET doctorName=#{doctorName},doctorAge=#{doctorAge},rid=#{rid},`position`=#{position},info=#{info},limitCount=#{limitCount} where doctorId=#{doctorId}")
     int change(Doctor doctor);
 
 }
