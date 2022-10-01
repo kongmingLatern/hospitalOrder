@@ -7,11 +7,11 @@
         <a-form-item name="userName" label="DoctorName">
           <a-input v-model:value="formState.doctorName" />
         </a-form-item>
-        <a-form-item name="password" label="Position">
-          <a-input v-model:value="formState.position" />
-        </a-form-item>
         <a-form-item name='age' label="DoctorAge" :rules="[{ type: 'number', min: 0, max: 99 }]">
           <a-input-number v-model:value="formState.doctorAge" />
+        </a-form-item>
+        <a-form-item name="position" label="Position">
+          <a-input v-model:value="formState.position" />
         </a-form-item>
         <a-form-item name="info" label="Info">
           <a-input v-model:value="formState.info" />
@@ -64,6 +64,7 @@ const onOk = () => {
     .validateFields()
     .then((values: any) => {
       request.post('/api/doctor/add', toRaw(formState)).then((res: any) => {
+        console.log(res);
         emit('addDoctor', toRaw(formState));
         message.success(res.data.message)
       }).catch((err: any) => {
