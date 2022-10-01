@@ -1,18 +1,20 @@
 <template>
-  <div class="order-container">
-    <aside mr-2>
-      <UserCard :userInfo="userInfo" class="card-container" />
-      <MenuCard />
-    </aside>
-    <main mr-2>
-      <Search class="search" @search="getValue" />
-      <a-spin :spinning="spinning">
-        <Tabs :tabs="tabs" />
-      </a-spin>
-    </main>
-    <aside>
-      <NoticeCard />
-    </aside>
+  <div id="container">
+    <div class="order-container">
+      <aside mr-2>
+        <UserCard :userInfo="userInfo" class="card-container" />
+        <MenuCard />
+      </aside>
+      <main mr-2>
+        <Search class="search" @search="getValue" />
+        <a-spin :spinning="spinning">
+          <Tabs :tabs="tabs" />
+        </a-spin>
+      </main>
+      <aside>
+        <NoticeCard />
+      </aside>
+    </div>
   </div>
 </template>
 
@@ -55,18 +57,23 @@ const getValue = (value: string) => {
 }
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 .ant-tabs>.ant-tabs-nav,
 .ant-tabs>div>.ant-tabs-nav {
   margin: unset;
 }
 
-body {
-  // background-image: url('https://img2.baidu.com/it/u=2037147439,3680943017&fm=253&fmt=auto&app=138&f=JPG?w=889&h=500');
-  // background-repeat: no-repeat;
-  // background-size: cover;
+#container {
+  width: 100vw;
+  height: auto;
   background-color: skyblue;
 }
+
+// :deep(#app) {
+// background-image: url('https://img2.baidu.com/it/u=2037147439,3680943017&fm=253&fmt=auto&app=138&f=JPG?w=889&h=500');
+// background-repeat: no-repeat;
+// background-size: cover;
+// }
 
 .order-container {
   display: flex;
@@ -95,6 +102,10 @@ aside {
 .search {
   width: 400px;
   margin-bottom: 20px;
+}
+
+.ant-tabs {
+  background-color: #fff;
 }
 
 .ant-card-head {
