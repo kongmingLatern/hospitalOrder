@@ -6,7 +6,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      redirect: '/order/rid1',
+      redirect: '/doctor',
       component: () => import('@/page/Home.vue'),
       children: [
         {
@@ -48,8 +48,8 @@ const router = createRouter({
       component: () => import('@/page/Index.vue'),
     },
     {
-      path: '/order',
-      name: 'order',
+      path: '/ordermanger',
+      name: 'ordermanger',
       component: () => import('@/page/Order.vue'),
       children: [
         {
