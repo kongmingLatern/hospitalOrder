@@ -48,8 +48,8 @@ const router = createRouter({
       component: () => import('@/page/Index.vue'),
     },
     {
-      path: '/ordermanger',
-      name: 'ordermanger',
+      path: '/ordermanager',
+      name: 'ordermanager',
       component: () => import('@/page/Order.vue'),
       children: [
         {
