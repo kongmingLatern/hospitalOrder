@@ -44,6 +44,10 @@ const columns = [
     dataIndex: 'doctorId'
   },
   {
+    title: 'rname',
+    dataIndex: 'rname',
+  },
+  {
     title: 'doctorName',
     dataIndex: 'doctorName'
   },
@@ -74,6 +78,7 @@ const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 onMounted(() => {
   request.get('api/doctor/selectAll').then((res: Record<string, any>) => {
+    console.log(res);
     spinning.value = false
     const lists = res.data
     lists.forEach((list: DoctorType) => {

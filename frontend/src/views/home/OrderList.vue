@@ -35,17 +35,28 @@ import type { OrderListType } from '@/type';
 
 const columns = [
   {
-    title: 'name',
-    dataIndex: 'name',
-    width: '30%',
+    title: 'orderId',
+    dataIndex: 'orderId',
   },
   {
-    title: 'order',
-    dataIndex: 'order',
+    title: 'uid',
+    dataIndex: 'uid',
   },
   {
-    title: 'dateTime',
-    dataIndex: 'dateTime',
+    title: 'orderTime',
+    dataIndex: 'orderTime',
+  },
+  {
+    title: 'orderRoom',
+    dataIndex: 'orderRoom',
+  },
+  {
+    title: 'isCancel',
+    dataIndex: 'isCancel',
+  },
+  {
+    title: 'isFinish',
+    dataIndex: 'isFinish',
   },
   {
     title: 'operation',
@@ -58,7 +69,8 @@ onMounted(() => {
   const instance = getCurrentInstance()
   const request = (instance?.proxy as any).$request!
 
-  request.get('/order').then((res: Record<string, any>) => {
+  request.get('api/order/selectAll').then((res: Record<string, any>) => {
+    console.log(res);
     spinning.value = false
     const lists = res.data
     lists.forEach((list: OrderListType) => {
