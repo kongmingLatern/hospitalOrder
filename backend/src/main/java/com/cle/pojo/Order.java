@@ -7,7 +7,7 @@ import java.util.Date;
 public class Order {
     private String orderId;
     private String uid;
-    @JSONField(format = "yyyy-MM-dd hh:mm:ss")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date orderTime;
     private String rid;
     private String doctorId;
