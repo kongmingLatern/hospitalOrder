@@ -124,6 +124,18 @@ public class OrderServlet extends BaseServlet {
         }
         String jsonString = JSON.toJSONString(message);
         resp.getWriter().write(jsonString);
+    }
 
+
+    public void selectByOrderId(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String orderId = req.getParameter("orderId");
+        Order order = orderService.selectByOrderId(orderId);
+        String json = JSON.toJSONString(order);
+        Map map = JSON.parseObject(json, Map.class);
+        AddNameUtil.mapAddRname(map);
+        AddNameUtil.mapAddRealName(map);
+        AddNameUtil.mapAddDoctorName(map);
+        String jsonString = JSON.toJSONString(map);
+        resp.getWriter().write(jsonString);
     }
 }
