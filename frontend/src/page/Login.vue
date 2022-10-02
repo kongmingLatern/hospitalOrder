@@ -63,7 +63,8 @@ const onFinish = (values: any) => {
     }
   }).then((res: any) => {
     if (res.status === 200) {
-      localStorage.setItem('uid', 'CJPBWmSSemJGcMF76PwM26WpcyhQBKcw')
+      const { uid } = res.data
+      localStorage.setItem('uid', uid)
       message.success('登录成功，即将跳转到后台管理');
       setTimeout(() => {
         router.push('/doctor');
