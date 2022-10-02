@@ -26,9 +26,7 @@
 </template>
 <script lang="ts" setup>
 import { message } from 'ant-design-vue';
-import { request } from 'http';
 import { getCurrentInstance, reactive, toRaw } from 'vue';
-import type { DoctorType } from '../../type';
 import { randomString } from '../../utils';
 
 const props = defineProps<{
@@ -86,7 +84,7 @@ const confirm = (selectId: string) => {
   }
   request.post('api/order/add', toRaw(result)).then((res: Record<string, any>) => {
     message.success('预约成功');
-  }).catch((err: string)=> {
+  }).catch((err: string) => {
     message.success('预约失败');
   })
 };
