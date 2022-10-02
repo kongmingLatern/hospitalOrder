@@ -12,7 +12,7 @@
       </svg>
     </template>
     <template #desc>
-      <router-link to="/order/rid1">预约</router-link>
+      <router-link to="/ordermanager">预约</router-link>
     </template>
   </IconTemp>
   <IconTemp>

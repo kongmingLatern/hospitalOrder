@@ -48,6 +48,7 @@ import { UserOutlined } from '@ant-design/icons-vue';
 import router from '@/router';
 const selectedKeys1 = ref<string[]>(['2'])
 const exitLogin = () => {
+  localStorage.removeItem('uid')
   router.push('/login')
 }
 </script>

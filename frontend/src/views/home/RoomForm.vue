@@ -4,9 +4,6 @@
     <a-modal v-model:visible="visible" title="Add" ok-text="Create" cancel-text="Cancel" @ok="onOk">
       <a-form ref="formRef" :model="formState" v-bind="layout" userName="nest-messages" @finish="onFinish" flex
         flex-wrap flex-col content-start>
-        <a-form-item name="rid" label="rid">
-          <a-input v-model:value="formState.rid" />
-        </a-form-item>
         <a-form-item name="rname" label="rname">
           <a-input v-model:value="formState.rname" />
         </a-form-item>
@@ -31,7 +28,7 @@ const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 
 let formState: RoomType = reactive({
-  rid: '',
+  rid: randomString(),
   rname: ''
 });
 

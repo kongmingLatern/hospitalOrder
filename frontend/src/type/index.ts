@@ -22,11 +22,16 @@ export interface DoctorType {
   img?: string
 }
 export interface OrderListType {
-  id: string;
-  name: string;
-  age: number;
-  order: string;
-  dateTime: string;
+  orderId: string;
+  uid?: string,
+  realName: string,
+  rId: string;
+  rname: string;
+  doctorId?: string,
+  doctorName: string;
+  orderTime: string;
+  isCancel: number | string,
+  isFinish: number | string
 }
 export interface RoomType {
   rid: string;

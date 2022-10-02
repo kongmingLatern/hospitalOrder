@@ -1,117 +1,66 @@
 <template>
-  <a-list item-layout="horizontal" :data-source="data" :pagination="pagination">
-    <template #renderItem="{ item }">
-      <a-list-item>
-        <a-list-item-meta>
-          <!-- 姓名 -->
-          <template #title>
-            <a href="https://www.antdv.com/">{{ item.doctorName }}</a>
-          </template>
-          <!-- 描述 -->
-          <template #description class="description">
-            <p>{{item.info}}</p>
-            <OrderTime />
-          </template>
-          <!-- 照片 -->
-          <template #avatar>
-            <Avatar size="large" shape="square">
-              <template #icon>
-                <img :src="item.img" />
-              </template>
-            </Avatar>
-          </template>
-        </a-list-item-meta>
-      </a-list-item>
-    </template>
-  </a-list>
+  <a-spin :spinning="spinning">
+    <a-list item-layout="horizontal" :data-source="data" :pagination="pagination">
+      <template #renderItem="{ item }">
+        <a-list-item>
+          <a-list-item-meta>
+            <!-- 姓名 -->
+            <template #title>
+              <a href="https://www.antdv.com/">{{ item.doctorName }}</a>
+            </template>
+            <!-- 描述 -->
+            <template #description class="description">
+              <p>{{item.info}}</p>
+              <OrderTime :doctorId="item.doctorId" :rid="item.rid" />
+            </template>
+            <!-- 照片 -->
+            <template #avatar>
+              <Avatar size="large" shape="square">
+                <template #icon>
+                  <img src="https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg" />
+                </template>
+              </Avatar>
+            </template>
+          </a-list-item-meta>
+        </a-list-item>
+      </template>
+    </a-list>
+  </a-spin>
 </template>
 <script lang="ts" setup>
-import { watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
+import { getCurrentInstance, reactive, ref, watchEffect } from 'vue';
 import Avatar from './Avatar.vue';
 import OrderTime from '@/views/order/OrderTime.vue'
 import type { DoctorType } from '../../type';
-import { randomString } from '../../utils';
+import { useRoute } from 'vue-router';
 
-let data: DoctorType[] = [
-  {
-    rid: 'zT2sWTXff7T7ZYJDrQpEdNkGz4zzRxtF',
-    doctorId: randomString(),
-    doctorName: '医生1',
-    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
-    img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
-  },
-  {
-    rid: 'zT2sWTXff7T7ZYJDrQpEdNkGz4zzRxtF',
-    doctorId: randomString(),
-    doctorName: '医生2',
-    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
-    img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
-  },
-  {
-    rid: 'zT2sWTXff7T7ZYJDrQpEdNkGz4zzRxtF',
-    doctorId: randomString(),
-    doctorName: '医生2',
-    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
-    img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
-  },
-  {
-    rid: 'zT2sWTXff7T7ZYJDrQpEdNkGz4zzRxtF',
-    doctorId: randomString(),
-    doctorName: '医生2',
-    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
-    img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
-  },
-  {
-    rid: 'zT2sWTXff7T7ZYJDrQpEdNkGz4zzRxtF',
-    doctorId: randomString(),
-    doctorName: '医生2',
-    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
-    img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
-  },
-  {
-    rid: 'zT2sWTXff7T7ZYJDrQpEdNkGz4zzRxtF',
-    doctorId: randomString(),
-    doctorName: '医生2',
-    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
-    img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
-  },
-  {
-    rid: 'rid3',
-    doctorId: randomString(),
-    doctorName: '医生2',
-    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
-    img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
-  },
-  {
-    rid: 'rid3',
-    doctorId: randomString(),
-    doctorName: '医生2',
-    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
-    img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
-  },
-  {
-    rid: 'rid3',
-    doctorId: randomString(),
-    doctorName: '医生2',
-    info: '视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。视网膜若离、糖尿病视网膜病变、黄斑疾病及眼外伤等眼底病的诊断与手术治疗。',
-    img: 'https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg'
-  },
-];
+const instance = getCurrentInstance()
+const request = (instance?.proxy as any).$request!
+const spinning = ref<Boolean>(true)
+let data: DoctorType[] = reactive([]);
+
+const { params } = useRoute()
+watchEffect(() => {
+  request.get('api/doctor/selectDoctorByRid', {
+    params: {
+      rid: params.rid
+    }
+  }).then((res: Record<string, any>) => {
+    spinning.value = false
+    const lists = res.data
+    lists.forEach((list: DoctorType) => {
+      data.push(list)
+    })
+  }).catch((e: any) => {
+    console.log(e.message);
+  })
+})
 const pagination = {
   onChange: (page: number) => {
     console.log(page);
   },
   pageSize: 5,
 };
-const { params } = useRoute()
-watchEffect(() => {
-  console.log(params);
-  data = data.filter(item => item.rid === params.rid)
-})
-
-console.log(data);
-
 
 </script>
 
