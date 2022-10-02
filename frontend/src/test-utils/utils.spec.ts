@@ -1,7 +1,68 @@
 import { describe, it, expect } from 'vitest'
-import { randomString } from '../utils';
+import { formatData, formatObject, randomString } from '../utils';
 describe('randomString', () => {
-  it('Random string length = 32', () => {
+  it.skip('Random string length = 32', () => {
     expect(randomString()).toMatchInlineSnapshot('"TBfsJX2MJimRsKpN3hKjJek4eCSf2Y5E"')
   })
+})
+
+describe('format data', () => {
+  it('format dataSource', () => {
+    const dataSource = [
+      {
+        isCancel: 0,
+        isFinish: 0,
+      }, {
+        isCancel: 1,
+        isFinish: 1,
+      }]
+    expect(formatData(dataSource)).toEqual([
+      {
+        isCancel: '否',
+        isFinish: '否',
+      }, {
+        isCancel: '是',
+        isFinish: '是',
+      }]
+    )
+  });
+
+  it('format object1', () => {
+    const dataSource =
+    {
+      isCancel: 0,
+      isFinish: 0,
+    }
+    expect(formatObject(dataSource)).toEqual(
+      {
+        isCancel: '否',
+        isFinish: '否',
+      })
+  });
+  it('format object2', () => {
+    const dataSource =
+    {
+      isAuth: 0,
+      isAllow: 0,
+    }
+    expect(formatObject(dataSource)).toEqual(
+      {
+        isAuth: '否',
+        isAllow: '否',
+      })
+  });
+  it('format object3', () => {
+    const dataSource =
+    {
+      cancelCount: 0,
+      isAuth: 0,
+      isAllow: 0,
+    }
+    expect(formatObject(dataSource)).toEqual(
+      {
+        cancelCount: 0,
+        isAuth: '否',
+        isAllow: '否',
+      })
+  });
 })

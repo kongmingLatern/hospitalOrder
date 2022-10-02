@@ -8,3 +8,27 @@ export function randomString() {
   }
   return character;
 }
+
+export function formatData(data: Record<string, any>[]) {
+  return data.map(item => {
+    return {
+      ...item,
+      isCancel: item.isCancel ? '是' : '否',
+      isFinish: item.isFinish ? '是' : '否',
+    }
+  })
+};
+
+export function formatObject(data: Record<string, any>) {
+  for (const key in data) {
+    if (key === 'cancelCount') {
+      continue;
+    }
+    if (data[key] === 0) {
+      data[key] = '否'
+    } else if (data[key] === 1) {
+      data[key] = '是'
+    }
+  }
+  return data
+};
