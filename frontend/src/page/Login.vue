@@ -62,8 +62,8 @@ const onFinish = (values: any) => {
       password: formState.password
     }
   }).then((res: any) => {
-    console.log(res);
     if (res.status === 200) {
+      localStorage.setItem('uid', 'CJPBWmSSemJGcMF76PwM26WpcyhQBKcw')
       message.success('登录成功，即将跳转到后台管理');
       setTimeout(() => {
         router.push('/doctor');
