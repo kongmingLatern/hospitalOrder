@@ -117,7 +117,7 @@ const onDelete = (uid: string) => {
 };
 
 const add = (formState: UserType) => {
-  dataSource.push(formState)
+  dataSource.push(formatObject(formState) as UserType)
 }
 </script>
 <style lang="scss" scoped>

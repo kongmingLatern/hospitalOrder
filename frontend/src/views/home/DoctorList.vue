@@ -38,6 +38,7 @@ import type { DoctorType } from '@/type';
 import DoctorForm from './DoctorForm.vue';
 import router from '@/router';
 import { message } from 'ant-design-vue';
+import { formatObject } from '../../utils';
 const columns = [
   {
     title: 'doctorId',
@@ -78,7 +79,6 @@ const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 onMounted(() => {
   request.get('api/doctor/selectAll').then((res: Record<string, any>) => {
-    console.log(res);
     spinning.value = false
     const lists = res.data
     lists.forEach((list: DoctorType) => {
@@ -115,7 +115,10 @@ const onDelete = (doctorId: string) => {
 };
 
 const add = (formState: DoctorType) => {
-  dataSource.push(formState)
+  dataSource.push(formatObject(formState) as DoctorType)
+  setTimeout(() => {
+    router.go(0)
+  }, 0)
 }
 </script>
 <style lang="scss" scoped>
