@@ -34,6 +34,7 @@ import { cloneDeep } from 'lodash-es';
 import type { UserType } from '@/type';
 import UserForm from './UserForm.vue';
 import { message } from 'ant-design-vue';
+import { formatObject } from '../../utils';
 import router from '@/router';
 
 const columns = [
@@ -42,35 +43,35 @@ const columns = [
     dataIndex: 'uid',
   },
   {
-    title: 'userName',
+    title: '用户名',
     dataIndex: 'userName',
   },
   {
-    title: 'age',
-    dataIndex: 'age',
-  },
-  {
-    title: 'password',
+    title: '密码',
     dataIndex: 'password',
   },
   {
-    title: 'realName',
+    title: '年龄',
+    dataIndex: 'age',
+  },
+  {
+    title: '真实姓名',
     dataIndex: 'realName',
   },
   {
-    title: 'cancelCount',
+    title: '取消次数',
     dataIndex: 'cancelCount',
   },
   {
-    title: 'isAllow',
+    title: '是否禁用',
     dataIndex: 'isAllow',
   },
   {
-    title: 'isAuth',
+    title: '是否是管理员',
     dataIndex: 'isAuth',
   },
   {
-    title: 'operation',
+    title: '操作',
     dataIndex: 'operation',
   },
 ];
@@ -83,7 +84,7 @@ onMounted(() => {
     spinning.value = false
     const lists = res.data
     lists.forEach((list: UserType) => {
-      dataSource.push(list)
+      dataSource.push(formatObject(list) as UserType)
     })
   }).catch((e: any) => {
     console.log(e.message);
