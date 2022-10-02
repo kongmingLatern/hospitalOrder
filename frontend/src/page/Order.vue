@@ -2,7 +2,7 @@
   <div id="container">
     <div class="order-container">
       <aside mr-2>
-        <UserCard :userInfo="userInfo" class="card-container" />
+        <UserCard class="card-container" />
         <MenuCard />
       </aside>
       <main mr-2>
@@ -27,21 +27,15 @@ import Tabs from '../views/order/Tabs.vue';
 import type { TabType } from '../type';
 import NoticeCard from '../views/order/NoticeCard.vue';
 import MenuCard from '../views/order/MenuCard.vue';
-const userInfo = reactive<UserType>({
-  uid: '',
-  userName: 'ccccle',
-  age: 10,
-  password: '',
-  realName: '陈楷豪',
-  cancelCount: 0,
-  isAllow: 0,
-  isAuth: 0,
-});
+
+const instance = getCurrentInstance()
+const request = (instance?.proxy as any).$request!
+
 
 const tabs = reactive<TabType[]>([]);
 const spinning = ref<Boolean>(false);
-const instance = getCurrentInstance()
-const request = (instance?.proxy as any).$request!
+
+
 request.get('api/room/selectAll').then((res: Record<string, any>) => {
   spinning.value = false
   console.log(res);

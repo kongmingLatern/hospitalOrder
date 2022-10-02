@@ -18,10 +18,34 @@
 <script setup lang='ts'>
 import type { UserType } from '@/type';
 import { UserOutlined } from '@ant-design/icons-vue';
+import { getCurrentInstance, reactive } from 'vue';
 import Avatar from './Avatar.vue';
-const props = defineProps<{
-  userInfo: UserType;
-}>();
+import { hasOwnProperty } from '../../utils';
+let userInfo = reactive<UserType>({
+  uid: '',
+  userName: '',
+  age: undefined,
+  password: '',
+  realName: '',
+  cancelCount: 0,
+  isAllow: 0,
+  isAuth: 0,
+});
+const instance = getCurrentInstance()
+const request = (instance?.proxy as any).$request!
+request.get('api/user/selectByUid', {
+  params: {
+    uid: localStorage.getItem('uid') ?? ''
+  }
+}).then((res: Record<string, any>) => {
+  let key: string
+  for (key in res.data) {
+    if (hasOwnProperty(userInfo, key)) {
+      userInfo[key] = res.data[key]
+    }
+  }
+})
+
 </script>
 
 <style scoped>
