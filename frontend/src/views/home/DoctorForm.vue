@@ -16,6 +16,9 @@
         <a-form-item name="info" label="Info">
           <a-input v-model:value="formState.info" />
         </a-form-item>
+        <a-form-item name="rid" label="rid">
+          <a-input v-model:value="formState.rid" />
+        </a-form-item>
         <a-form-item name="limitCount" label="limitCount">
           <a-input-number v-model:value="formState.limitCount" />
         </a-form-item>
@@ -49,7 +52,7 @@ let formState: DoctorType = reactive({
   doctorId: randomString(),
   doctorName: '',
   doctorAge: undefined,
-  rid: randomString(),
+  rid: '',
   position: '',
   info: '',
   limitCount: undefined
@@ -64,7 +67,6 @@ const onOk = () => {
     .validateFields()
     .then((values: any) => {
       request.post('/api/doctor/add', toRaw(formState)).then((res: any) => {
-        console.log(res);
         emit('addDoctor', toRaw(formState));
         message.success(res.data.message)
       }).catch((err: any) => {
