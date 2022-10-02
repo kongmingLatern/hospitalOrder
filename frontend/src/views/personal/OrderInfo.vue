@@ -1,5 +1,5 @@
 <template>
-  <a-descriptions title="User Info" bordered>
+  <a-descriptions title="User Info" bordered class="desc-container">
     <a-descriptions-item label="Product">Cloud Database</a-descriptions-item>
     <a-descriptions-item label="Billing Mode">Prepaid</a-descriptions-item>
     <a-descriptions-item label="Automatic Renewal">YES</a-descriptions-item>
@@ -9,23 +9,12 @@
       <a-badge status="processing" text="Running" />
     </a-descriptions-item>
     <a-descriptions-item label="Negotiated Amount">$80.00</a-descriptions-item>
-    <a-descriptions-item label="Discount">$20.00</a-descriptions-item>
-    <a-descriptions-item label="Official Receipts">$60.00</a-descriptions-item>
-    <a-descriptions-item label="Config Info">
-      Data disk type: MongoDB
-      <br />
-      Database version: 3.4
-      <br />
-      Package: dds.mongo.mid
-      <br />
-      Storage space: 10 GB
-      <br />
-      Replication factor: 3
-      <br />
-      Region: East China 1
-      <br />
-    </a-descriptions-item>
   </a-descriptions>
 </template>
 
+<script lang='ts' setup>
+</script>
 
+<style lang='scss' scoped>
+
+</style>
