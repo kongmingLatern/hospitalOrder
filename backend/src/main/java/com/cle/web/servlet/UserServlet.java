@@ -1,6 +1,8 @@
 package com.cle.web.servlet;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.cle.pojo.Message;
 import com.cle.pojo.PageBean;
 import com.cle.pojo.User;
 import com.cle.service.Imlp.UserServiceImpl;
@@ -14,29 +16,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("/api/user/*")
 public class UserServlet extends BaseServlet {
-    private class Message {
-        private String message;
-        private boolean isAuth;
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public boolean isAuth() {
-            return isAuth;
-        }
-
-        public void setAuth(boolean auth) {
-            isAuth = auth;
-        }
-    }
 
     UserService userService = new UserServiceImpl();
 
@@ -95,8 +78,8 @@ public class UserServlet extends BaseServlet {
         String _remeber = req.getParameter("remeber");
         boolean remeber = Boolean.parseBoolean(_remeber);
         User user = userService.selectByUsername(username);
+        Map map = null;
         Message message = new Message();
-        message.setAuth(false);
         if (user == null) {
             message.setMessage("没有该用户");
             resp.setStatus(400);
@@ -104,10 +87,17 @@ public class UserServlet extends BaseServlet {
             message.setMessage("密码错误");
             resp.setStatus(400);
         } else {
-            if (user.getIsAuth() == 1) {
-                message.setAuth(true);
-            }
             message.setMessage("登录成功");
+            String jsonString = JSON.toJSONString(user);
+            map = JSON.parseObject(jsonString, Map.class);
+            if ("1".equals(map.get("isAuth"))) {
+                map.remove("isAuth");
+                map.put("isAuth", true);
+            } else {
+                map.remove("isAuth");
+                map.put("isAuth", false);
+            }
+            map.put("message", message.getMessage());
             if (remeber) {
                 Cookie c_username = new Cookie("username", username);
                 Cookie c_password = new Cookie("password", password);
@@ -117,7 +107,12 @@ public class UserServlet extends BaseServlet {
                 resp.addCookie(c_password);
             }
         }
-        String jsonString = JSON.toJSONString(message);
+        String jsonString;
+        if (map != null) {
+            jsonString = JSON.toJSONString(map);
+        } else {
+            jsonString = JSON.toJSONString(message);
+        }
         resp.getWriter().write(jsonString);
     }
 
