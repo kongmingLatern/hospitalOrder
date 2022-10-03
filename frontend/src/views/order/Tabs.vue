@@ -11,16 +11,27 @@
 </template>
 <script lang="ts" setup>
 import router from '@/router';
+import type { TabType } from '@/type';
 import type { TabsProps } from 'ant-design-vue';
-import { ref } from 'vue';
-const props = defineProps<{
-  tabs: {
-    rid: string
-    rname: string
-  }[];
-}>();
+import { getCurrentInstance, onMounted, reactive, ref } from 'vue';
 
-const activeKey = ref('1')
+const instance = getCurrentInstance()
+const request = (instance?.proxy as any).$request!
+const activeKey = ref<string>('')
+const tabs = reactive<TabType[]>([]);
+
+onMounted(async () => {
+  const res = await request.get('api/room/selectAll')
+  const lists = res.data
+  lists.forEach((list: TabType) => {
+    tabs.push(list)
+  })
+
+  const { rid } = tabs[0] ?? ""
+  activeKey.value = rid
+  router.push('/ordermanager/' + rid)
+})
+
 
 const goTab = (key: string) => {
   router.push({

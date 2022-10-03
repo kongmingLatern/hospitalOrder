@@ -29,29 +29,6 @@ const data: DataItem[] = [
 ];
 </script>
 
-<style lang='scss'>
-.ant-card-body {
-  padding: 10px 0 10px 10px;
-}
+<style lang='scss' scoped>
 
-.ant-spin-container {
-  padding: unset;
-}
-
-.ant-list-item-meta-title {
-  overflow: hidden; //超出的文本隐藏
-  text-overflow: ellipsis; //溢出用省略号显示
-  display: -webkit-box;
-  -webkit-line-clamp: 1; // 超出多少行
-  -webkit-box-orient: vertical;
-}
-
-.ant-list-item-meta-description {
-  font-size: 12px;
-  overflow: hidden; //超出的文本隐藏
-  text-overflow: ellipsis; //溢出用省略号显示
-  display: -webkit-box;
-  -webkit-line-clamp: 1; // 超出多少行
-  -webkit-box-orient: vertical;
-}
 </style>
