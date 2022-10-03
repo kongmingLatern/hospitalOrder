@@ -110,6 +110,14 @@ public class OrderServlet extends BaseServlet {
         resp.getWriter().write(jsonString);
     }
 
+    /**
+     * 修改预约
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void change(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Message message = new Message();
         BufferedReader reader = req.getReader();
@@ -126,7 +134,14 @@ public class OrderServlet extends BaseServlet {
         resp.getWriter().write(jsonString);
     }
 
-
+    /**
+     * 通过orderid查询预约
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void selectByOrderId(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String orderId = req.getParameter("orderId");
         Order order = orderService.selectByOrderId(orderId);

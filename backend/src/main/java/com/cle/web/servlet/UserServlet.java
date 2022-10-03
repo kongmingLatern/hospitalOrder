@@ -75,8 +75,8 @@ public class UserServlet extends BaseServlet {
     public void Login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
-        String _remeber = req.getParameter("remeber");
-        boolean remeber = Boolean.parseBoolean(_remeber);
+        String _remember = req.getParameter("remember");
+        boolean remember = Boolean.parseBoolean(_remember);
         User user = userService.selectByUsername(username);
         Map map = null;
         Message message = new Message();
@@ -90,7 +90,7 @@ public class UserServlet extends BaseServlet {
             message.setMessage("登录成功");
             String jsonString = JSON.toJSONString(user);
             map = JSON.parseObject(jsonString, Map.class);
-            if ("1".equals(map.get("isAuth"))) {
+            if (user.getIsAuth() == 1) {
                 map.remove("isAuth");
                 map.put("isAuth", true);
             } else {
@@ -98,7 +98,7 @@ public class UserServlet extends BaseServlet {
                 map.put("isAuth", false);
             }
             map.put("message", message.getMessage());
-            if (remeber) {
+            if (remember) {
                 Cookie c_username = new Cookie("username", username);
                 Cookie c_password = new Cookie("password", password);
                 c_username.setMaxAge(7 * 60 * 60 * 24);
