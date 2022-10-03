@@ -4,6 +4,7 @@ export interface LoginType {
   remember: boolean;
 }
 export interface RegistType {
+  uid: string,
   userName: string;
   age: number | string,
   password: string;
