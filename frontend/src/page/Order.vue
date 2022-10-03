@@ -7,9 +7,7 @@
       </aside>
       <main mr-2>
         <Search class="search" @search="getValue" />
-        <a-spin :spinning="spinning">
-          <Tabs :tabs="tabs" />
-        </a-spin>
+        <Tabs />
       </main>
       <aside>
         <NoticeCard />
@@ -19,33 +17,12 @@
 </template>
 
 <script lang='ts' setup>
-import type { UserType } from '@/type';
 import UserCard from '@/views/order/UserCard.vue';
-import { getCurrentInstance, reactive, ref } from 'vue';
 import Search from '../views/order/Search.vue';
-import Tabs from '../views/order/Tabs.vue';
-import type { TabType } from '../type';
 import NoticeCard from '../views/order/NoticeCard.vue';
+import Tabs from '../views/order/Tabs.vue';
 import MenuCard from '../views/order/MenuCard.vue';
 
-const instance = getCurrentInstance()
-const request = (instance?.proxy as any).$request!
-
-
-const tabs = reactive<TabType[]>([]);
-const spinning = ref<Boolean>(false);
-
-
-request.get('api/room/selectAll').then((res: Record<string, any>) => {
-  spinning.value = false
-  console.log(res);
-  const lists = res.data
-  lists.forEach((list: TabType) => {
-    tabs.push(list)
-  })
-}).catch((e: any) => {
-  console.log(e.message);
-})
 const getValue = (value: string) => {
   console.log('getValue', value);
 }
@@ -61,6 +38,31 @@ const getValue = (value: string) => {
   width: 100vw;
   height: auto;
   background-color: skyblue;
+}
+
+:deep(.ant-card-body) {
+  padding: 10px 0 10px 10px;
+}
+
+:deep(.ant-spin-container) {
+  padding: unset;
+}
+
+:deep(.ant-list-item-meta-title) {
+  overflow: hidden; //超出的文本隐藏
+  text-overflow: ellipsis; //溢出用省略号显示
+  display: -webkit-box;
+  -webkit-line-clamp: 1; // 超出多少行
+  -webkit-box-orient: vertical;
+}
+
+:deep(.ant-list-item-meta-description) {
+  font-size: 12px;
+  overflow: hidden; //超出的文本隐藏
+  text-overflow: ellipsis; //溢出用省略号显示
+  display: -webkit-box;
+  -webkit-line-clamp: 1; // 超出多少行
+  -webkit-box-orient: vertical;
 }
 
 // :deep(#app) {
