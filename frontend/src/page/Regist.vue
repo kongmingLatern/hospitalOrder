@@ -42,9 +42,12 @@
 </template>
 <script lang="ts" setup>
 import type { RegistType } from '@/type';
-import { reactive, computed, getCurrentInstance, ref } from 'vue';
+import { message } from 'ant-design-vue';
+import { reactive, computed, getCurrentInstance, ref, toRaw } from 'vue';
 import router from '../router';
+import { randomString } from '../utils';
 const formState = reactive<RegistType>({
+  uid: randomString(),
   userName: '',
   password: '',
   age: '',
@@ -56,9 +59,10 @@ const request = (instance?.proxy as any).$request!
 
 const onFinish = (values: any) => {
   console.log('Success:', values);
-  request.post('api/user/register', values).then((res: Record<string, any>) => {
-    if ((res.data as string) === '') {
+  request.post('api/user/register', toRaw(formState)).then((res: Record<string, any>) => {
+    if (res.status === 200) {
       spinning.value = true
+      message.success('注册成功，即将跳转至登录页')
       setTimeout(() => {
         router.push('/login')
       }, 1000)
@@ -102,6 +106,8 @@ const disabled = computed(() => {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  overflow: hidden;
+  border-radius: 15%;
 }
 
 .right {
