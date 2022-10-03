@@ -56,18 +56,26 @@ const request = (instance?.proxy as any).$request!
 
 const onFinish = (values: any) => {
   console.log('Success:', values);
+  console.log('formState:', formState);
   request.get('/api/user/Login', {
     params: {
       username: formState.username,
-      password: formState.password
+      password: formState.password,
+      remember: formState.remember
     }
   }).then((res: any) => {
     if (res.status === 200) {
-      const { uid } = res.data
+      const { uid, isAuth } = res.data
       localStorage.setItem('uid', uid)
-      message.success('登录成功，即将跳转到后台管理');
+      localStorage.setItem('isAuth', isAuth)
       setTimeout(() => {
-        router.push('/doctor');
+        if (isAuth) {
+          message.success('登录成功，欢迎您管理员，即将跳转到后台管理');
+          router.push('/doctor')
+        } else {
+          message.success('登录成功');
+          router.push('/ordermanager');
+        }
       }, 1000)
     }
   }).catch((err: Record<string, any>) => {
@@ -78,18 +86,6 @@ const onFinish = (values: any) => {
       message.error(msg);
     }
   })
-  // request.get('/api/user/Login', {
-  //   params: values
-  // }, res => {
-  //   console.log(res);
-  //   spinning.value = true
-  //   if (res.data.length === 1) {
-  //     setTimeout(() => {
-  //       router.push('/doctor')
-  //     }, 1000)
-  //   }
-  // }
-  // )
 };
 
 const onFinishFailed = (errorInfo: any) => {
@@ -126,6 +122,8 @@ const disabled = computed(() => {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  overflow: hidden;
+  border-radius: 15%;
 }
 
 .right {
