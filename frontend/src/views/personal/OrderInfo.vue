@@ -15,6 +15,7 @@
 
 <script lang='ts' setup>
 import { getCurrentInstance, reactive, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import type { OrderListType } from '../../type';
 
 const orderList = reactive<OrderListType[]>([])
@@ -22,21 +23,20 @@ const spinning = ref<Boolean>(true)
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 // 根据 orderId 查询预约信息
-request.get('api/order/selectByUid', {
-  params: {
-    uid: localStorage.getItem('uid') ?? ''
-  }
-}).then((res: Record<string, any>) => {
-  spinning.value = false
-  const lists = res.data
-  console.log(res);
-  lists.forEach((list: OrderListType) => {
-    orderList.push(list)
-  })
 
-})
+const { params } = useRoute()
 
-
+getData()
+function getData() {
+  request.get('api/order/selectByOrderId', {
+    params: {
+      orderId: params.orderId
+    }
+  }).then((res: Record<string, any>) => {
+    spinning.value = false;
+    orderList.push(res.data);
+  });
+}
 </script>
 
 <style lang='scss' scoped>
