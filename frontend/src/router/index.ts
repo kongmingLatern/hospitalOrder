@@ -58,8 +58,8 @@ const router = createRouter({
           component: () => import('@/views/order/RoomInfo.vue'),
         },
         {
-          path: ':search',
-          name: 'SearchDoctor',
+          path: 'search/:doctorId',
+          name: 'doctorSearch',
           component: () => import('@/views/order/SearchDoctor.vue'),
         }
       ]
