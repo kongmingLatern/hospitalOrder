@@ -6,7 +6,7 @@
     <div mt-5>
       <a-button type="primary" @click="$router.push('/login')">退出登录</a-button>
     </div>
-    <div mt-5 v-if="isAuth">
+    <div mt-5 v-if="isAuth === 'true'">
       <a-button type="danger" @click="$router.push('/doctor')">后台管理</a-button>
     </div>
   </a-card>
