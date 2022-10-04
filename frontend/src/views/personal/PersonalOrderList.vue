@@ -3,8 +3,10 @@
     <a-list bordered :data-source="data" class="left" :pagination="pagination">
       <template #renderItem="{ item, index }">
         <a-list-item>
-          {{index + 1}} :
+          <span>{{index + 1}} :</span>
           <span @click="getInfo(item.orderId)">{{ item.orderTime }}</span>
+          <a-tag v-if="item.isFinish ==='是'" color="#87d068">已完成</a-tag>
+          <a-tag v-else color="#108ee9">未完成</a-tag>
         </a-list-item>
       </template>
       <template #header>
@@ -53,7 +55,7 @@ const getInfo = (orderId: string) => {
   })
   setTimeout(() => {
     router.go(0)
-  }, 0)
+  }, 500)
 }
 const pagination = {
   onChange: (page: number) => {
