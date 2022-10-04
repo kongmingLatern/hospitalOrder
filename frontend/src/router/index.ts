@@ -81,14 +81,24 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.path === '/login' || to.path === '/regist') {
+  if (to.path === '/login' || to.path === '/regist' || to.path === '/index') {
     next()
   } else {
+    // TODO: 当我是普通用户的时候，输入 doctor 会跳转到后台
     const uid = localStorage.getItem('uid')
+    const isAuth = localStorage.getItem('isAuth')
     if (uid === null || uid === '') {
       message.error('请先登录')
       next('/login')
-    } else {
+    } else if (isAuth === 'false' && (to.path === '/doctor' || to.path === 'order' || to.path === 'user')) {
+      message.error('未知错误')
+      const uri = document.referrer;
+      const arrurl = uri.split('/');
+      setTimeout(() => {
+        next(arrurl[arrurl.length - 1])
+      })
+    }
+    else {
       next()
     }
   }
