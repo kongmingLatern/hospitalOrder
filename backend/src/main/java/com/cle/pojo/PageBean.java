@@ -2,6 +2,9 @@ package com.cle.pojo;
 
 import java.util.List;
 
+/**
+ * @author kele
+ */
 public class PageBean<T> {
     //总计记录
     private int totalCount;

@@ -1,5 +1,10 @@
 package com.cle.pojo;
 
+import java.util.Date;
+
+/**
+ * @author kele
+ */
 public class User {
     private String uid;//用户Id
     private String userName;//用户名字
@@ -9,9 +14,26 @@ public class User {
     private int cancelCount;//取消次数
     private int isAllow;//是否违规
     private int isAuth;//是否管理员
-
+    private Date firstCancelTime;//第一次取消时间
+    private Date banTime;//封禁时间
 
     public User() {
+    }
+
+    public Date getFirstCancelTime() {
+        return firstCancelTime;
+    }
+
+    public void setFirstCancelTime(Date firstCancelTime) {
+        this.firstCancelTime = firstCancelTime;
+    }
+
+    public Date getBanTime() {
+        return banTime;
+    }
+
+    public void setBanTime(Date banTime) {
+        this.banTime = banTime;
     }
 
     public int getIsAuth() {

@@ -51,4 +51,12 @@ public interface OrderService {
      */
     int change(Order order);
 
+    /**
+     * 修改是否取消预约状态
+     *
+     * @param orderId
+     * @param isCancel
+     * @return
+     */
+    int changeIsCancel(String orderId, int isCancel);
 }

@@ -57,4 +57,14 @@ public interface OrderMapper {
      */
     @Select("SELECT * FROM `ORDER` WHERE ORDERID=#{orderId}")
     Order selectByOrderId(String orderId);
+
+    /**
+     * 修改预约是否取消状态
+     *
+     * @param orderId
+     * @param isCancel
+     * @return
+     */
+    @Update("UPDATE `ORDER` set isCancel=#{isCancel} where orderId = #{orderId}")
+    int changeCancel(@Param("orderId") String orderId, @Param("isCancel") int isCancel);
 }

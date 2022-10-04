@@ -1,6 +1,8 @@
 package com.cle.pojo;
 
-//科室实体类
+/**
+ * @author kele
+ */
 public class Room {
     private String rid;//房间Id
     private String rname;//科室名称

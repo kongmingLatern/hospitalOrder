@@ -5,9 +5,12 @@ import com.cle.pojo.PageBean;
 import com.cle.pojo.User;
 import com.cle.service.UserService;
 import com.cle.util.SqlSessionFactoryUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import java.util.Date;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -84,4 +87,66 @@ public class UserServiceImpl implements UserService {
         sqlSession.close();
         return count;
     }
+
+    @Override
+    public int changeCancelCount(String uid, int cancelCount) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        int count = mapper.changeCancelCount(uid, cancelCount);
+        sqlSession.commit();
+        sqlSession.close();
+        return count;
+    }
+
+    @Override
+    public int changeisAllow(String uid, int isAllow) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        int count = mapper.changeIsAllow(uid, isAllow);
+        sqlSession.commit();
+        sqlSession.close();
+        return count;
+    }
+
+    @Override
+    public int changeFirstCancelTime(String uid, Date firstCancelTime) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        int count = mapper.changeFirstCancelTime(uid, firstCancelTime);
+        sqlSession.commit();
+        sqlSession.close();
+        return count;
+    }
+
+    @Override
+    public int changeBanTime(String uid, Date banTime) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        int count = mapper.changeBanTime(uid, banTime);
+        sqlSession.commit();
+        sqlSession.close();
+        return count;
+    }
+
+    @Override
+    public void cancel(HttpServletRequest req) {
+        HttpSession session = req.getSession();
+        String uid = (String) session.getAttribute("uid");
+        Integer cancelCount = (Integer) session.getAttribute("cancelCount");
+        ;
+        cancelCount++;
+        session.setAttribute("cancelCount", cancelCount);
+        if (cancelCount == 1) {
+            Date firstCancelTime = new Date();
+            changeFirstCancelTime(uid, firstCancelTime);
+        }
+        if (cancelCount >= 3) {
+            Date banTime = new Date();
+            changeBanTime(uid, banTime);
+            changeisAllow(uid, 1);
+            session.setAttribute("isAllow", 1);
+        }
+        changeCancelCount(uid, cancelCount);
+    }
+
 }

@@ -68,4 +68,14 @@ public class OrderServiceImpl implements OrderService {
         sqlSession.close();
         return count;
     }
+
+    @Override
+    public int changeIsCancel(String orderId, int isCancel) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
+        int count = mapper.changeCancel(orderId, isCancel);
+        sqlSession.commit();
+        sqlSession.close();
+        return count;
+    }
 }

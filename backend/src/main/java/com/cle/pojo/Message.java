@@ -1,5 +1,8 @@
 package com.cle.pojo;
 
+/**
+ * @author kele
+ */
 public class Message {
     private String message;
 

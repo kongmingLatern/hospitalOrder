@@ -3,6 +3,7 @@ package com.cle.mapper;
 import com.cle.pojo.User;
 import org.apache.ibatis.annotations.*;
 
+import java.util.Date;
 import java.util.List;
 
 public interface UserMapper {
@@ -29,7 +30,7 @@ public interface UserMapper {
      * @param user
      * @return int 添加的用户条数
      */
-    @Insert("insert into user values (#{uid},#{userName},#{password},#{age},#{realName},#{cancelCount},#{isAllow},#{isAuth})")
+    @Insert("insert into user values (#{uid},#{userName},#{password},#{age},#{realName},#{cancelCount},#{isAllow},#{isAuth},#{firstCancelTime},#{banTime})")
     int add(User user);
 
     /**
@@ -75,4 +76,37 @@ public interface UserMapper {
      * @return
      */
     int change(User user);
+
+    /**
+     * 修改cancelCount次数
+     *
+     * @param uid
+     * @param cancelCount
+     * @return
+     */
+    @Update("UPDATE `USER` SET cancelcount=#{cancelCount} where uid = #{uid}")
+    int changeCancelCount(@Param("uid") String uid, @Param("cancelCount") int cancelCount);
+
+    /**
+     * 修改第一次取消时间
+     *
+     * @param uid
+     * @param firstCancelTime
+     * @return
+     */
+    @Update("UPDATE `USER` SET firstCancelTime=#{firstCancelTime} where uid = #{uid}")
+    int changeFirstCancelTime(@Param("uid") String uid, @Param("firstCancelTime") Date firstCancelTime);
+
+    /**
+     * 修改封禁时间
+     *
+     * @param uid
+     * @param banTime
+     * @return
+     */
+    @Update("UPDATE `USER` SET banTime=#{banTime} where uid = #{uid}")
+    int changeBanTime(@Param("uid") String uid, @Param("banTime") Date banTime);
+
+    @Update("UPDATE `USER` SET isAllow=#{isAllow} where uid = #{uid}")
+    int changeIsAllow(@Param("uid") String uid, @Param("isAllow") int isAllow);
 }

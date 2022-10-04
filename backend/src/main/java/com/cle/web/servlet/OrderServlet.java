@@ -5,13 +5,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.cle.pojo.Message;
 import com.cle.pojo.Order;
 import com.cle.service.Imlp.OrderServiceImpl;
+import com.cle.service.Imlp.UserServiceImpl;
 import com.cle.service.OrderService;
+import com.cle.service.UserService;
 import com.cle.util.AddNameUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.Map;
 @WebServlet("/api/order/*")
 public class OrderServlet extends BaseServlet {
     OrderService orderService = new OrderServiceImpl();
+    UserService userService = new UserServiceImpl();
 
     /**
      * 查询预约单
@@ -153,4 +155,30 @@ public class OrderServlet extends BaseServlet {
         String jsonString = JSON.toJSONString(map);
         resp.getWriter().write(jsonString);
     }
+
+    /**
+     * 修改是否取消预约状态
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void changeIsCancel(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Message message = new Message();
+        String orderId = req.getParameter("orderId");
+        String _isCancel = req.getParameter("isCancel");
+        int isCancel = Integer.parseInt(_isCancel);
+        int count = orderService.changeIsCancel(orderId, isCancel);
+        if (count != 0) {
+            message.setMessage("取消成功");
+            userService.cancel(req);
+        } else {
+            message.setMessage("取消失败");
+            resp.setStatus(400);
+        }
+        String jsonString = JSON.toJSONString(message);
+        resp.getWriter().write(jsonString);
+    }
+
 }

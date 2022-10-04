@@ -1,20 +1,26 @@
 package com.cle.web.servlet;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.cle.pojo.Message;
+import com.cle.pojo.Order;
 import com.cle.pojo.PageBean;
 import com.cle.pojo.User;
+import com.cle.service.Imlp.OrderServiceImpl;
 import com.cle.service.Imlp.UserServiceImpl;
+import com.cle.service.OrderService;
 import com.cle.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +28,7 @@ import java.util.Map;
 public class UserServlet extends BaseServlet {
 
     UserService userService = new UserServiceImpl();
+    OrderService orderService = new OrderServiceImpl();
 
     /**
      * 查询所有用户
@@ -73,6 +80,12 @@ public class UserServlet extends BaseServlet {
      * @throws IOException
      */
     public void Login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Date date = new Date();
+        Integer ss = 1000;
+        Integer mi = ss * 60;
+        Integer hh = mi * 60;
+        Integer dd = hh * 24;
+        long diffTimes = 30 * 24 * 60 * 60 * 1000L;
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String _remember = req.getParameter("remember");
@@ -88,6 +101,32 @@ public class UserServlet extends BaseServlet {
             resp.setStatus(400);
         } else {
             message.setMessage("登录成功");
+            HttpSession session = req.getSession();
+            session.setAttribute("uid", user.getUid());
+            session.setAttribute("cancelCount", user.getCancelCount());
+            session.setAttribute("isAllow", user.getIsAllow());
+            List<Order> orders = orderService.selectByUid(user.getUid());
+            for (Order order : orders) {
+                if (date.getTime() > order.getOrderTime().getTime() && order.getIsCancel() == 0) {
+                    orderService.changeIsCancel(order.getOrderId(), 1);
+                    userService.cancel(req);
+                }
+            }
+            if ((Integer) session.getAttribute("isAllow") == 1) {
+                long cancelBan = (date.getTime() - user.getBanTime().getTime());
+                if (cancelBan >= diffTimes) {
+                    userService.changeisAllow(user.getUid(), 0);
+                    userService.changeCancelCount(user.getUid(), 0);
+                } else {
+                    long time = diffTimes - cancelBan;
+                    long day = time / dd;
+                    long hour = (time - day * dd) / hh;
+                    long minute = (time - day * dd - hour * hh) / mi;
+                    long second = (time - day * dd - hour * hh - minute * mi) / ss;
+                    message.setMessage("该账号已封禁" + " 还剩" + day + "天" + hour + "时" + minute + "分" + second + "秒解封");
+                    resp.setStatus(400);
+                }
+            }
             String jsonString = JSON.toJSONString(user);
             map = JSON.parseObject(jsonString, Map.class);
             if (user.getIsAuth() == 1) {
