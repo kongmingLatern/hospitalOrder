@@ -84,4 +84,12 @@ const pagination = {
   width: 800px;
   height: 100%;
 }
+
+span {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
 </style>
