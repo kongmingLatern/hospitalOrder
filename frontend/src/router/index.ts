@@ -71,7 +71,7 @@ const router = createRouter({
       component: () => import('@/page/Personal.vue'),
       children: [
         {
-          path: '/:orderId',
+          path: ':orderId',
           name: 'OrderInfo',
           component: () => import('@/views/personal/OrderInfo.vue'),
         }
