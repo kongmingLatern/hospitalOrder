@@ -27,7 +27,7 @@
 <script lang="ts" setup>
 import { message } from 'ant-design-vue';
 import { getCurrentInstance, reactive, toRaw } from 'vue';
-import { randomString } from '../../utils';
+import { getStartEndTime, randomString, formatDate } from '../../utils';
 
 const props = defineProps<{
   doctorId: string,
@@ -62,11 +62,15 @@ const request = (instance?.proxy as any).$request!
 const confirm = (selectId: string) => {
   const result: any[] = reactive([])
   const uid = localStorage.getItem('uid')
+  const time: number = Number(selectId) === 1 ? 8 : 13
+  console.log(getStartEndTime(-1)[0]);
+  console.log(getStartEndTime(-1)[0] + time * 60 * 60 * 1000);
+
   const { doctorId, rid } = props
   result.push({
     orderId: randomString(),
     uid,
-    orderTime: Date.now(),
+    orderTime: getStartEndTime(-1)[0] + time * 60 * 60 * 1000,
     isCancel: 0,
     isFinish: 0,
     rid,

@@ -52,7 +52,7 @@ import { cloneDeep } from 'lodash-es';
 import type { UserType } from '@/type';
 import UserForm from './UserForm.vue';
 import { message, type FormInstance } from 'ant-design-vue';
-import { formatObject, hasOwnProperty, randomString } from '../../utils';
+import { formatObject, hasOwnProperty } from '../../utils';
 import router from '@/router';
 
 const columns = [
