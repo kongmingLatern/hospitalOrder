@@ -1,3 +1,4 @@
+import { message } from 'ant-design-vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -70,13 +71,27 @@ const router = createRouter({
       component: () => import('@/page/Personal.vue'),
       children: [
         {
-          path: ':orderid',
-          name: 'orderid',
+          path: '/:orderId',
+          name: 'OrderInfo',
           component: () => import('@/views/personal/OrderInfo.vue'),
         }
       ]
-    }
+    },
   ],
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login' || to.path === '/regist') {
+    next()
+  } else {
+    const uid = localStorage.getItem('uid')
+    if (uid === null || uid === '') {
+      message.error('请先登录')
+      next('/login')
+    } else {
+      next()
+    }
+  }
 })
 
 export default router
