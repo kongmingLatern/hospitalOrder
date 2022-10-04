@@ -6,7 +6,8 @@
           <span>{{index + 1}} :</span>
           <span @click="getInfo(item.orderId)">{{ item.orderTime }}</span>
           <a-tag v-if="item.isFinish ==='是'" color="#87d068">已完成</a-tag>
-          <a-tag v-else color="#108ee9">未完成</a-tag>
+          <a-tag v-else-if="item.isCancel === '是'" color="#f50">已取消</a-tag>
+          <a-tag v-else color="#108ee9">待完成</a-tag>
         </a-list-item>
       </template>
       <template #header>
@@ -41,6 +42,7 @@ onMounted(() => {
     lists.forEach((list: OrderListType) => {
       data.push(formatObject(list) as OrderListType)
     })
+    console.log(res.data);
   }).catch((e: any) => {
     console.log(e.message);
   })

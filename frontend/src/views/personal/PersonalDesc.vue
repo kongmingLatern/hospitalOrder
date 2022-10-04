@@ -12,33 +12,43 @@
 
 <script lang='ts' setup>
 import type { UserType } from '@/type';
-import { reactive } from 'vue';
+import { getCurrentInstance, onMounted, reactive, watch, watchEffect } from 'vue';
+import { hasOwnProperty } from '../../utils';
+const uid = localStorage.getItem('uid')
 const result = reactive<UserType>({
-  uid: 'CJPBWmSSemJGcMF76PwM26WpcyhQBKcw',
-  userName: '陈楷豪',
-  age: 21,
-  password: '123456',
-  realName: '陈楷豪',
+  uid: '',
+  userName: '',
+  password: '',
+  age: 0,
+  realName: '',
   cancelCount: 0,
   isAllow: 0,
-  isAuth: 1,
+  isAuth: 0,
+});
+const instance = getCurrentInstance()
+const request = (instance?.proxy as any).$request!
+onMounted(() => {
+  request.get('api/user/selectByUid', {
+    params: {
+      uid
+    }
+  }).then((res: Record<string, any>) => {
+    let key: string
+    for (key in res.data) {
+      if (hasOwnProperty(result, key)) {
+        result[key] = res.data[key]
+      }
+    }
+  }).catch((e: any) => {
+    console.log(e.message);
+  })
 })
-// const { params } = useRoute()
 
-// const instance = getCurrentInstance()
-// const request = (instance?.proxy as any).$request!
-// onMounted(() => {
-  // request.get('api/user/selectByUid', {
-  //   params: {
-  //     uid: params.uid
-  //   }
-  // }).then((res: Record<string, any>) => {
-  //   console.log(res);
-  //   result.push(res.data)
-  // }).catch((e: any) => {
-  //   console.log(e.message);
-  // })
-// }),
+watchEffect((() => {
+  result.cancelCount
+  console.log('监听');
+
+}))
 
 </script>
 
