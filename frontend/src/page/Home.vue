@@ -31,6 +31,9 @@
             <pie-chart-outlined />
             <router-link to="/order" ml-2>预约管理</router-link>
           </a-menu-item>
+          <a-menu-item key="5">
+            <router-link to="/ordermanager">去预约</router-link>
+          </a-menu-item>
         </a-menu>
       </a-layout-sider>
       <a-layout style="padding: 0 24px 24px">
@@ -48,7 +51,7 @@ import { UserOutlined } from '@ant-design/icons-vue';
 import router from '@/router';
 const selectedKeys1 = ref<string[]>(['2'])
 const exitLogin = () => {
-  localStorage.removeItem('uid')
+  localStorage.clear()
   router.push('/login')
 }
 </script>
