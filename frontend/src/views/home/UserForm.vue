@@ -8,7 +8,7 @@
           <a-input v-model:value="formState.userName" />
         </a-form-item>
         <a-form-item name="password" label="Password">
-          <a-input v-model:value="formState.password" />
+          <a-input-password v-model:value="formState.password" />
         </a-form-item>
         <a-form-item name='age' label="Age" :rules="[{ type: 'number', min: 0, max: 99 }]">
           <a-input-number v-model:value="formState.age" />
@@ -44,17 +44,19 @@ const formRef = ref<FormInstance>();
 const visible = ref<Boolean>(false);
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
-let formState: UserType = reactive({
-  uid: '',
+const formState: UserType = reactive({
+  uid: randomString(),
   userName: '',
   age: undefined,
   password: '',
   realName: '',
-  isAuth: undefined,
+  isAuth: 0,
+  cancelCount: 0,
+  isAllow: 0
 });
 
 const emit = defineEmits<{
-  (msg: string, formStaet: UserType): void
+  (msg: string, formState: UserType): void
 }>()
 
 const onOk = () => {
@@ -63,12 +65,6 @@ const onOk = () => {
     .then((values: any) => {
       console.log('Received values of form: ', values);
       console.log('formState: ', toRaw(formState));
-      formState = {
-        ...formState,
-        uid: randomString(),
-        cancelCount: 0,
-        isAllow: 0,
-      }
       request.post('/api/user/add', toRaw(formState)).then((res: any) => {
         console.log(formState);
         emit('addUser', toRaw(formState));
