@@ -108,7 +108,7 @@ public class UserServlet extends BaseServlet {
             session.setAttribute("isAllow", user.getIsAllow());
             List<Order> orders = orderService.selectByUid(user.getUid());
             for (Order order : orders) {
-                if (date.getTime() > order.getOrderTime().getTime() && order.getIsCancel() == 0) {
+                if (date.getTime() > order.getOrderTime().getTime() && order.getIsCancel() == 0 && order.getIsFinish() == 0) {
                     orderService.changeIsCancel(order.getOrderId(), 1);
                     userService.cancel(req);
                 }
