@@ -1,16 +1,16 @@
 <template>
   <div class="personal_order_container">
     <a-list bordered :data-source="data" class="left" :pagination="pagination">
-      <template #renderItem="{ item }">
+      <template #renderItem="{ item, index }">
         <a-list-item>
-          <router-link to="/personal/1">{{ item }}</router-link>
+          {{index + 1}} :
+          <span @click="getInfo(item.orderId)">{{ item.orderTime }}</span>
         </a-list-item>
       </template>
       <template #header>
         <div>我的预约单</div>
       </template>
     </a-list>
-
     <div class="right">
       <router-view />
     </div>
@@ -18,23 +18,43 @@
 </template>
 
 <script setup lang='ts'>
-const data: string[] = [
-  'Racing car sprays burning fuel into crowd.',
-  'Japanese princess to wed commoner.',
-  'Australian walks 100km after outback crash.',
-  'Man charged over missing wedding girl.',
-  'Los Angeles battles huge wildfires.',
-  'Racing car sprays burning fuel into crowd.',
-  'Japanese princess to wed commoner.',
-  'Australian walks 100km after outback crash.',
-  'Man charged over missing wedding girl.',
-  'Los Angeles battles huge wildfires.',
-  'Racing car sprays burning fuel into crowd.',
-  'Japanese princess to wed commoner.',
-  'Australian walks 100km after outback crash.',
-  'Man charged over missing wedding girl.',
-  'Los Angeles battles huge wildfires.',
-];
+import router from '@/router';
+import type { OrderListType } from '@/type';
+import { formatObject } from '@/utils';
+import { getCurrentInstance, onMounted, reactive, ref } from 'vue';
+
+const instance = getCurrentInstance()
+const request = (instance?.proxy as any).$request!
+const spinning = ref<Boolean>(true)
+const data = reactive<OrderListType[]>([])
+
+onMounted(() => {
+  request.get('/api/order/selectByUid', {
+    params: {
+      uid: localStorage.getItem('uid') ?? ''
+    }
+  }).then((res: Record<string, any>) => {
+    spinning.value = false
+    const lists = res.data
+    lists.forEach((list: OrderListType) => {
+      data.push(formatObject(list) as OrderListType)
+    })
+  }).catch((e: any) => {
+    console.log(e.message);
+  })
+})
+const getInfo = (orderId: string) => {
+  console.log(orderId);
+  router.push({
+    name: 'OrderInfo',
+    params: {
+      orderId
+    }
+  })
+  setTimeout(() => {
+    router.go(0)
+  }, 0)
+}
 const pagination = {
   onChange: (page: number) => {
     console.log(page);
