@@ -6,7 +6,7 @@
       <a-descriptions-item label="预约医生" :span="3">{{item.doctorName}}</a-descriptions-item>
       <a-descriptions-item label="是否取消预约" :span="3">
         <span>{{item.isCancel ? '是' : '否'}}</span>
-        <a-button type="danger" class="position">取消预约</a-button>
+        <a-button type="danger" class="position" @click="cancelOrder(item.orderId)">取消预约</a-button>
       </a-descriptions-item>
       <a-descriptions-item label="是否完成">
         <a-badge v-if="item.isFinish" status="processing" text="Loading" />
@@ -17,6 +17,7 @@
 </template>
 
 <script lang='ts' setup>
+import { message } from 'ant-design-vue';
 import { getCurrentInstance, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import type { OrderListType } from '../../type';
@@ -39,6 +40,18 @@ function getData() {
     spinning.value = false;
     orderList.push(res.data);
   });
+}
+const cancelOrder = (orderId: string) => {
+  request.get('api/order/changeIsCancel', {
+    params: {
+      orderId,
+      isCancel: 1
+    }
+  }).then((res: Record<string, any>) => {
+    message.success(res.data.message);
+  }).catch((e: any) => {
+    message.error(e.message);
+  })
 }
 </script>
 
