@@ -12,8 +12,7 @@
 
 <script lang='ts' setup>
 import type { UserType } from '@/type';
-import { getCurrentInstance, onMounted, reactive } from 'vue';
-import { useRoute } from 'vue-router';
+import { reactive } from 'vue';
 const result = reactive<UserType>({
   uid: 'CJPBWmSSemJGcMF76PwM26WpcyhQBKcw',
   userName: '陈楷豪',
