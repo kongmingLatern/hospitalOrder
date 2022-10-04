@@ -4,17 +4,17 @@
       <a-spin :spinning="spinning">
         <a-card :border="false">
           <template #title>
-            <h3>Login</h3>
+            <h3>登录</h3>
           </template>
           <a-form :model="formState" name="normal_login" class="login-form" @finish="onFinish"
             @finishFailed="onFinishFailed">
-            <a-form-item label="Username" name="username"
+            <a-form-item label="用户名" name="username"
               :rules="[{ required: true, message: 'Please input your username!' }]">
               <a-input v-model:value="formState.username">
               </a-input>
             </a-form-item>
 
-            <a-form-item label="Password" name="password"
+            <a-form-item label="密码" name="password"
               :rules="[{ required: true, message: 'Please input your password!' }]">
               <a-input-password v-model:value="formState.password">
               </a-input-password>
@@ -22,16 +22,16 @@
 
             <a-form-item>
               <a-form-item name="remember" no-style>
-                <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
+                <a-checkbox v-model:checked="formState.remember">记住我</a-checkbox>
               </a-form-item>
-              <a href="#" float-right>Forgot password</a>
+              <a href="#" float-right>忘记密码</a>
             </a-form-item>
 
             <a-form-item text-center>
               <a-button :disabled="disabled" type="primary" html-type="submit">
-                Log in
+                登录
               </a-button>
-              <router-link to="/regist" class="right">Register now!</router-link>
+              <router-link to="/regist" class="right">注册</router-link>
             </a-form-item>
           </a-form>
         </a-card>

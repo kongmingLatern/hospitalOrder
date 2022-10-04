@@ -4,35 +4,35 @@
       <a-spin :spinning="spinning">
         <a-card :border="false">
           <template #title>
-            <h3>Regist</h3>
+            <h3>注册</h3>
           </template>
           <a-form :model="formState" name="normal_login" class="login-form" @finish="onFinish"
             @finishFailed="onFinishFailed">
-            <a-form-item label="Username" name="userName">
+            <a-form-item label="用户名" name="userName">
               <a-input v-model:value="formState.userName">
               </a-input>
             </a-form-item>
 
-            <a-form-item label="Password" name="password">
+            <a-form-item label="密码" name="password">
               <a-input-password v-model:value="formState.password">
               </a-input-password>
             </a-form-item>
 
-            <a-form-item label="Realname" name="realName">
+            <a-form-item label="真实姓名" name="realName">
               <a-input v-model:value="formState.realName">
               </a-input>
             </a-form-item>
 
-            <a-form-item label="Age" name="age">
+            <a-form-item label="年龄" name="age">
               <a-input v-model:value="formState.age">
               </a-input>
             </a-form-item>
 
             <a-form-item text-center>
               <a-button :disabled="disabled" type="primary" html-type="submit">
-                Regist
+                注册
               </a-button>
-              <router-link to="/login" class="right">Go Login</router-link>
+              <router-link to="/login" class="right">去登录</router-link>
             </a-form-item>
           </a-form>
         </a-card>
