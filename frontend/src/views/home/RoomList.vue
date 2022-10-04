@@ -1,5 +1,13 @@
 <template>
   <RoomForm @addRoom="add" text-right />
+  <a-modal v-model:visible="visible" title="Add" ok-text="Create" cancel-text="Cancel" @ok="onOk">
+    <a-form ref="formRef" :model="formState" v-bind="layout" userName="nest-messages" @finish="onFinish" flex flex-wrap
+      flex-col content-start>
+      <a-form-item name="rname" label="rname">
+        <a-input v-model:value="formState.rname" />
+      </a-form-item>
+    </a-form>
+  </a-modal>
   <a-spin :spinning="spinning">
     <header color-green>
       科室管理
@@ -22,20 +30,28 @@
           <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.rid)">
             <a>Delete</a>
           </a-popconfirm>
+          <a-button type="primary" @click="changeInfo(record)">修改</a-button>
         </template>
       </template>
     </a-table>
   </a-spin>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, onMounted, reactive, ref } from 'vue';
+import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 import type { RoomType } from '@/type';
-import { message } from 'ant-design-vue';
+import { message, type FormInstance } from 'ant-design-vue';
 import router from '@/router';
 import RoomForm from './RoomForm.vue';
+import { hasOwnProperty } from '@/utils';
 
+const layout = {
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
+
+const formRef = ref<FormInstance>();
 
 const columns = [
   {
@@ -53,10 +69,15 @@ const columns = [
   },
 ];
 const spinning = ref<Boolean>(true)
+const visible = ref<Boolean>(false)
 let dataSource: RoomType[] = reactive([]);
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 
+let formState: RoomType = reactive({
+  rid: '',
+  rname: ''
+})
 onMounted(() => {
 
   request.get('api/room/selectAll').then((res: Record<string, any>) => {
@@ -100,6 +121,38 @@ const onDelete = (rid: string) => {
 const add = (formState: RoomType) => {
   dataSource.push(formState)
   console.log(dataSource);
+}
+const onOk = () => {
+  (formRef as any)?.value
+    .validateFields()
+    .then((values: any) => {
+      // TODO: 表单不为空 判断
+      request.post('/api/room/change', toRaw(formState)).then((res: any) => {
+        message.success(res.data.message)
+        setTimeout(() => {
+          router.go(0)
+        }, 1000)
+      }).catch((err: any) => {
+        message.error(err.data.message)
+      })
+      visible.value = false;
+    })
+    .catch((info: string) => {
+      console.log('Validate Failed:', info);
+    });
+};
+
+const changeInfo = (item: Record<string, any>) => {
+  visible.value = true
+  for (const key in item) {
+    if (hasOwnProperty(formState, key)) {
+      formState[key] = item[key]
+    }
+  }
+}
+const onFinish = (e: MouseEvent) => {
+  console.log(e);
+  console.log('onFinish');
 }
 </script>
 <style lang="scss" scoped>

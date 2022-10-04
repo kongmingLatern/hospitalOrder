@@ -1,5 +1,25 @@
 <template>
   <UserForm @addUser="add" text-right />
+  <a-modal v-model:visible="visible" title="Add" ok-text="Create" cancel-text="Cancel" @ok="onOk">
+    <a-form ref="formRef" :model="formState" v-bind="layout" userName="nest-messages"
+      :validate-messages="validateMessages" @finish="onFinish" flex flex-wrap flex-col content-start>
+      <a-form-item userName="userName" label="Username">
+        <a-input v-model:value="formState.userName" />
+      </a-form-item>
+      <a-form-item name="password" label="Password">
+        <a-input v-model:value="formState.password" />
+      </a-form-item>
+      <a-form-item name='age' label="Age" :rules="[{ type: 'number', min: 0, max: 99 }]">
+        <a-input-number v-model:value="formState.age" />
+      </a-form-item>
+      <a-form-item name="realName" label="realName">
+        <a-input v-model:value="formState.realName" />
+      </a-form-item>
+      <a-form-item name="isAuth" label="IsAuth">
+        <a-input-number v-model:value="formState.isAuth" />
+      </a-form-item>
+    </a-form>
+  </a-modal>
   <a-spin :spinning="spinning">
     <a-table bordered :data-source="dataSource" :columns="columns">
       <template #bodyCell="{ column, text, record }">
@@ -19,22 +39,20 @@
           <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.uid)">
             <a-button>删除</a-button>
           </a-popconfirm>
-          <a-popconfirm v-if="dataSource.length" title="Sure to change?" @confirm="onDelete(record.uid)">
-            <a-button>修改</a-button>
-          </a-popconfirm>
+          <a-button @click="changeInfo(record)">修改</a-button>
         </template>
       </template>
     </a-table>
   </a-spin>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, onMounted, reactive, ref } from 'vue';
+import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 import type { UserType } from '@/type';
 import UserForm from './UserForm.vue';
-import { message } from 'ant-design-vue';
-import { formatObject } from '../../utils';
+import { message, type FormInstance } from 'ant-design-vue';
+import { formatObject, hasOwnProperty } from '../../utils';
 import router from '@/router';
 
 const columns = [
@@ -79,6 +97,27 @@ const spinning = ref<Boolean>(true)
 let dataSource: UserType[] = reactive([]);
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
+const visible = ref<Boolean>(false)
+const layout = {
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
+
+const validateMessages = {
+  required: '${label} is required!',
+  number: {
+    type: '${label} is not a validate number!',
+  }
+};
+const formRef = ref<FormInstance>();
+let formState: UserType = reactive({
+  uid: '',
+  userName: '',
+  age: undefined,
+  password: '',
+  realName: '',
+  isAuth: undefined,
+});
 onMounted(() => {
   request.get('/api/user/selectAll').then((res: Record<string, any>) => {
     spinning.value = false
@@ -117,8 +156,47 @@ const onDelete = (uid: string) => {
 };
 
 const add = (formState: UserType) => {
+  console.log('formState', formState);
   dataSource.push(formatObject(formState) as UserType)
 }
+const changeInfo = (item: Record<string, any>) => {
+  visible.value = true
+  for (const key in item) {
+    if (hasOwnProperty(formState, key)) {
+      if (key === 'isAuth') {
+        formState[key] = item[key] === '是' ? 1 : 0
+      } else {
+        formState[key] = item[key]
+      }
+    }
+  }
+}
+const onOk = () => {
+  (formRef as any)?.value
+    .validateFields()
+    .then((values: any) => {
+      console.log('Received values of form: ', values);
+      console.log('formState: ', toRaw(formState));
+      request.post('/api/user/change', toRaw(formState)).then((res: any) => {
+        message.success(res.data.message)
+        setTimeout(() => {
+          router.go(0)
+        }, 0)
+      }).catch((err: any) => {
+        message.error(err.data.message)
+      })
+      visible.value = false;
+    })
+    .catch((info: string) => {
+      console.log('Validate Failed:', info);
+    });
+};
+
+const onFinish = (e: MouseEvent) => {
+  console.log(e);
+  console.log('onFinish');
+}
+
 </script>
 <style lang="scss" scoped>
 .editable-cell {
