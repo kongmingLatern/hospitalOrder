@@ -81,6 +81,7 @@ public class UserServlet extends BaseServlet {
      */
     public void Login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Date date = new Date();
+        User user;
         Integer ss = 1000;
         Integer mi = ss * 60;
         Integer hh = mi * 60;
@@ -90,7 +91,7 @@ public class UserServlet extends BaseServlet {
         String password = req.getParameter("password");
         String _remember = req.getParameter("remember");
         boolean remember = Boolean.parseBoolean(_remember);
-        User user = userService.selectByUsername(username);
+        user = userService.selectByUsername(username);
         Map map = null;
         Message message = new Message();
         if (user == null) {
@@ -113,6 +114,7 @@ public class UserServlet extends BaseServlet {
                 }
             }
             if ((Integer) session.getAttribute("isAllow") == 1) {
+                user = userService.selectByUsername(username);
                 long cancelBan = (date.getTime() - user.getBanTime().getTime());
                 if (cancelBan >= diffTimes) {
                     userService.changeisAllow(user.getUid(), 0);
