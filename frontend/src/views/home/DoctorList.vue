@@ -1,5 +1,28 @@
 <template>
   <DoctorForm @addDoctor="add" text-right />
+  <a-modal v-model:visible="visible" title="Add" ok-text="Create" cancel-text="Cancel" @ok="onOk">
+    <a-form ref="formRef" :model="formState" v-bind="layout" userName="nest-messages"
+      :validate-messages="validateMessages" @finish="onFinish" flex flex-wrap flex-col content-start>
+      <a-form-item name="userName" label="DoctorName">
+        <a-input v-model:value="formState.doctorName" />
+      </a-form-item>
+      <a-form-item name='age' label="DoctorAge" :rules="[{ type: 'number', min: 0, max: 99 }]">
+        <a-input-number v-model:value="formState.doctorAge" />
+      </a-form-item>
+      <a-form-item name="position" label="Position">
+        <a-input v-model:value="formState.position" />
+      </a-form-item>
+      <a-form-item name="info" label="Info">
+        <a-input v-model:value="formState.info" />
+      </a-form-item>
+      <a-form-item name="rid" label="rid">
+        <a-input v-model:value="formState.rid" />
+      </a-form-item>
+      <a-form-item name="limitCount" label="limitCount">
+        <a-input-number v-model:value="formState.limitCount" />
+      </a-form-item>
+    </a-form>
+  </a-modal>
   <a-spin :spinning="spinning">
     <header color-green>
       医生管理
@@ -22,23 +45,33 @@
           <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.doctorId)">
             <a-button>删除</a-button>
           </a-popconfirm>
-          <a-popconfirm v-if="dataSource.length" title="Sure to change?" @confirm="onDelete(record.doctorId)">
-            <a-button>修改</a-button>
-          </a-popconfirm>
+          <a-button @click="changeInfo(record)">修改</a-button>
         </template>
       </template>
     </a-table>
   </a-spin>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, onMounted, reactive, ref } from 'vue';
+import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 import type { DoctorType } from '@/type';
 import DoctorForm from './DoctorForm.vue';
 import router from '@/router';
-import { message } from 'ant-design-vue';
-import { formatObject } from '../../utils';
+import { message, type FormInstance } from 'ant-design-vue';
+import { formatObject, hasOwnProperty } from '../../utils';
+import { emit } from 'process';
+const layout = {
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
+
+const validateMessages = {
+  required: '${label} is required!',
+  number: {
+    type: '${label} is not a validate number!',
+  }
+};
 const columns = [
   {
     title: 'doctorId',
@@ -73,10 +106,21 @@ const columns = [
     dataIndex: 'operation',
   },
 ];
+const visible = ref<Boolean>()
 const spinning = ref<Boolean>(true)
 let dataSource: DoctorType[] = reactive([]);
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
+const formRef = ref<FormInstance>();
+let formState: DoctorType = reactive({
+  doctorId: '',
+  doctorName: '',
+  doctorAge: undefined,
+  rid: '',
+  position: '',
+  info: '',
+  limitCount: undefined
+});
 onMounted(() => {
   request.get('api/doctor/selectAll').then((res: Record<string, any>) => {
     spinning.value = false
@@ -119,6 +163,41 @@ const add = (formState: DoctorType) => {
   setTimeout(() => {
     router.go(0)
   }, 0)
+}
+const onOk = () => {
+  (formRef as any)?.value
+    .validateFields()
+    .then((values: any) => {
+      request.post('/api/doctor/change', toRaw(formState)).then((res: any) => {
+        message.success(res.data.message)
+        setTimeout(() => {
+          router.go(0)
+        }, 0)
+      }).catch((err: any) => {
+        message.error(err.data.message)
+      })
+      visible.value = false;
+    })
+    .catch((info: string) => {
+      console.log('Validate Failed:', info);
+    });
+};
+
+const changeInfo = (item: Record<string, any>) => {
+  visible.value = true
+  for (const key in item) {
+    if (hasOwnProperty(formState, key)) {
+      if (key === 'isAuth') {
+        formState[key] = item[key] === '是' ? 1 : 0
+      } else {
+        formState[key] = item[key]
+      }
+    }
+  }
+}
+const onFinish = (e: MouseEvent) => {
+  console.log(e);
+  console.log('onFinish');
 }
 </script>
 <style lang="scss" scoped>
