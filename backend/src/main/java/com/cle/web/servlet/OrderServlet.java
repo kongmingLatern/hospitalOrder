@@ -54,15 +54,27 @@ public class OrderServlet extends BaseServlet {
      */
     public void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Message message = new Message();
+        boolean flag = true;
         BufferedReader reader = req.getReader();
         String json = reader.readLine();
         Order order = JSON.parseObject(json, Order.class);
-        int count = orderService.add(order);
-        if (count != 0) {
-            message.setMessage("添加成功");
-        } else {
-            message.setMessage("添加失败");
-            resp.setStatus(400);
+        String uid = order.getUid();
+        List<Order> orders = orderService.selectByUid(uid);
+        for (Order order1 : orders) {
+            if (order1.getIsFinish() == 0 && order1.getIsCancel() == 0 && order1.getOrderTime() == order.getOrderTime()) {
+                message.setMessage("还搁着预约呢？早就预约过了");
+                flag = false;
+                break;
+            }
+        }
+        if (flag) {
+            int count = orderService.add(order);
+            if (count != 0) {
+                message.setMessage("预约成功");
+            } else {
+                message.setMessage("预约失败");
+                resp.setStatus(400);
+            }
         }
         String jsonString = JSON.toJSONString(message);
         resp.getWriter().write(jsonString);
