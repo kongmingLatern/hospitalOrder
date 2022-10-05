@@ -17,7 +17,9 @@
       <template v-else-if="column.key === 'action'">
         <span>
           <a-popconfirm title="是否确定预约" ok-text="是" cancel-text="否" @confirm="confirm(record.key)" @cancel="cancel">
-            <a href="#">预约</a>
+            <a-button :disabled=" disabled">
+              预约
+            </a-button>
           </a-popconfirm>
         </span>
       </template>
@@ -26,8 +28,8 @@
 </template>
 <script lang="ts" setup>
 import { message } from 'ant-design-vue';
-import { getCurrentInstance, reactive, toRaw } from 'vue';
-import { getStartEndTime, randomString, formatDate } from '../../utils';
+import { getCurrentInstance, reactive, ref, toRaw } from 'vue';
+import { getStartEndTime, randomString } from '../../utils';
 
 const props = defineProps<{
   doctorId: string,
@@ -59,12 +61,11 @@ const data = [
 
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
+const result: Record<string, any>[] = reactive([])
+const disabled = ref<Boolean>(false)
 const confirm = (selectId: string) => {
-  const result: any[] = reactive([])
   const uid = localStorage.getItem('uid')
   const time: number = Number(selectId) === 1 ? 8 : 13
-  console.log(getStartEndTime(-1)[0]);
-  console.log(getStartEndTime(-1)[0] + time * 60 * 60 * 1000);
 
   const { doctorId, rid } = props
   result.push({
@@ -74,8 +75,9 @@ const confirm = (selectId: string) => {
     isCancel: 0,
     isFinish: 0,
     rid,
-    doctorId
+    doctorId,
   })
+  disabled.value = true
   // selectId: 预约的时间段
   // 1: 8:00 - 12:00
   // 2: 13:00 - 18:00
@@ -94,9 +96,9 @@ const confirm = (selectId: string) => {
 };
 
 const cancel = (e: MouseEvent) => {
-  console.log(e);
-  message.error('Click on No');
+  message.error('已取消预约');
 };
+
 </script>
 
 
