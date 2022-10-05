@@ -60,7 +60,6 @@ import DoctorForm from './DoctorForm.vue';
 import router from '@/router';
 import { message, type FormInstance } from 'ant-design-vue';
 import { formatObject, hasOwnProperty } from '../../utils';
-import { emit } from 'process';
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },

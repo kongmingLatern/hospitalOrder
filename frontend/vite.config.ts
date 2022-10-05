@@ -14,7 +14,7 @@ export default defineConfig({
       ],
     }),
   ],
-  server: { //主要是加上这段代码
+  server: {
     host: '127.0.0.1',
     port: 3000,
     proxy: {

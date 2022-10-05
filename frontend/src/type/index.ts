@@ -59,3 +59,13 @@ export interface RoomInfoType {
   description: string
   img: string
 }
+export interface OrderType {
+  orderId: string,
+  uid: string | null,
+  orderTime: number | string,
+  isCancel: number,
+  isFinish: number,
+  rid: string,
+  doctorId: string,
+  isOrder: boolean
+}

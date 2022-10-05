@@ -59,7 +59,7 @@ const pagination = {
   onChange: (page: number) => {
     console.log(page);
   },
-  pageSize: 5,
+  pageSize: 3,
 };
 
 </script>

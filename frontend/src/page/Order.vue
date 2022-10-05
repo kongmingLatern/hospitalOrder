@@ -35,9 +35,10 @@ const getValue = (value: string) => {
 }
 
 #container {
-  width: 100vw;
-  height: auto;
-  background-color: skyblue;
+  height: 100%;
+  background-image: url('../assets/background.jpg');
+  background-size: 100% 100%;
+  background-attachment: fixed;
 }
 
 :deep(.ant-card-body) {
@@ -79,9 +80,6 @@ const getValue = (value: string) => {
   padding-top: 10px;
 }
 
-aside {
-  background-color: skyblue;
-}
 
 .ant-list {
   background-color: #fff;
