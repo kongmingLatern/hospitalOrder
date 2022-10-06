@@ -1,7 +1,8 @@
 <template>
-  <a-descriptions :title="'姓名：' + result.realName" class="desc-container" bordered>
+  <a-descriptions title="基本信息" class="desc-container" :column=1 bordered>
     <a-descriptions-item label="用户名">{{ result.userName}}</a-descriptions-item>
     <a-descriptions-item label="年龄">{{result.age}}</a-descriptions-item>
+    <a-descriptions-item label="真实姓名">{{result.realName}}</a-descriptions-item>
     <a-descriptions-item label="取消预约次数">{{ result.cancelCount}}</a-descriptions-item>
     <a-descriptions-item label="账号是否禁用">{{!result.isAllow ? '否': '是'}}</a-descriptions-item>
     <a-descriptions-item label="是否是管理员" v-if="result.isAuth">
@@ -12,7 +13,7 @@
 
 <script lang='ts' setup>
 import type { UserType } from '@/type';
-import { getCurrentInstance, onMounted, reactive, watch, watchEffect } from 'vue';
+import { getCurrentInstance, onMounted, reactive } from 'vue';
 import { hasOwnProperty } from '../../utils';
 const uid = localStorage.getItem('uid')
 const result = reactive<UserType>({
@@ -44,21 +45,15 @@ onMounted(() => {
   })
 })
 
-watchEffect((() => {
-  result.cancelCount
-  console.log('监听');
 
-}))
 
 </script>
 
 
 <style lang='scss' scoped>
 .desc-container {
-  width: 1000px;
+  width: 500px;
   margin: 0 auto;
-  text-align: center;
-  background-color: #c5d7ff;
 }
 
 :deep(.ant-descriptions-header) {
@@ -68,5 +63,9 @@ watchEffect((() => {
 
 :deep(.ant-descriptions-title) {
   font-size: 18px;
+}
+
+:deep(.ant-descriptions-item-label) {
+  width: 170px;
 }
 </style>
