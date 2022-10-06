@@ -2,18 +2,13 @@
   <div class="personal-container">
     <!-- 头部 -->
     <Header />
-    <!-- 个人信息 -->
+    <!-- Tab 栏 -->
     <NavTab text-center />
-    <!-- <PersonalInfo /> -->
-    <!-- 预约单号 -->
-    <!-- <PersonalOrderList /> -->
   </div>
 </template>
 
 <script setup lang='ts'>
 import Header from '@/views/personal/Header.vue'
-import PersonalInfo from '@/views/personal/PersonalInfo.vue'
-import PersonalOrderList from '@/views/personal/PersonalOrderList.vue';
 import NavTab from '../views/personal/NavTab.vue';
 </script>
 
