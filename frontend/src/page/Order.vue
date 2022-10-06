@@ -36,7 +36,7 @@ const getValue = (value: string) => {
 
 #container {
   height: 100%;
-  background-image: url('../assets/background.jpg');
+  background-image: url('../assets/1.jpeg');
   background-size: 100% 100%;
   background-attachment: fixed;
 }
