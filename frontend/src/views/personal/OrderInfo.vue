@@ -1,9 +1,9 @@
 <template>
   <a-spin :spinning="spinning">
-    <a-descriptions title="预约信息" bordered class="desc-container" v-for="item in orderList" :key="item.uid">
-      <a-descriptions-item label="预约单号" :span="3">{{item.orderId}}</a-descriptions-item>
-      <a-descriptions-item label="预约时间" :span="3">{{item.orderTime}}</a-descriptions-item>
-      <a-descriptions-item label="预约医生" :span="3">{{item.doctorName}}</a-descriptions-item>
+    <a-descriptions title="预约信息" bordered class="desc-container" v-for="item in orderList" :key="item.uid" :column="1">
+      <a-descriptions-item label="预约单号">{{item.orderId}}</a-descriptions-item>
+      <a-descriptions-item label="预约时间">{{item.orderTime}}</a-descriptions-item>
+      <a-descriptions-item label="预约医生">{{item.doctorName}}</a-descriptions-item>
       <a-descriptions-item label="是否取消预约" :span="3">
         <span>{{item.isCancel ? '是' : '否'}}</span>
         <a-button v-if="!item.isCancel" type="danger" class="position" @click="cancelOrder(item.orderId)">取消预约
