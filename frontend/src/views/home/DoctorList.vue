@@ -42,10 +42,12 @@
           </div>
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
-          <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.doctorId)">
-            <a-button>删除</a-button>
-          </a-popconfirm>
-          <a-button @click="changeInfo(record)">修改</a-button>
+          <a-space>
+            <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.uid)">
+              <a-button type="danger">删除</a-button>
+            </a-popconfirm>
+            <a-button type="primary" @click="changeInfo(record)">修改</a-button>
+          </a-space>
         </template>
       </template>
     </a-table>

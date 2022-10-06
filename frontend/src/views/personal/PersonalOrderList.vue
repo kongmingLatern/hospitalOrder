@@ -77,7 +77,7 @@ const pagination = {
 
 .personal_order_container {
   width: 1300px;
-  height: 600px;
+  /* height: 600px; */
   margin: 20px auto;
 }
 
