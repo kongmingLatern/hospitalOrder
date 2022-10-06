@@ -4,7 +4,7 @@
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'operation'">
           <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.orderId)">
-            <a>Delete</a>
+            <a-button type="danger">删除</a-button>
           </a-popconfirm>
         </template>
       </template>
