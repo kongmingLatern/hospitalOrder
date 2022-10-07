@@ -13,6 +13,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
@@ -61,7 +62,7 @@ public class OrderServlet extends BaseServlet {
         String uid = order.getUid();
         List<Order> orders = orderService.selectByUid(uid);
         for (Order order1 : orders) {
-            if (order1.getIsFinish() == 0 && order1.getIsCancel() == 0 && order1.getOrderTime() == order.getOrderTime()) {
+            if (order1.getIsFinish() == 0 && order1.getIsCancel() == 0 && order1.getOrderTime().getTime() == order.getOrderTime().getTime() && order1.getDoctorId().equals(order.getDoctorId())) {
                 message.setMessage("还搁着预约呢？早就预约过了");
                 flag = false;
                 break;
