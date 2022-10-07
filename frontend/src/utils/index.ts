@@ -96,3 +96,10 @@ export function formatDate(Unix: any, formate = 'Y-m-d h:i:s', complement = true
   formate = formate.replace(/s/g, String(second_str));
   return formate;
 }
+
+export function isNotEmpty(data: any): boolean {
+  if (data === null || data === undefined || data === '') {
+    return false
+  }
+  return true
+}
