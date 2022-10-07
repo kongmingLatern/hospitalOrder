@@ -28,7 +28,7 @@
             </a-form-item>
 
             <a-form-item text-center>
-              <a-button :disabled="disabled" type="primary" html-type="submit">
+              <a-button :disabled="disabled" type="primary" html-type="submit" data-test="loginButton">
                 登录
               </a-button>
               <router-link to="/regist" class="right">注册</router-link>
@@ -55,19 +55,21 @@ const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 
 const onFinish = (values: any) => {
-  console.log('Success:', values);
-  console.log('formState:', formState);
+  const { username, password, remember } = formState
   request.get('/api/user/Login', {
     params: {
-      username: formState.username,
-      password: formState.password,
-      remember: formState.remember
+      username,
+      password,
+      remember
     }
   }).then((res: any) => {
     if (res.status === 200) {
-      const { uid, isAuth } = res.data
+      const { uid, isAuth, userName } = res.data
+      // 存入缓存信息
       localStorage.setItem('uid', uid)
       localStorage.setItem('isAuth', isAuth)
+      localStorage.setItem('username', userName)
+
       setTimeout(() => {
         if (isAuth) {
           message.success('登录成功，欢迎您管理员，即将跳转到后台管理');
@@ -76,7 +78,7 @@ const onFinish = (values: any) => {
           message.success('登录成功');
           router.push('/ordermanager');
         }
-      }, 1000)
+      }, 2000)
     }
   }).catch((err: Record<string, any>) => {
     const { status } = err.response
