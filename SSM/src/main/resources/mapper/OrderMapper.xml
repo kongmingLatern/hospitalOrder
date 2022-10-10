@@ -25,9 +25,6 @@
         <if test="isFinish != null and isFinish !=''">
             ,isFinish=#{isFinish}
         </if>
-        <if test="orderNo != null and orderNo !=''">
-            ,orderNo=#{orderNo}
-        </if>
         <where>orderId=#{orderId}</where>
     </update>
 </mapper>

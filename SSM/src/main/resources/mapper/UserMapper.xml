@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cle.mapper.UserMapper">
+    <resultMap id="userResultMap" type="User">
+    </resultMap>
+    <update id="change">
+        UPDATE USER SET uid=#{uid}
+        <if test="userName!=null and userName!=''">
+            ,userName=#{userName}
+        </if>
+        <if test="password!=null and password!=''">
+            ,password=#{password}
+        </if>
+        <if test="age!=null and age!=''">
+            ,age=#{age}
+        </if>
+        <if test="realName!=null and realName!=''">
+            ,realName=#{realName}
+        </if>
+        <if test="cancelCount!=null and cancelCount!=''">
+            ,cancelCount=#{cancelCount}
+        </if>
+        <if test="isAllow!=null and isAllow!=''">
+            ,isAllow==#{isAllow}
+        </if>
+        <if test="isAuth!=null and isAuth!=''">
+            ,isAuth=#{isAuth}
+        </if>
+        <where>uid=#{uid}</where>
+    </update>
+</mapper>

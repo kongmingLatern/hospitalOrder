@@ -8,17 +8,8 @@ public class Doctor {
     private String position;//职位
     private String info;//简要介绍
     private int limitCount;//限制人数
-    private int leftCount;
 
     public Doctor() {
-    }
-
-    public int getLeftCount() {
-        return leftCount;
-    }
-
-    public void setLeftCount(int leftCount) {
-        this.leftCount = leftCount;
     }
 
     public String getDoctorId() {

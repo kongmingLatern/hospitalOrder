@@ -85,4 +85,17 @@ public class DoctorServiceImpl implements DoctorService {
         sqlSession.close();
         return doctor;
     }
+
+    @Override
+    public void flush() {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        DoctorMapper mapper = sqlSession.getMapper(DoctorMapper.class);
+        List<Doctor> doctors = mapper.selectAll();
+        for (Doctor doctor : doctors) {
+            doctor.setLeftCount(0);
+            mapper.change(doctor);
+        }
+        sqlSession.commit();
+        sqlSession.close();
+    }
 }

@@ -1,10 +1,11 @@
 package com.cle.mapper;
 
 import com.cle.pojo.Doctor;
-import com.cle.pojo.User;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
-import javax.print.Doc;
 import java.util.List;
 
 public interface DoctorMapper {
@@ -22,7 +23,7 @@ public interface DoctorMapper {
      * @param doctor
      * @return int 添加数量
      */
-    @Insert("insert into doctor values (#{doctorId},#{doctorName},#{doctorAge},#{rid},#{position},#{info},#{limitCount},#{limitCount})")
+    @Insert("insert into doctor values (#{doctorId},#{doctorName},#{doctorAge},#{rid},#{position},#{info},#{limitCount})")
     int add(Doctor doctor);
 
     /**

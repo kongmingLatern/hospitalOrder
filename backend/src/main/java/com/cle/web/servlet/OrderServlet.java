@@ -2,8 +2,11 @@ package com.cle.web.servlet;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.cle.pojo.Doctor;
 import com.cle.pojo.Message;
 import com.cle.pojo.Order;
+import com.cle.service.DoctorService;
+import com.cle.service.Imlp.DoctorServiceImpl;
 import com.cle.service.Imlp.OrderServiceImpl;
 import com.cle.service.Imlp.UserServiceImpl;
 import com.cle.service.OrderService;
@@ -23,6 +26,7 @@ import java.util.Map;
 public class OrderServlet extends BaseServlet {
     OrderService orderService = new OrderServiceImpl();
     UserService userService = new UserServiceImpl();
+    DoctorService doctorService = new DoctorServiceImpl();
 
     /**
      * 查询预约单
@@ -63,11 +67,21 @@ public class OrderServlet extends BaseServlet {
         List<Order> orders = orderService.selectByUid(uid);
         for (Order order1 : orders) {
             if (order1.getIsFinish() == 0 && order1.getIsCancel() == 0 && order1.getOrderTime().getTime() == order.getOrderTime().getTime() && order1.getDoctorId().equals(order.getDoctorId())) {
+                resp.setStatus(400);
                 message.setMessage("还搁着预约呢？早就预约过了");
                 flag = false;
                 break;
             }
         }
+        Doctor doctor = doctorService.selectByDoctorId(order.getDoctorId());
+        int leftCount = doctor.getLeftCount();
+        int limitCount = doctor.getLimitCount();
+        int orderNo = limitCount - leftCount + 1;
+        if (orderNo <= 0) {
+            message.setMessage("已经预约满啦");
+            resp.setStatus(400);
+        }
+        order.setOrderNo(orderNo);
         if (flag) {
             int count = orderService.add(order);
             if (count != 0) {

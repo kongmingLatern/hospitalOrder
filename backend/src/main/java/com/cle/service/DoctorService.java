@@ -60,4 +60,9 @@ public interface DoctorService {
      * @return
      */
     Doctor selectByDoctorId(String doctorId);
+
+    /**
+     * 刷新医生每日预约
+     */
+    void flush();
 }

@@ -28,9 +28,6 @@
         <if test="limitCount!=null and limitCount!=''">
             ,limitCount=#{limitCount}
         </if>
-        <if test="leftCount!=null and leftCount!=''">
-            ,leftCount=#{leftCount}
-        </if>
         <where>doctorId=#{doctorId}</where>
     </update>
 </mapper>

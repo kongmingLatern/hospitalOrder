@@ -60,11 +60,17 @@ public class UserServlet extends BaseServlet {
         user.setIsAllow(0);
         user.setIsAuth(0);
         Message message = new Message();
-        int count = userService.add(user);
-        if (count != 0) {
-            message.setMessage("注册成功");
+        User user1 = userService.selectByUsername(user.getUserName());
+        if (user1 == null) {
+            int count = userService.add(user);
+            if (count != 0) {
+                message.setMessage("注册成功");
+            } else {
+                message.setMessage("注册失败");
+                resp.setStatus(400);
+            }
         } else {
-            message.setMessage("注册失败");
+            message.setMessage("用户名太受欢迎啦！");
             resp.setStatus(400);
         }
         String jsonString = JSON.toJSONString(message);

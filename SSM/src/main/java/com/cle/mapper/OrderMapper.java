@@ -20,7 +20,7 @@ public interface OrderMapper {
      * @param order
      * @return int 预约条数
      */
-    @Insert("insert into `order` values (#{orderId},#{uid},#{orderTime},#{isFinish},#{isCancel},#{rid},#{doctorId},#{orderNo})")
+    @Insert("insert into `order` values (#{orderId},#{uid},#{orderTime},#{isFinish},#{isCancel},#{rid},#{doctorId})")
     int add(Order order);
 
     /**
