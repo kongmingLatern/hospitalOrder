@@ -9,7 +9,7 @@
       <a-form-item name="password" label="Password">
         <a-input v-model:value="formState.password" />
       </a-form-item>
-      <a-form-item name='age' label="Age" :rules="[{ type: 'number', min: 0, max: 99 }]">
+      <a-form-item name='age' label="Age" :rules="[{ type: 'number', min: 2, max: 99 }]">
         <a-input-number v-model:value="formState.age" />
       </a-form-item>
       <a-form-item name="realName" label="realName">
@@ -22,20 +22,8 @@
   </a-modal>
   <a-spin :spinning="spinning">
     <a-table bordered :data-source="dataSource" :columns="columns">
-      <template #bodyCell="{ column, text, record }">
-        <template v-if="column.dataIndex === 'name'">
-          <div class="editable-cell">
-            <div v-if="editableData[record.uid]" class="editable-cell-input-wrapper">
-              <a-input v-model:value="editableData[record.uid].userName" @pressEnter="save(record.uid)" />
-              <check-outlined class="editable-cell-icon-check" @click="save(record.uid)" />
-            </div>
-            <div v-else class="editable-cell-text-wrapper">
-              {{ text || ' ' }}
-              <edit-outlined class="editable-cell-icon" @click="edit(record.uid)" />
-            </div>
-          </div>
-        </template>
-        <template v-else-if="column.dataIndex === 'operation'">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.dataIndex === 'operation'">
           <a-space>
             <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.uid)">
               <a-button type="danger">删除</a-button>
@@ -49,10 +37,8 @@
 </template>
 <script lang="ts" setup>
 import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue';
-import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
-import { cloneDeep } from 'lodash-es';
 import type { UserType } from '@/type';
-import UserForm from './UserForm.vue';
+import UserForm from '../../components/home/UserForm.vue';
 import { message, type FormInstance } from 'ant-design-vue';
 import { formatObject, hasOwnProperty } from '../../utils';
 import router from '@/router';
@@ -131,15 +117,6 @@ onMounted(() => {
     console.log(e.message);
   })
 })
-const editableData: Record<string, UserType> = reactive({});
-
-const edit = (uid: string) => {
-  editableData[uid] = cloneDeep(dataSource.filter(item => uid === item.uid)[0]);
-};
-const save = (uid: string) => {
-  Object.assign(dataSource.filter(item => uid === item.uid)[0], editableData[uid]);
-  delete editableData[uid];
-};
 const onDelete = (uid: string) => {
   request.get('api/user/delete', {
     params: {

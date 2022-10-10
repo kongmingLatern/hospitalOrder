@@ -2,14 +2,19 @@
   <div id="container">
     <div class="order-container">
       <aside mr-2>
+        <!-- 用户卡片 -->
         <UserCard class="card-container" />
+        <!-- 快捷菜单 -->
         <MenuCard />
       </aside>
       <main mr-2>
+        <!-- 搜索 -->
         <Search class="search" @search="getValue" />
+        <!-- 预约科室 以及 展示列表 -->
         <Tabs />
       </main>
       <aside>
+        <!-- 公告栏 -->
         <NoticeCard />
       </aside>
     </div>
@@ -66,15 +71,9 @@ const getValue = (value: string) => {
   -webkit-box-orient: vertical;
 }
 
-// :deep(#app) {
-// background-image: url('https://img2.baidu.com/it/u=2037147439,3680943017&fm=253&fmt=auto&app=138&f=JPG?w=889&h=500');
-// background-repeat: no-repeat;
-// background-size: cover;
-// }
-
 .order-container {
   display: flex;
-  width: 830px;
+  width: 950px;
   overflow: hidden;
   margin: 0 auto;
   padding-top: 10px;
@@ -94,7 +93,7 @@ const getValue = (value: string) => {
 }
 
 .search {
-  width: 400px;
+  width: 500px;
   margin-bottom: 20px;
 }
 
@@ -104,5 +103,9 @@ const getValue = (value: string) => {
 
 .ant-card-head {
   padding: 0 10px;
+}
+
+main {
+  width: 500px;
 }
 </style>

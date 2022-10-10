@@ -51,16 +51,18 @@ describe('format data', () => {
         isAllow: '否',
       })
   });
-  it('format object3', () => {
+  it('format object3 ignore cancelCount and age', () => {
     const dataSource =
     {
       cancelCount: 0,
+      age: 0,
       isAuth: 0,
       isAllow: 0,
     }
     expect(formatObject(dataSource)).toEqual(
       {
         cancelCount: 0,
+        age: 0,
         isAuth: '否',
         isAllow: '否',
       })
@@ -73,7 +75,7 @@ describe('test date', () => {
     expect(result[0]).toMatchInlineSnapshot('1664899200')
   })
 
-  it('should get current date', () => {
+  it.skip('should get current date', () => {
     const selectId = 1
     let time: number
     if (selectId === 1) {

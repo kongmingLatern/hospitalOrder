@@ -1,23 +1,26 @@
 <template>
   <div>
-    <a-button type="primary" @click="visible = true">添加</a-button>
+    <a-button type="primary" @click="visible = true" mb-2>添加医生</a-button>
     <a-modal v-model:visible="visible" title="Add" ok-text="Create" cancel-text="Cancel" @ok="onOk">
       <a-form ref="formRef" :model="formState" v-bind="layout" userName="nest-messages"
         :validate-messages="validateMessages" @finish="onFinish" flex flex-wrap flex-col content-start>
-        <a-form-item userName="userName" label="Username">
-          <a-input v-model:value="formState.userName" />
+        <a-form-item name="userName" label="DoctorName">
+          <a-input v-model:value="formState.doctorName" />
         </a-form-item>
-        <a-form-item name="password" label="Password">
-          <a-input-password v-model:value="formState.password" />
+        <a-form-item name='age' label="DoctorAge" :rules="[{ type: 'number', min: 0, max: 99 }]">
+          <a-input-number v-model:value="formState.doctorAge" />
         </a-form-item>
-        <a-form-item name='age' label="Age" :rules="[{ type: 'number', min: 0, max: 99 }]">
-          <a-input-number v-model:value="formState.age" />
+        <a-form-item name="position" label="Position">
+          <a-input v-model:value="formState.position" />
         </a-form-item>
-        <a-form-item name="realName" label="realName">
-          <a-input v-model:value="formState.realName" />
+        <a-form-item name="info" label="Info">
+          <a-input v-model:value="formState.info" />
         </a-form-item>
-        <a-form-item name="isAuth" label="IsAuth">
-          <a-input-number v-model:value="formState.isAuth" />
+        <a-form-item name="rid" label="rid">
+          <a-input v-model:value="formState.rid" />
+        </a-form-item>
+        <a-form-item name="limitCount" label="limitCount">
+          <a-input-number v-model:value="formState.limitCount" />
         </a-form-item>
       </a-form>
     </a-modal>
@@ -27,7 +30,7 @@
 import { getCurrentInstance, reactive, ref, toRaw } from 'vue';
 import { message, type FormInstance } from 'ant-design-vue';
 import { randomString } from '../../utils';
-import type { UserType } from '@/type';
+import type { DoctorType } from '@/type';
 
 const layout = {
   labelCol: { span: 8 },
@@ -44,30 +47,27 @@ const formRef = ref<FormInstance>();
 const visible = ref<Boolean>(false);
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
-const formState: UserType = reactive({
-  uid: randomString(),
-  userName: '',
-  age: undefined,
-  password: '',
-  realName: '',
-  isAuth: 0,
-  cancelCount: 0,
-  isAllow: 0
+
+let formState: DoctorType = reactive({
+  doctorId: randomString(),
+  doctorName: '',
+  doctorAge: undefined,
+  rid: '',
+  position: '',
+  info: '',
+  limitCount: undefined
 });
 
 const emit = defineEmits<{
-  (msg: string, formState: UserType): void
+  (msg: string, formStaet: DoctorType): void
 }>()
 
 const onOk = () => {
   (formRef as any)?.value
     .validateFields()
     .then((values: any) => {
-      console.log('Received values of form: ', values);
-      console.log('formState: ', toRaw(formState));
-      request.post('/api/user/add', toRaw(formState)).then((res: any) => {
-        console.log(formState);
-        emit('addUser', toRaw(formState));
+      request.post('/api/doctor/add', toRaw(formState)).then((res: any) => {
+        emit('addDoctor', toRaw(formState));
         message.success(res.data.message)
       }).catch((err: any) => {
         message.error(err.data.message)

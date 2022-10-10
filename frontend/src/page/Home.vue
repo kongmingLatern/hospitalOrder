@@ -1,17 +1,22 @@
 <template>
   <a-layout>
+    <!-- 头部 -->
     <a-layout-header class="header">
       <h1 color-white bg-blue>医院管理系统</h1>
       <div color-white>
+        <!-- 头像 -->
         <a-avatar :size="40" mr-5>
           <template #icon>
             <UserOutlined />
           </template>
         </a-avatar>
-        <span ml-2 mr-5>管理员: XXX</span>
+        <span ml-2 mr-5>管理员:
+          <span color-green font-semibold text-lg>{{ userName }}</span>
+        </span>
         <span class="exit" @click="exitLogin">退出登录</span>
       </div>
     </a-layout-header>
+    <!-- 内容 -->
     <a-layout>
       <a-layout-sider width="200" style="background: #fff">
         <a-menu v-model:selectedKeys="selectedKeys1" mode="inline" :style="{ height: '100%', borderRight: 0 }">
@@ -50,7 +55,9 @@ import { ref } from 'vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import router from '@/router';
 const selectedKeys1 = ref<string[]>(['2'])
+const userName = localStorage.getItem('username')
 const exitLogin = () => {
+  // 清空所有缓存
   localStorage.clear()
   router.push('/login')
 }

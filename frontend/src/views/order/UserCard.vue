@@ -19,7 +19,7 @@
 import type { UserType } from '@/type';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { getCurrentInstance, reactive } from 'vue';
-import Avatar from './Avatar.vue';
+import Avatar from '../../components/order/Avatar.vue';
 import { hasOwnProperty } from '../../utils';
 let userInfo = reactive<UserType>({
   uid: '',

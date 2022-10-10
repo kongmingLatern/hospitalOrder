@@ -56,12 +56,12 @@ const router = createRouter({
         {
           path: ':rid',
           name: 'rid',
-          component: () => import('@/views/order/RoomInfo.vue'),
+          component: () => import('@/components/order/RoomInfo.vue'),
         },
         {
           path: 'search/:doctorId',
           name: 'doctorSearch',
-          component: () => import('@/views/order/SearchDoctor.vue'),
+          component: () => import('@/components/order/SearchDoctor.vue'),
         }
       ]
     },
@@ -73,7 +73,7 @@ const router = createRouter({
         {
           path: ':orderId',
           name: 'OrderInfo',
-          component: () => import('@/views/personal/OrderInfo.vue'),
+          component: () => import('@/components/personal/OrderInfo.vue'),
         }
       ]
     },

@@ -12,8 +12,8 @@
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue';
-import PersonalDesc from './PersonalDesc.vue';
-import PersonalOrderList from './PersonalOrderList.vue';
+import PersonalDesc from '@/components/personal/PersonalDesc.vue';
+import PersonalOrderList from '@/components/personal/PersonalOrderList.vue';
 const activeKey = ref('1')
 </script>
 

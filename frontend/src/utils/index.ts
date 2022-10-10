@@ -1,3 +1,5 @@
+import type { VueWrapper } from "@vue/test-utils/dist/vueWrapper";
+
 export function randomString() {
   let len = 32;
   let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
@@ -21,7 +23,7 @@ export function formatData(data: Record<string, any>[]) {
 
 export function formatObject(data: Record<string, any>) {
   for (const key in data) {
-    if (key === 'cancelCount') {
+    if (key === 'cancelCount' || key === 'age') {
       continue;
     }
     if (data[key] === 0) {
@@ -95,4 +97,14 @@ export function formatDate(Unix: any, formate = 'Y-m-d h:i:s', complement = true
   formate = formate.replace(/i/g, String(minute_str));
   formate = formate.replace(/s/g, String(second_str));
   return formate;
+}
+
+export function isNotEmpty(data: any): boolean {
+  if (data === null || data === undefined || data === '') {
+    return false
+  }
+  return true
+}
+export const findTestWrapper = (wrapper: VueWrapper<any>, tag: string): any => {
+  return wrapper.findAll(`[data-test="${tag}"]`)
 }

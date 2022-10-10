@@ -23,13 +23,13 @@
               </a-input>
             </a-form-item>
 
-            <a-form-item label="年龄" name="age">
-              <a-input v-model:value="formState.age">
-              </a-input>
+
+            <a-form-item name='age' label="Age" :rules="[{ type: 'number', min: 2, max: 99 }]">
+              <a-input-number v-model:value="formState.age" />
             </a-form-item>
 
             <a-form-item text-center>
-              <a-button :disabled="disabled" type="primary" html-type="submit">
+              <a-button :disabled="disabled" :loading="loading" type="primary" html-type="submit">
                 注册
               </a-button>
               <router-link to="/login" class="right">去登录</router-link>
@@ -54,6 +54,7 @@ const formState = reactive<RegistType>({
   realName: ''
 });
 const spinning = ref<Boolean>(false)
+const loading = ref<Boolean>(false)
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 
@@ -61,6 +62,7 @@ const onFinish = (values: any) => {
   console.log('Success:', values);
   request.post('api/user/register', toRaw(formState)).then((res: Record<string, any>) => {
     if (res.status === 200) {
+      loading.value = true
       spinning.value = true
       message.success('注册成功，即将跳转至登录页')
       setTimeout(() => {
@@ -76,7 +78,7 @@ const onFinishFailed = (errorInfo: any) => {
   console.log('Failed:', errorInfo);
 };
 const disabled = computed(() => {
-  return !(formState.userName && formState.password && formState.realName && formState.age);
+  return !(formState.userName && formState.password && formState.realName && formState.age) || loading.value;
 });
 </script>
 <style lang="scss" scoped>

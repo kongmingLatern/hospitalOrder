@@ -22,15 +22,19 @@
               </Avatar>
             </template>
           </a-list-item-meta>
+          <template #actions>
+            <a-rate :value="randNum(5)" class="rate-size" />
+            <span color-red font-semibold class="size">￥{{ randNum(10) * 10}}</span>
+          </template>
         </a-list-item>
       </template>
     </a-list>
   </a-spin>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, ref, watchEffect } from 'vue';
+import { getCurrentInstance, reactive, ref, watchEffect, computed } from 'vue';
 import Avatar from './Avatar.vue';
-import OrderTime from '@/views/order/OrderTime.vue'
+import OrderTime from '@/components/order/OrderTime.vue'
 import type { DoctorType } from '../../type';
 import { useRoute } from 'vue-router';
 
@@ -38,7 +42,6 @@ const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 const spinning = ref<Boolean>(true)
 let data: DoctorType[] = reactive([]);
-
 const { params } = useRoute()
 watchEffect(() => {
   request.get('api/doctor/selectDoctorByRid', {
@@ -62,11 +65,17 @@ const pagination = {
   pageSize: 3,
 };
 
+
+const randNum = (num: number) => {
+  return Math.floor(Math.random() * num + 1)
+}
+
 </script>
 
 
 <style lang='scss' scoped >
 .ant-list-item {
+  position: relative;
   overflow: hidden;
   padding: 10px;
 }
@@ -108,5 +117,21 @@ p {
 
 :deep(.ant-list-item-meta-content) {
   height: 162px;
+}
+
+:deep(.ant-list-item-action) {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  display: flex;
+  align-items: baseline;
+}
+
+.size {
+  font-size: 20px;
+}
+
+.rate-size {
+  font-size: 16px;
 }
 </style>
