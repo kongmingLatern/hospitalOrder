@@ -1,3 +1,5 @@
+import type { VueWrapper } from "@vue/test-utils/dist/vueWrapper";
+
 export function randomString() {
   let len = 32;
   let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
@@ -102,4 +104,7 @@ export function isNotEmpty(data: any): boolean {
     return false
   }
   return true
+}
+export const findTestWrapper = (wrapper: VueWrapper<any>, tag: string): any => {
+  return wrapper.findAll(`[data-test="${tag}"]`)
 }
