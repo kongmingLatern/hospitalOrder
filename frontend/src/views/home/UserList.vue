@@ -9,7 +9,7 @@
       <a-form-item name="password" label="Password">
         <a-input v-model:value="formState.password" />
       </a-form-item>
-      <a-form-item name='age' label="Age" :rules="[{ type: 'number', min: 0, max: 99 }]">
+      <a-form-item name='age' label="Age" :rules="[{ type: 'number', min: 2, max: 99 }]">
         <a-input-number v-model:value="formState.age" />
       </a-form-item>
       <a-form-item name="realName" label="realName">

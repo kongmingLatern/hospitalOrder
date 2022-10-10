@@ -10,7 +10,7 @@
         <a-form-item name="password" label="Password">
           <a-input-password v-model:value="formState.password" />
         </a-form-item>
-        <a-form-item name='age' label="Age" :rules="[{ type: 'number', min: 0, max: 99 }]">
+        <a-form-item name='age' label="Age" :rules="[{ type: 'number', min: 2, max: 99 }]">
           <a-input-number v-model:value="formState.age" />
         </a-form-item>
         <a-form-item name="realName" label="realName">
@@ -66,7 +66,6 @@ const onOk = () => {
       console.log('Received values of form: ', values);
       console.log('formState: ', toRaw(formState));
       request.post('/api/user/add', toRaw(formState)).then((res: any) => {
-        console.log(formState);
         emit('addUser', toRaw(formState));
         message.success(res.data.message)
       }).catch((err: any) => {

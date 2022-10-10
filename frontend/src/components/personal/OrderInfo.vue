@@ -56,7 +56,7 @@ const cancelOrder = async (orderId: string) => {
       uid: localStorage.getItem('uid') ?? ''
     }
   })
-  console.log(result);
+
   const { cancelCount } = result.data
 
   if (cancelCount >= 3) {

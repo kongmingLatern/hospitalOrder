@@ -23,9 +23,9 @@
               </a-input>
             </a-form-item>
 
-            <a-form-item label="年龄" name="age">
-              <a-input v-model:value="formState.age">
-              </a-input>
+
+            <a-form-item name='age' label="Age" :rules="[{ type: 'number', min: 2, max: 99 }]">
+              <a-input-number v-model:value="formState.age" />
             </a-form-item>
 
             <a-form-item text-center>

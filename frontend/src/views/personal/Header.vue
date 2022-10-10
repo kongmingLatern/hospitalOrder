@@ -23,7 +23,7 @@ import { UserOutlined } from "@ant-design/icons-vue";
 import { getCurrentInstance, onMounted, ref } from "vue";
 import router from "@/router";
 import Avatar from "../../components/order/Avatar.vue";
-import Calander from "./Calander.vue";
+import Calander from "../../components/personal/Calander.vue";
 import { message } from "ant-design-vue";
 const uid = localStorage.getItem('uid')
 const instance = getCurrentInstance()
