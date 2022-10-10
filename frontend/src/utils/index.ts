@@ -23,7 +23,7 @@ export function formatData(data: Record<string, any>[]) {
 
 export function formatObject(data: Record<string, any>) {
   for (const key in data) {
-    if (key === 'cancelCount') {
+    if (key === 'cancelCount' || key === 'age') {
       continue;
     }
     if (data[key] === 0) {

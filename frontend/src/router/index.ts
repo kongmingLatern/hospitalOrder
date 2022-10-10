@@ -73,7 +73,7 @@ const router = createRouter({
         {
           path: ':orderId',
           name: 'OrderInfo',
-          component: () => import('@/views/personal/OrderInfo.vue'),
+          component: () => import('@/components/personal/OrderInfo.vue'),
         }
       ]
     },
