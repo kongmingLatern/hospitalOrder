@@ -17,7 +17,7 @@
       <template v-else-if="column.key === 'action'">
         <span>
           <a-popconfirm title="是否确定预约" ok-text="是" cancel-text="否" @confirm="confirm(record.key)" @cancel="cancel">
-            <a-button :disabled=" disabled">
+            <a-button type="primary">
               预约
             </a-button>
           </a-popconfirm>
@@ -62,7 +62,6 @@ const data = [
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 const result: Record<string, any>[] = reactive([])
-const disabled = ref<Boolean>(false)
 const confirm = (selectId: string) => {
   const uid = localStorage.getItem('uid')
   const time: number = Number(selectId) === 1 ? 8 : 13
@@ -77,26 +76,28 @@ const confirm = (selectId: string) => {
     rid,
     doctorId,
   })
-  disabled.value = true
   // selectId: 预约的时间段
   // 1: 8:00 - 12:00
   // 2: 13:00 - 18:00
   if (selectId === '1') {
-    message.success('您预约时间为：8:00 - 12:00');
-    // console.log(props.doctorId);
+    // message.success('您预约时间为：8:00 - 12:00');
   } else if (selectId === '2') {
-    message.success('您预约时间为：13:00 - 18:00');
-    // console.log(props.doctorId);
+    // message.success('您预约时间为：13:00 - 18:00');
   }
   request.post('api/order/add', toRaw(result)).then((res: Record<string, any>) => {
-    message.success('预约成功');
+    const { message: msg } = res.data
+    if (msg === '预约成功') {
+      message.success(msg)
+    } else {
+      message.error(msg);
+    }
   }).catch((err: string) => {
-    message.success('预约失败');
+    message.error('预约失败');
   })
 };
 
 const cancel = (e: MouseEvent) => {
-  message.error('已取消预约');
+  message.success('已取消预约');
 };
 
 </script>
