@@ -24,24 +24,9 @@
     </a-form>
   </a-modal>
   <a-spin :spinning="spinning">
-    <header color-green>
-      医生管理
-    </header>
     <a-table bordered :data-source="dataSource" :columns="columns">
-      <template #bodyCell="{ column, text, record }">
-        <template v-if="column.dataIndex === 'doctorName'">
-          <div class="editable-cell">
-            <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
-              <a-input v-model:value="editableData[record.key].doctorName" @pressEnter="save(record.key)" />
-              <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
-            </div>
-            <div v-else class="editable-cell-text-wrapper">
-              {{ text || ' ' }}
-              <edit-outlined class="editable-cell-icon" @click="edit(record.key)" />
-            </div>
-          </div>
-        </template>
-        <template v-else-if="column.dataIndex === 'operation'">
+      <template #bodyCell="{ column,  record }">
+        <template v-if="column.dataIndex === 'operation'">
           <a-space>
             <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.uid)">
               <a-button type="danger">删除</a-button>
@@ -55,10 +40,8 @@
 </template>
 <script lang="ts" setup>
 import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue';
-import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
-import { cloneDeep } from 'lodash-es';
 import type { DoctorType } from '@/type';
-import DoctorForm from './DoctorForm.vue';
+import DoctorForm from '../../components/home/DoctorForm.vue';
 import router from '@/router';
 import { message, type FormInstance } from 'ant-design-vue';
 import { formatObject, hasOwnProperty } from '../../utils';
@@ -79,31 +62,31 @@ const columns = [
     dataIndex: 'doctorId'
   },
   {
-    title: 'rname',
+    title: '科室',
     dataIndex: 'rname',
   },
   {
-    title: 'doctorName',
+    title: '姓名',
     dataIndex: 'doctorName'
   },
   {
-    title: 'doctorAge',
+    title: '年龄',
     dataIndex: 'doctorAge',
   },
   {
-    title: 'position',
+    title: '职位',
     dataIndex: 'position',
   },
   {
-    title: 'info',
+    title: '简介',
     dataIndex: 'info',
   },
   {
-    title: 'limitCount',
+    title: '限制人数',
     dataIndex: 'limitCount',
   },
   {
-    title: 'operation',
+    title: '操作',
     dataIndex: 'operation',
   },
 ];
@@ -133,14 +116,6 @@ onMounted(() => {
     console.log(e.message);
   })
 })
-const editableData: Record<string, DoctorType> = reactive({});
-const edit = (doctorId: string) => {
-  editableData[doctorId] = cloneDeep(dataSource.filter(item => doctorId === item.doctorId)[0]);
-};
-const save = (doctorId: string) => {
-  Object.assign(dataSource.filter(item => doctorId === item.doctorId)[0], editableData[doctorId]);
-  delete editableData[doctorId];
-};
 
 const onDelete = (doctorId: string) => {
   request.get('api/doctor/delete', {

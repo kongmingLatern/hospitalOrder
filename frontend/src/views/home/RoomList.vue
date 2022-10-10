@@ -1,5 +1,5 @@
 <template>
-  <RoomForm @addRoom="add" text-right />
+  <RoomForm @addRoom="add" text-right mb-2 />
   <a-modal v-model:visible="visible" title="Add" ok-text="Create" cancel-text="Cancel" @ok="onOk">
     <a-form ref="formRef" :model="formState" v-bind="layout" userName="nest-messages" @finish="onFinish" flex flex-wrap
       flex-col content-start>
@@ -9,24 +9,9 @@
     </a-form>
   </a-modal>
   <a-spin :spinning="spinning">
-    <header color-green>
-      科室管理
-    </header>
     <a-table bordered :data-source="dataSource" :columns="columns">
-      <template #bodyCell="{ column, text, record }">
-        <template v-if="column.dataIndex === 'name'">
-          <div class="editable-cell">
-            <div v-if="editableData[record.id]" class="editable-cell-input-wrapper">
-              <a-input v-model:value="editableData[record.rid].rname" @pressEnter="save(record.id)" />
-              <check-outlined class="editable-cell-icon-check" @click="save(record.rid)" />
-            </div>
-            <div v-else class="editable-cell-text-wrapper">
-              {{ text || ' ' }}
-              <edit-outlined class="editable-cell-icon" @click="edit(record.rid)" />
-            </div>
-          </div>
-        </template>
-        <template v-else-if="column.dataIndex === 'operation'">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.dataIndex === 'operation'">
           <a-space>
             <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.rid)">
               <a-button type="danger">删除</a-button>
@@ -40,12 +25,10 @@
 </template>
 <script lang="ts" setup>
 import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue';
-import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
-import { cloneDeep } from 'lodash-es';
 import type { RoomType } from '@/type';
 import { message, type FormInstance } from 'ant-design-vue';
 import router from '@/router';
-import RoomForm from './RoomForm.vue';
+import RoomForm from '../../components/home/RoomForm.vue';
 import { hasOwnProperty } from '@/utils';
 
 const layout = {
@@ -61,7 +44,7 @@ const columns = [
     dataIndex: 'rid',
   },
   {
-    title: 'rname',
+    title: '科室',
     dataIndex: 'rname',
     width: '30%',
   },
@@ -93,15 +76,7 @@ onMounted(() => {
     console.log(e.message);
   })
 })
-const editableData: Record<string, RoomType> = reactive({});
 
-const edit = (rid: string) => {
-  editableData[rid] = cloneDeep(dataSource.filter(item => rid === item.rid)[0]);
-};
-const save = (rid: string) => {
-  Object.assign(dataSource.filter(item => rid === item.rid)[0], editableData[rid]);
-  delete editableData[rid];
-};
 
 const onDelete = (rid: string) => {
   request.get('api/room/delete', {

@@ -13,10 +13,9 @@
 </template>
 <script lang="ts" setup>
 import { getCurrentInstance, onMounted, reactive, ref } from 'vue';
-import { cloneDeep } from 'lodash-es';
 import type { OrderListType } from '@/type';
 import { message } from 'ant-design-vue';
-import { formatData, formatObject } from '../../utils';
+import { formatObject } from '../../utils';
 import router from '@/router';
 
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-button type="primary" @click="visible = true">添加</a-button>
+    <a-button type="primary" @click="visible = true">添加科室</a-button>
     <a-modal v-model:visible="visible" title="Add" ok-text="Create" cancel-text="Cancel" @ok="onOk">
       <a-form ref="formRef" :model="formState" v-bind="layout" userName="nest-messages" @finish="onFinish" flex
         flex-wrap flex-col content-start>
