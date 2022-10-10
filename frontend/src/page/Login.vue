@@ -28,7 +28,8 @@
             </a-form-item>
 
             <a-form-item text-center>
-              <a-button :disabled="disabled" type="primary" html-type="submit" data-test="loginButton">
+              <a-button :disabled="disabled" :loading="loading" type="primary" html-type="submit"
+                data-test="loginButton">
                 登录
               </a-button>
               <router-link to="/regist" class="right">注册</router-link>
@@ -51,6 +52,7 @@ const formState = reactive<LoginType>({
 });
 
 const spinning = ref<Boolean>(false)
+const loading = ref<Boolean>(false)
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 
@@ -64,6 +66,8 @@ const onFinish = (values: any) => {
     }
   }).then((res: any) => {
     if (res.status === 200) {
+      // 展示 Loading 信息
+      loading.value = true
       const { uid, isAuth, userName } = res.data
       // 存入缓存信息
       localStorage.setItem('uid', uid)
@@ -94,7 +98,7 @@ const onFinishFailed = (errorInfo: any) => {
   console.log('Failed:', errorInfo);
 };
 const disabled = computed(() => {
-  return !(formState.username && formState.password);
+  return !(formState.username && formState.password) || loading.value;
 });
 </script>
 <style lang="scss" scoped>
