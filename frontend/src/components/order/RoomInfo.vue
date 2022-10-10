@@ -30,7 +30,7 @@
 <script lang="ts" setup>
 import { getCurrentInstance, reactive, ref, watchEffect } from 'vue';
 import Avatar from './Avatar.vue';
-import OrderTime from '@/views/order/OrderTime.vue'
+import OrderTime from '@/components/order/OrderTime.vue'
 import type { DoctorType } from '../../type';
 import { useRoute } from 'vue-router';
 
