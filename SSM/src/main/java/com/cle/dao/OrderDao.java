@@ -1,11 +1,11 @@
-package com.cle.mapper;
+package com.cle.dao;
 
-import com.cle.pojo.Order;
+import com.cle.domain.Order;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
-public interface OrderMapper {
+public interface OrderDao {
     /**
      * 查询所有预约单
      *

@@ -1,0 +1,60 @@
+package com.cle.service;
+
+import com.cle.domain.Doctor;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+@Transactional
+public interface DoctorService {
+    /**
+     * 查询所有
+     *
+     * @return
+     */
+    List<Doctor> selectAll();
+
+    /**
+     * 添加医生
+     *
+     * @param doctor
+     * @return
+     */
+    boolean add(Doctor doctor);
+
+    /**
+     * 删除医生
+     *
+     * @param doctorId
+     * @return
+     */
+    boolean delete(String doctorId);
+
+
+    /**
+     * 根据rid查询医生
+     *
+     * @param rid
+     * @return
+     */
+    List<Doctor> selectDoctorByRid(String rid);
+
+    /**
+     * 更新医生信息
+     *
+     * @param doctor
+     * @return
+     */
+    boolean update(Doctor doctor);
+    /**
+     * 根据doctorId查询医生
+     *
+     * @param doctorId
+     * @return
+     */
+    Doctor selectByDoctorId(String doctorId);
+
+    /**
+     * 刷新医生每日预约
+     */
+    void flush();
+}

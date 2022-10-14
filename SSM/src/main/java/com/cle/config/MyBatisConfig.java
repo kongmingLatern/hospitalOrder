@@ -12,14 +12,14 @@ public class MyBatisConfig {
     public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource){
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
-        factoryBean.setTypeAliasesPackage("com.cle.pojo");
+        factoryBean.setTypeAliasesPackage("com.cle.domain");
         return factoryBean;
     }
 
     @Bean
     public MapperScannerConfigurer mapperScannerConfigurer(){
         MapperScannerConfigurer msc = new MapperScannerConfigurer();
-        msc.setBasePackage("com.pojo.dao");
+        msc.setBasePackage("com.cle.dao");
         return msc;
     }
 

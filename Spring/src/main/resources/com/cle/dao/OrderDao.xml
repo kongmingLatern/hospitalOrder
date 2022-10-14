@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cle.dao.OrderDao">
+    <resultMap id="orderResultMap" type="com.cle.domain.Order">
+    </resultMap>
+    <update id="change">
+        UPDATE `ORDER` SET orderId=#{orderId}
+        <if test="uid != null and uid !=''">
+            ,uid = #{uid}
+        </if>
+        <if test="orderTime != null and orderTime !=''">
+            , orderTime=#{orderTime}
+        </if>
+        <if test="rid != null and rid !=''">
+            ,rid=#{rid}
+        </if>
+        <if test="doctorId != null and doctorId !=''">
+            ,doctorId=#{doctorId}
+        </if>
+        <if test="isCancel != null and isCancel !=''">
+            ,isCancel=#{isCancel}
+        </if>
+        <if test="isFinish != null and isFinish !=''">
+            ,isFinish=#{isFinish}
+        </if>
+        <if test="orderNo != null and orderNo !=''">
+            ,orderNo=#{orderNo}
+        </if>
+        <where>orderId=#{orderId}</where>
+    </update>
+</mapper>

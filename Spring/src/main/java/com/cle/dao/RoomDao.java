@@ -1,0 +1,52 @@
+package com.cle.dao;
+
+import com.cle.domain.Room;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
+@Mapper
+public interface RoomDao {
+    /**
+     * 查询科室
+     *
+     * @return
+     */
+    @Select("select * from ROOM")
+    List<Room> selectAll();
+
+    /**
+     * 插入科室
+     *
+     * @param room
+     * @return
+     */
+    @Insert("INSERT INTO ROOM VALUES (#{rid},#{rname})")
+    int add(Room room);
+
+    /**
+     * 删除科室
+     *
+     * @param rid
+     * @return
+     */
+    @Delete("delete from ROOM where rid = #{rid}")
+    int delete(String rid);
+
+    /**
+     * 根据rid查询科室
+     *
+     * @param rid
+     * @return
+     */
+    @Select("select * from ROOM where rid = #{rid}")
+    Room selectByRid(String rid);
+
+    /**
+     * 修改科室
+     *
+     * @param room
+     * @return
+     */
+    @Update("UPDATE ROOM SET RNAME=#{rname} where rid = #{rid}")
+    int change(Room room);
+}
