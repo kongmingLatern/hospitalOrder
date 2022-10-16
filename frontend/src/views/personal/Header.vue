@@ -7,7 +7,7 @@
         </template>
       </Avatar>
       <div mt-2 class="font">
-        {{ realName}}
+        {{ realName }}
       </div>
       <a-space>
         <a-button type="primary" @click="$router.push('/ordermanager')">预约</a-button>
@@ -18,25 +18,22 @@
   </header>
 </template>
 
-<script setup lang='ts'>
-import { UserOutlined } from "@ant-design/icons-vue";
-import { getCurrentInstance, onMounted, ref } from "vue";
-import router from "@/router";
-import Avatar from "../../components/order/Avatar.vue";
-import Calander from "../../components/personal/Calander.vue";
-import { message } from "ant-design-vue";
+<script setup lang="ts">
+import { UserOutlined } from '@ant-design/icons-vue'
+import { getCurrentInstance, onMounted, ref } from 'vue'
+import router from '@/router'
+import Avatar from '../../components/order/Avatar.vue'
+import Calander from '../../components/personal/Calander.vue'
+import { message } from 'ant-design-vue'
 const uid = localStorage.getItem('uid')
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 const realName = ref<string>('')
 
 onMounted(async () => {
-  const res = await request.get('api/user/selectByUid', {
-    params: {
-      uid
-    }
-  })
-  realName.value = res.data.realName
+  const res = await request.get('/users/getByUid/' + uid)
+  console.log(res)
+  realName.value = res.data.data.realName
 })
 
 const exit = () => {
@@ -44,8 +41,6 @@ const exit = () => {
   router.push('/index')
   message.success('退出成功')
 }
-
-
 </script>
 
 <style scoped>
