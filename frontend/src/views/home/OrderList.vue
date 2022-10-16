@@ -3,7 +3,11 @@
     <a-table bordered :data-source="dataSource" :columns="columns">
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'operation'">
-          <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.orderId)">
+          <a-popconfirm
+            v-if="dataSource.length"
+            title="Sure to delete?"
+            @confirm="onDelete(record.orderId)"
+          >
             <a-button type="danger">删除</a-button>
           </a-popconfirm>
         </template>
@@ -12,12 +16,11 @@
   </a-spin>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, onMounted, reactive, ref } from 'vue';
-import type { OrderListType } from '@/type';
-import { message } from 'ant-design-vue';
-import { formatObject } from '../../utils';
-import router from '@/router';
-
+import { getCurrentInstance, onMounted, reactive, ref } from 'vue'
+import type { OrderListType } from '@/type'
+import { message } from 'ant-design-vue'
+import { formatObject } from '../../utils'
+import router from '@/router'
 
 const columns = [
   {
@@ -52,39 +55,45 @@ const columns = [
     title: 'operation',
     dataIndex: 'operation',
   },
-];
+]
 const spinning = ref<Boolean>(true)
-let dataSource: OrderListType[] = reactive([]);
+let dataSource: OrderListType[] = reactive([])
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 onMounted(() => {
-  request.get('api/order/selectAll').then((res: Record<string, any>) => {
-    console.log(res);
-    spinning.value = false
-    const lists = res.data
-    lists.forEach((list: OrderListType) => {
-      dataSource.push(formatObject(list) as OrderListType)
+  request
+    .get('/orders')
+    .then((res: Record<string, any>) => {
+      console.log(res)
+      spinning.value = false
+      const lists = res.data.data
+      lists.forEach((list: OrderListType) => {
+        dataSource.push(formatObject(list) as OrderListType)
+      })
     })
-  }).catch((e: any) => {
-    console.log(e.message);
-  })
+    .catch((e: any) => {
+      console.log(e.message)
+    })
 })
 
 const onDelete = (orderId: string) => {
-  request.get('/api/order/delete', {
-    params: {
-      orderId
-    }
-  }).then((res: Record<string, any>) => {
-    dataSource = dataSource.filter(item => item.orderId !== orderId);
-    message.success('删除成功')
-    setTimeout(() => {
-      router.go(0)
-    }, 0)
-  }).catch((err: string) => {
-    message.error(err)
-  })
-};
+  request
+    .get('/api/order/delete', {
+      params: {
+        orderId,
+      },
+    })
+    .then((res: Record<string, any>) => {
+      dataSource = dataSource.filter(item => item.orderId !== orderId)
+      message.success('删除成功')
+      setTimeout(() => {
+        router.go(0)
+      }, 0)
+    })
+    .catch((err: string) => {
+      message.error(err)
+    })
+}
 </script>
 <style lang="scss" scoped>
 .editable-cell {
