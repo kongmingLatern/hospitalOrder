@@ -1,12 +1,22 @@
 <template>
   <DoctorForm @addDoctor="add" text-right />
   <a-modal v-model:visible="visible" title="Add" ok-text="Create" cancel-text="Cancel" @ok="onOk">
-    <a-form ref="formRef" :model="formState" v-bind="layout" userName="nest-messages"
-      :validate-messages="validateMessages" @finish="onFinish" flex flex-wrap flex-col content-start>
+    <a-form
+      ref="formRef"
+      :model="formState"
+      v-bind="layout"
+      userName="nest-messages"
+      :validate-messages="validateMessages"
+      @finish="onFinish"
+      flex
+      flex-wrap
+      flex-col
+      content-start
+    >
       <a-form-item name="userName" label="DoctorName">
         <a-input v-model:value="formState.doctorName" />
       </a-form-item>
-      <a-form-item name='age' label="DoctorAge" :rules="[{ type: 'number', min: 0, max: 99 }]">
+      <a-form-item name="age" label="DoctorAge" :rules="[{ type: 'number', min: 0, max: 99 }]">
         <a-input-number v-model:value="formState.doctorAge" />
       </a-form-item>
       <a-form-item name="position" label="Position">
@@ -25,10 +35,14 @@
   </a-modal>
   <a-spin :spinning="spinning">
     <a-table bordered :data-source="dataSource" :columns="columns">
-      <template #bodyCell="{ column,  record }">
+      <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'operation'">
           <a-space>
-            <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.uid)">
+            <a-popconfirm
+              v-if="dataSource.length"
+              title="Sure to delete?"
+              @confirm="onDelete(record.doctorId)"
+            >
               <a-button type="danger">删除</a-button>
             </a-popconfirm>
             <a-button type="primary" @click="changeInfo(record)">修改</a-button>
@@ -39,27 +53,27 @@
   </a-spin>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue';
-import type { DoctorType } from '@/type';
-import DoctorForm from '../../components/home/DoctorForm.vue';
-import router from '@/router';
-import { message, type FormInstance } from 'ant-design-vue';
-import { formatObject, hasOwnProperty } from '../../utils';
+import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue'
+import type { DoctorType } from '@/type'
+import DoctorForm from '../../components/home/DoctorForm.vue'
+import router from '@/router'
+import { message, type FormInstance } from 'ant-design-vue'
+import { formatObject, hasOwnProperty } from '../../utils'
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
-};
+}
 
 const validateMessages = {
   required: '${label} is required!',
   number: {
     type: '${label} is not a validate number!',
-  }
-};
+  },
+}
 const columns = [
   {
     title: 'doctorId',
-    dataIndex: 'doctorId'
+    dataIndex: 'doctorId',
   },
   {
     title: '科室',
@@ -67,7 +81,7 @@ const columns = [
   },
   {
     title: '姓名',
-    dataIndex: 'doctorName'
+    dataIndex: 'doctorName',
   },
   {
     title: '年龄',
@@ -89,13 +103,13 @@ const columns = [
     title: '操作',
     dataIndex: 'operation',
   },
-];
+]
 const visible = ref<Boolean>()
 const spinning = ref<Boolean>(true)
-let dataSource: DoctorType[] = reactive([]);
+let dataSource: DoctorType[] = reactive([])
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
-const formRef = ref<FormInstance>();
+const formRef = ref<FormInstance>()
 let formState: DoctorType = reactive({
   doctorId: '',
   doctorName: '',
@@ -103,36 +117,39 @@ let formState: DoctorType = reactive({
   rid: '',
   position: '',
   info: '',
-  limitCount: undefined
-});
+  limitCount: undefined,
+})
 onMounted(() => {
-  request.get('api/doctor/selectAll').then((res: Record<string, any>) => {
-    spinning.value = false
-    const lists = res.data
-    lists.forEach((list: DoctorType) => {
-      dataSource.push(list)
+  request
+    .get('/doctors')
+    .then((res: Record<string, any>) => {
+      spinning.value = false
+      const lists = res.data.data
+      lists.forEach((list: DoctorType) => {
+        dataSource.push(list)
+      })
     })
-  }).catch((e: any) => {
-    console.log(e.message);
-  })
+    .catch((e: any) => {
+      console.log(e.message)
+    })
 })
 
 const onDelete = (doctorId: string) => {
-  request.get('api/doctor/delete', {
-    params: {
-      doctorId
-    }
-  }).then((res: Record<string, any>) => {
-    const { message: msg } = res.data
-    dataSource = dataSource.filter(item => item.doctorId !== doctorId)
-    message.success(msg)
-    setTimeout(() => {
-      router.go(0)
-    }, 0)
-  }).catch((err: Record<string, any>) => {
-    message.error(err.message)
-  })
-};
+  request
+    .delete('/doctors/' + doctorId)
+    .then((res: Record<string, any>) => {
+      console.log(res)
+      const { message: msg } = res.data
+      dataSource = dataSource.filter(item => item.doctorId !== doctorId)
+      message.success(msg)
+      setTimeout(() => {
+        router.go(0)
+      }, 0)
+    })
+    .catch((err: Record<string, any>) => {
+      message.error(err.message)
+    })
+}
 
 const add = (formState: DoctorType) => {
   dataSource.push(formatObject(formState) as DoctorType)
@@ -141,23 +158,26 @@ const add = (formState: DoctorType) => {
   }, 0)
 }
 const onOk = () => {
-  (formRef as any)?.value
+  ;(formRef as any)?.value
     .validateFields()
     .then((values: any) => {
-      request.post('/api/doctor/change', toRaw(formState)).then((res: any) => {
-        message.success(res.data.message)
-        setTimeout(() => {
-          router.go(0)
-        }, 0)
-      }).catch((err: any) => {
-        message.error(err.data.message)
-      })
-      visible.value = false;
+      request
+        .post('/api/doctor/change', toRaw(formState))
+        .then((res: any) => {
+          message.success(res.data.message)
+          setTimeout(() => {
+            router.go(0)
+          }, 0)
+        })
+        .catch((err: any) => {
+          message.error(err.data.message)
+        })
+      visible.value = false
     })
     .catch((info: string) => {
-      console.log('Validate Failed:', info);
-    });
-};
+      console.log('Validate Failed:', info)
+    })
+}
 
 const changeInfo = (item: Record<string, any>) => {
   visible.value = true
@@ -172,8 +192,8 @@ const changeInfo = (item: Record<string, any>) => {
   }
 }
 const onFinish = (e: MouseEvent) => {
-  console.log(e);
-  console.log('onFinish');
+  console.log(e)
+  console.log('onFinish')
 }
 </script>
 <style lang="scss" scoped>
