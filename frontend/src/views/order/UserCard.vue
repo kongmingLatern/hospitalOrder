@@ -6,21 +6,21 @@
           <UserOutlined />
         </template>
       </Avatar>
-      <span class="ml-2">{{userInfo.userName}}</span>
+      <span class="ml-2">{{ userInfo.userName }}</span>
     </template>
-    <p>姓名：{{ userInfo.realName}}</p>
-    <p>年齡：{{ userInfo.age}}</p>
-    <p>取消預約次數：{{ userInfo.cancelCount}}</p>
-    <p>是否违规：{{userInfo.isAllow ? '违规' : '正常'}}</p>
+    <p>姓名：{{ userInfo.realName }}</p>
+    <p>年齡：{{ userInfo.age }}</p>
+    <p>取消預約次數：{{ userInfo.cancelCount }}</p>
+    <p>是否违规：{{ userInfo.isAllow ? '违规' : '正常' }}</p>
   </a-card>
 </template>
 
-<script setup lang='ts'>
-import type { UserType } from '@/type';
-import { UserOutlined } from '@ant-design/icons-vue';
-import { getCurrentInstance, reactive } from 'vue';
-import Avatar from '../../components/order/Avatar.vue';
-import { hasOwnProperty } from '../../utils';
+<script setup lang="ts">
+import type { UserType } from '@/type'
+import { UserOutlined } from '@ant-design/icons-vue'
+import { getCurrentInstance, reactive } from 'vue'
+import Avatar from '../../components/order/Avatar.vue'
+import { hasOwnProperty } from '../../utils'
 let userInfo = reactive<UserType>({
   uid: '',
   userName: '',
@@ -30,22 +30,23 @@ let userInfo = reactive<UserType>({
   cancelCount: 0,
   isAllow: 0,
   isAuth: 0,
-});
+})
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
-request.get('api/user/selectByUid', {
-  params: {
-    uid: localStorage.getItem('uid') ?? ''
-  }
-}).then((res: Record<string, any>) => {
-  let key: string
-  for (key in res.data) {
-    if (hasOwnProperty(userInfo, key)) {
-      userInfo[key] = res.data[key]
+request
+  .get('/users/getByUid/', {
+    params: {
+      uid: localStorage.getItem('uid') ?? '',
+    },
+  })
+  .then((res: Record<string, any>) => {
+    let key: string
+    for (key in res.data) {
+      if (hasOwnProperty(userInfo, key)) {
+        userInfo[key] = res.data[key]
+      }
     }
-  }
-})
-
+  })
 </script>
 
 <style scoped>

@@ -10,21 +10,23 @@
             </template>
             <!-- 描述 -->
             <template #description class="description">
-              <p>{{item.info}}</p>
+              <p>{{ item.info }}</p>
               <OrderTime :doctorId="item.doctorId" :rid="item.rid" />
             </template>
             <!-- 照片 -->
             <template #avatar>
               <Avatar size="large" shape="square">
                 <template #icon>
-                  <img src="https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg" />
+                  <img
+                    src="https://guahao.shgh.cn/yygh/UploadFiles/Doctor/000048%E9%83%91%E5%BF%97.jpg"
+                  />
                 </template>
               </Avatar>
             </template>
           </a-list-item-meta>
           <template #actions>
             <a-rate :value="randNum(5)" class="rate-size" />
-            <span color-red font-semibold class="size">￥{{ randNum(10) * 10}}</span>
+            <span color-red font-semibold class="size">￥{{ randNum(10) * 10 }}</span>
           </template>
         </a-list-item>
       </template>
@@ -32,48 +34,49 @@
   </a-spin>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, ref, watchEffect, computed } from 'vue';
-import Avatar from './Avatar.vue';
+import { getCurrentInstance, reactive, ref, watchEffect, computed } from 'vue'
+import Avatar from './Avatar.vue'
 import OrderTime from '@/components/order/OrderTime.vue'
-import type { DoctorType } from '../../type';
-import { useRoute } from 'vue-router';
+import type { DoctorType } from '../../type'
+import { useRoute } from 'vue-router'
 
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 const spinning = ref<Boolean>(true)
-let data: DoctorType[] = reactive([]);
+let data: DoctorType[] = reactive([])
 const { params } = useRoute()
 watchEffect(() => {
-  request.get('api/doctor/selectDoctorByRid', {
-    params: {
-      rid: params.rid
-    }
-  }).then((res: Record<string, any>) => {
-    spinning.value = false
-    const lists = res.data
-    lists.forEach((list: DoctorType) => {
-      data.push(list)
+  request
+    .get('/doctors/getByRid/', {
+      params: {
+        rid: params.rid,
+      },
     })
-  }).catch((e: any) => {
-    console.log(e.message);
-  })
+    .then((res: Record<string, any>) => {
+      console.log(res)
+      spinning.value = false
+      const lists = res.data.data
+      lists.forEach((list: DoctorType) => {
+        data.push(list)
+      })
+    })
+    .catch((e: any) => {
+      console.log(e.message)
+    })
 })
 const pagination = {
   onChange: (page: number) => {
-    console.log(page);
+    console.log(page)
   },
   pageSize: 3,
-};
-
+}
 
 const randNum = (num: number) => {
   return Math.floor(Math.random() * num + 1)
 }
-
 </script>
 
-
-<style lang='scss' scoped >
+<style lang="scss" scoped>
 .ant-list-item {
   position: relative;
   overflow: hidden;
