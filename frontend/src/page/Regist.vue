@@ -6,25 +6,26 @@
           <template #title>
             <h3>注册</h3>
           </template>
-          <a-form :model="formState" name="normal_login" class="login-form" @finish="onFinish"
-            @finishFailed="onFinishFailed">
+          <a-form
+            :model="formState"
+            name="normal_login"
+            class="login-form"
+            @finish="onFinish"
+            @finishFailed="onFinishFailed"
+          >
             <a-form-item label="用户名" name="userName">
-              <a-input v-model:value="formState.userName">
-              </a-input>
+              <a-input v-model:value="formState.userName"></a-input>
             </a-form-item>
 
             <a-form-item label="密码" name="password">
-              <a-input-password v-model:value="formState.password">
-              </a-input-password>
+              <a-input-password v-model:value="formState.password"></a-input-password>
             </a-form-item>
 
             <a-form-item label="真实姓名" name="realName">
-              <a-input v-model:value="formState.realName">
-              </a-input>
+              <a-input v-model:value="formState.realName"></a-input>
             </a-form-item>
 
-
-            <a-form-item name='age' label="Age" :rules="[{ type: 'number', min: 2, max: 99 }]">
+            <a-form-item name="age" label="Age" :rules="[{ type: 'number', min: 2, max: 99 }]">
               <a-input-number v-model:value="formState.age" />
             </a-form-item>
 
@@ -41,45 +42,58 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { RegistType } from '@/type';
-import { message } from 'ant-design-vue';
-import { reactive, computed, getCurrentInstance, ref, toRaw } from 'vue';
-import router from '../router';
-import { randomString } from '../utils';
+import { STATUS } from '@/api/status'
+import type { RegistType } from '@/type'
+import { message } from 'ant-design-vue'
+import { reactive, computed, getCurrentInstance, ref, toRaw } from 'vue'
+import router from '../router'
+import { randomString } from '../utils'
 const formState = reactive<RegistType>({
   uid: randomString(),
   userName: '',
   password: '',
   age: '',
-  realName: ''
-});
+  realName: '',
+})
 const spinning = ref<Boolean>(false)
 const loading = ref<Boolean>(false)
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 
 const onFinish = (values: any) => {
-  console.log('Success:', values);
-  request.post('api/user/register', toRaw(formState)).then((res: Record<string, any>) => {
-    if (res.status === 200) {
-      loading.value = true
-      spinning.value = true
-      message.success('注册成功，即将跳转至登录页')
-      setTimeout(() => {
-        router.push('/login')
-      }, 1000)
-    }
-  }).catch((e: any) => {
-    console.log(e.message);
-  })
-};
+  console.log('Success:', values)
+  request
+    .post('/users/register', toRaw(formState))
+    .then((res: Record<string, any>) => {
+      console.log(res.data)
+      const { code } = res.data
+      if (code === STATUS.POST_SUCCESS) {
+        // 注册成功
+        loading.value = true
+        spinning.value = true
+        message.success('注册成功，即将跳转至登录页')
+        setTimeout(() => {
+          router.push('/login')
+        }, 1000)
+      } else if (code === STATUS.POST_FAIL) {
+        // 注册失败
+        message.error('注册失败')
+      }
+    })
+    .catch((e: any) => {
+      console.log(e.message)
+    })
+}
 
 const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo);
-};
+  console.log('Failed:', errorInfo)
+}
 const disabled = computed(() => {
-  return !(formState.userName && formState.password && formState.realName && formState.age) || loading.value;
-});
+  return (
+    !(formState.userName && formState.password && formState.realName && formState.age) ||
+    loading.value
+  )
+})
 </script>
 <style lang="scss" scoped>
 .regist-container {
@@ -128,4 +142,3 @@ const disabled = computed(() => {
   position: relative;
 }
 </style>
-
