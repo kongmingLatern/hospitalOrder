@@ -78,11 +78,7 @@ onMounted(() => {
 
 const onDelete = (orderId: string) => {
   request
-    .get('/api/order/delete', {
-      params: {
-        orderId,
-      },
-    })
+    .delete('/orders/' + orderId)
     .then((res: Record<string, any>) => {
       dataSource = dataSource.filter(item => item.orderId !== orderId)
       message.success('删除成功')
