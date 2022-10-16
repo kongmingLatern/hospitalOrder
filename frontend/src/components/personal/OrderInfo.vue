@@ -50,7 +50,7 @@ getData()
 function getData() {
   request.get('/orders/getByOrderId/' + params.orderId).then((res: Record<string, any>) => {
     spinning.value = false
-    orderList.push(res.data)
+    orderList.push(res.data.data)
   })
 }
 const cancelOrder = async (orderId: string) => {
