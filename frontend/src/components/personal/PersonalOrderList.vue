@@ -33,19 +33,13 @@ const data = reactive<OrderListType[]>([])
 
 onMounted(() => {
   request
-    .get('/users/getByUid', {
-      params: {
-        uid: localStorage.getItem('uid') ?? '',
-      },
-    })
+    .get('/orders/getByUid/' + localStorage.getItem('uid') ?? '')
     .then((res: Record<string, any>) => {
-      console.log(res)
       spinning.value = false
-      const lists = res.data
+      const lists = res.data.data
       lists.forEach((list: OrderListType) => {
         data.push(formatObject(list) as OrderListType)
       })
-      console.log(res.data)
     })
     .catch((e: any) => {
       console.log(e.message)
