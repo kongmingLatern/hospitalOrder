@@ -124,7 +124,7 @@ const onOk = () => {
         .put('/rooms', toRaw(formState))
         .then((res: any) => {
           const { code, msg } = res.data
-          if (code === STATUS.DELETE_SUCCESS) {
+          if (code === STATUS.PUT_SUCCESS) {
             message.success(msg)
             setTimeout(() => {
               router.go(0)
