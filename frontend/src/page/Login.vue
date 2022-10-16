@@ -64,7 +64,6 @@ const request = (instance?.proxy as any).$request!
 
 const onFinish = (values: any) => {
   const { username: userName, password } = formState
-  console.log(toRaw(formState))
   request
     .post('/users/login', {
       userName,
