@@ -136,11 +136,7 @@ onMounted(() => {
 })
 const onDelete = (uid: string) => {
   request
-    .get('api/user/delete', {
-      params: {
-        uid,
-      },
-    })
+    .delete('/users/' + uid)
     .then((res: Record<string, any>) => {
       const { message: msg } = res.data
       dataSource = dataSource.filter(item => item.uid !== uid)
