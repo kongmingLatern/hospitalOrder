@@ -93,13 +93,9 @@ onMounted(() => {
 
 const onDelete = (rid: string) => {
   request
-    .get('api/room/delete', {
-      params: {
-        rid,
-      },
-    })
+    .delete('/rooms' + rid)
     .then((res: Record<string, any>) => {
-      const { message: msg } = res.data
+      const { message: msg } = res.data.data
       dataSource = dataSource.filter(item => item.rid !== rid)
       message.success(msg)
       setTimeout(() => {
@@ -119,9 +115,8 @@ const onOk = () => {
   ;(formRef as any)?.value
     .validateFields()
     .then((values: any) => {
-      // TODO: 表单不为空 判断
       request
-        .post('/api/room/change', toRaw(formState))
+        .put('/rooms', toRaw(formState))
         .then((res: any) => {
           message.success(res.data.message)
           setTimeout(() => {
