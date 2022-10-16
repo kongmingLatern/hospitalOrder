@@ -47,11 +47,7 @@ let data: DoctorType[] = reactive([])
 const { params } = useRoute()
 watchEffect(() => {
   request
-    .get('/doctors/getByRid/', {
-      params: {
-        rid: params.rid,
-      },
-    })
+    .get('/doctors/getByRid/' + params.rid)
     .then((res: Record<string, any>) => {
       console.log(res)
       spinning.value = false
