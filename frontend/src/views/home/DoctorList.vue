@@ -162,9 +162,10 @@ const onOk = () => {
     .validateFields()
     .then((values: any) => {
       request
-        .post('/api/doctor/change', toRaw(formState))
+        .put('/doctors', toRaw(formState))
         .then((res: any) => {
-          message.success(res.data.message)
+          console.log(res)
+          message.success(res.data.data.message)
           setTimeout(() => {
             router.go(0)
           }, 0)
