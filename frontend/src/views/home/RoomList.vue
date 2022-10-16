@@ -43,6 +43,7 @@ import { message, type FormInstance } from 'ant-design-vue'
 import router from '@/router'
 import RoomForm from '../../components/home/RoomForm.vue'
 import { hasOwnProperty } from '@/utils'
+import { STATUS } from '@/api/status'
 
 const layout = {
   labelCol: { span: 8 },
@@ -93,14 +94,18 @@ onMounted(() => {
 
 const onDelete = (rid: string) => {
   request
-    .delete('/rooms' + rid)
+    .delete('/rooms/' + rid)
     .then((res: Record<string, any>) => {
-      const { message: msg } = res.data.data
-      dataSource = dataSource.filter(item => item.rid !== rid)
-      message.success(msg)
-      setTimeout(() => {
-        router.go(0)
-      }, 0)
+      const { code, msg } = res.data
+      if (code === STATUS.DELETE_SUCCESS) {
+        dataSource = dataSource.filter(item => item.rid !== rid)
+        message.success(msg)
+        setTimeout(() => {
+          router.go(0)
+        }, 0)
+      } else {
+        message.error(msg)
+      }
     })
     .catch((err: Record<string, any>) => {
       message.error(err.message)
@@ -118,10 +123,15 @@ const onOk = () => {
       request
         .put('/rooms', toRaw(formState))
         .then((res: any) => {
-          message.success(res.data.message)
-          setTimeout(() => {
-            router.go(0)
-          }, 1000)
+          const { code, msg } = res.data
+          if (code === STATUS.DELETE_SUCCESS) {
+            message.success(msg)
+            setTimeout(() => {
+              router.go(0)
+            }, 1000)
+          } else {
+            message.error(msg)
+          }
         })
         .catch((err: any) => {
           message.error(err.data.message)

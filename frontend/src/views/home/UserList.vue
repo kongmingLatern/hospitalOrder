@@ -56,6 +56,7 @@ import UserForm from '../../components/home/UserForm.vue'
 import { message, type FormInstance } from 'ant-design-vue'
 import { formatObject, hasOwnProperty } from '../../utils'
 import router from '@/router'
+import { STATUS } from '@/api/status'
 
 const columns = [
   {
@@ -124,11 +125,16 @@ onMounted(() => {
   request
     .get('/users')
     .then((res: Record<string, any>) => {
-      spinning.value = false
-      const lists = res.data.data
-      lists.forEach((list: UserType) => {
-        dataSource.push(formatObject(list) as UserType)
-      })
+      const { code } = res.data
+      if (code === STATUS.GET_SUCCESS) {
+        spinning.value = false
+        const lists = res.data.data
+        lists.forEach((list: UserType) => {
+          dataSource.push(formatObject(list) as UserType)
+        })
+      } else {
+        message.error('获取用户列表失败')
+      }
     })
     .catch((e: any) => {
       console.log(e.message)
@@ -138,12 +144,16 @@ const onDelete = (uid: string) => {
   request
     .delete('/users/' + uid)
     .then((res: Record<string, any>) => {
-      const { message: msg } = res.data
-      dataSource = dataSource.filter(item => item.uid !== uid)
-      message.success(msg)
-      setTimeout(() => {
-        router.go(0)
-      }, 0)
+      const { code, msg } = res.data
+      if (code === STATUS.DELETE_SUCCESS) {
+        dataSource = dataSource.filter(item => item.uid !== uid)
+        message.success(msg)
+        setTimeout(() => {
+          router.go(0)
+        }, 0)
+      } else {
+        message.error(msg)
+      }
     })
     .catch((err: Record<string, any>) => {
       message.error(err.message)
@@ -175,10 +185,15 @@ const onOk = () => {
       request
         .put('/users', toRaw(formState))
         .then((res: any) => {
-          message.success(res.data.message)
-          setTimeout(() => {
-            router.go(0)
-          }, 0)
+          const { code, msg } = res.data
+          if (code === STATUS.PUT_SUCCESS) {
+            message.success(msg)
+            setTimeout(() => {
+              router.go(0)
+            }, 0)
+          } else {
+            message.error(msg)
+          }
         })
         .catch((err: any) => {
           message.error(err.data.message)

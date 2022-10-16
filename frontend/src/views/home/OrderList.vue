@@ -21,6 +21,7 @@ import type { OrderListType } from '@/type'
 import { message } from 'ant-design-vue'
 import { formatObject } from '../../utils'
 import router from '@/router'
+import { STATUS } from '@/api/status'
 
 const columns = [
   {
@@ -80,11 +81,16 @@ const onDelete = (orderId: string) => {
   request
     .delete('/orders/' + orderId)
     .then((res: Record<string, any>) => {
-      dataSource = dataSource.filter(item => item.orderId !== orderId)
-      message.success('删除成功')
-      setTimeout(() => {
-        router.go(0)
-      }, 0)
+      const { code, msg } = res.data
+      if (code === STATUS.DELETE_SUCCESS) {
+        dataSource = dataSource.filter(item => item.orderId !== orderId)
+        message.success(msg)
+        setTimeout(() => {
+          router.go(0)
+        }, 0)
+      } else {
+        message.error('删除失败')
+      }
     })
     .catch((err: string) => {
       message.error(err)

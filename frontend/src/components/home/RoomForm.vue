@@ -25,6 +25,7 @@ import { getCurrentInstance, reactive, ref, toRaw } from 'vue'
 import { message, type FormInstance } from 'ant-design-vue'
 import { randomString } from '../../utils'
 import type { RoomType } from '../../type'
+import { STATUS } from '@/api/status'
 
 const layout = {
   labelCol: { span: 8 },
@@ -52,9 +53,12 @@ const onOk = () => {
       request
         .post('/rooms', toRaw(formState))
         .then((res: any) => {
-          if (res.data.code === 20011) {
+          const { code, msg } = res.data
+          if (code === STATUS.POST_SUCCESS) {
             emit('addRoom', toRaw(formState))
-            message.success('添加成功')
+            message.success(msg)
+          } else {
+            message.error(msg)
           }
         })
         .catch((err: any) => {

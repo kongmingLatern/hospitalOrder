@@ -41,6 +41,7 @@ import { getCurrentInstance, reactive, ref, toRaw } from 'vue'
 import { message, type FormInstance } from 'ant-design-vue'
 import { randomString } from '../../utils'
 import type { DoctorType } from '@/type'
+import { STATUS } from '@/api/status'
 
 const layout = {
   labelCol: { span: 8 },
@@ -79,8 +80,13 @@ const onOk = () => {
       request
         .post('/doctors', toRaw(formState))
         .then((res: any) => {
-          emit('addDoctor', toRaw(formState))
-          message.success(res.data.message)
+          const { code, msg } = res.data
+          if (code === STATUS.POST_SUCCESS) {
+            emit('addDoctor', toRaw(formState))
+            message.success(msg)
+          } else {
+            message.error(msg)
+          }
         })
         .catch((err: any) => {
           message.error(err.data.message)

@@ -59,6 +59,7 @@ import DoctorForm from '../../components/home/DoctorForm.vue'
 import router from '@/router'
 import { message, type FormInstance } from 'ant-design-vue'
 import { formatObject, hasOwnProperty } from '../../utils'
+import { STATUS } from '@/api/status'
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -164,14 +165,18 @@ const onOk = () => {
       request
         .put('/doctors', toRaw(formState))
         .then((res: any) => {
-          console.log(res)
-          message.success(res.data.data.message)
-          setTimeout(() => {
-            router.go(0)
-          }, 0)
+          const { code, msg } = res.data
+          if (code === STATUS.PUT_SUCCESS) {
+            message.success(msg)
+            setTimeout(() => {
+              router.go(0)
+            }, 0)
+          } else {
+            message.error(msg)
+          }
         })
         .catch((err: any) => {
-          message.error(err.data.message)
+          message.error(err.data.msg)
         })
       visible.value = false
     })

@@ -36,6 +36,7 @@ import { getCurrentInstance, reactive, ref, toRaw } from 'vue'
 import { message, type FormInstance } from 'ant-design-vue'
 import { randomString } from '../../utils'
 import type { UserType } from '@/type'
+import { STATUS } from '@/api/status'
 
 const layout = {
   labelCol: { span: 8 },
@@ -74,8 +75,13 @@ const onOk = () => {
       request
         .post('/users/save', toRaw(formState))
         .then((res: any) => {
-          emit('addUser', toRaw(formState))
-          message.success(res.data.message)
+          const { code, msg } = res.data
+          if (code === STATUS.POST_SUCCESS) {
+            emit('addUser', toRaw(formState))
+            message.success(msg)
+          } else {
+            message.error(msg)
+          }
         })
         .catch((err: any) => {
           message.error(err.data.message)

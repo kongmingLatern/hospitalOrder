@@ -48,6 +48,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { STATUS } from '@/api/status'
 import type { LoginType } from '@/type'
 import { message } from 'ant-design-vue'
 import { reactive, computed, ref, getCurrentInstance, toRaw } from 'vue'
@@ -71,8 +72,10 @@ const onFinish = (values: any) => {
     })
     .then((res: any) => {
       console.log(res)
+      const { code } = res.data
+      console.log(code)
       // 登录成功
-      if (res.data.code === 20021) {
+      if (code === STATUS.LOGIN_SUCCESS || code === STATUS.LOGIN_AUTH) {
         // 展示 Loading 信息
         loading.value = true
         const { uid, isAuth, userName } = res.data.data
@@ -90,8 +93,12 @@ const onFinish = (values: any) => {
             router.push('/ordermanager')
           }
         }, 2000)
-      } else if (res.data.code === 20000) {
-        message.error('用户名或密码错误')
+      } else if (code === STATUS.LOGIN_FAIL) {
+        message.error('账号或密码错误')
+      } else if (code === STATUS.LOGIN_BAN) {
+        message.error('账号异常，请联系管理员')
+      } else if (code === STATUS.UNKNOWN_ERROR) {
+        message.error('未知错误')
       }
     })
     .catch((err: Record<string, any>) => {
