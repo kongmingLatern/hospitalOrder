@@ -177,7 +177,7 @@ const onOk = () => {
       console.log('Received values of form: ', values)
       console.log('formState: ', toRaw(formState))
       request
-        .post('/api/user/change', toRaw(formState))
+        .put('/users', toRaw(formState))
         .then((res: any) => {
           message.success(res.data.message)
           setTimeout(() => {
