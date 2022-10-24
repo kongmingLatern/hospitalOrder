@@ -65,7 +65,6 @@ onMounted(() => {
   request
     .get('/orders')
     .then((res: Record<string, any>) => {
-      console.log(res)
       spinning.value = false
       const lists = res.data
       lists.forEach((list: OrderListType) => {
@@ -81,7 +80,7 @@ const onDelete = (orderId: string) => {
   request
     .delete('/orders/' + orderId)
     .then((res: Record<string, any>) => {
-      const { code, msg } = res.data
+      const { code, msg } = res
       if (code === STATUS.DELETE_SUCCESS) {
         dataSource = dataSource.filter(item => item.orderId !== orderId)
         message.success(msg)

@@ -1,6 +1,6 @@
 <template>
   <UserForm @addUser="add" text-right />
-  <a-modal v-model:visible="visible" title="Add" ok-text="Create" cancel-text="Cancel" @ok="onOk">
+  <a-modal v-model:visible="visible" title="修改用户" ok-text="修改" cancel-text="取消" @ok="onOk">
     <a-form
       ref="formRef"
       :model="formState"
@@ -144,7 +144,7 @@ const onDelete = (uid: string) => {
   request
     .delete('/users/' + uid)
     .then((res: Record<string, any>) => {
-      const { code, msg } = res.data
+      const { code, msg } = res
       if (code === STATUS.DELETE_SUCCESS) {
         dataSource = dataSource.filter(item => item.uid !== uid)
         message.success(msg)
@@ -185,7 +185,7 @@ const onOk = () => {
       request
         .put('/users', toRaw(formState))
         .then((res: any) => {
-          const { code, msg } = res.data
+          const { code, msg } = res
           if (code === STATUS.PUT_SUCCESS) {
             message.success(msg)
             setTimeout(() => {
