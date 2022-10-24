@@ -50,7 +50,7 @@ getData()
 function getData() {
   request.get('/orders/getByOrderId/' + params.orderId).then((res: Record<string, any>) => {
     spinning.value = false
-    orderList.push(res.data.data)
+    orderList.push(res.data)
   })
 }
 const cancelOrder = async (orderId: string) => {
@@ -58,7 +58,8 @@ const cancelOrder = async (orderId: string) => {
     orderId,
   })
   const result = await request.get('/users/getByUid/' + localStorage.getItem('uid') ?? '')
-  const { cancelCount } = result.data
+
+  const { cancelCount } = result
 
   if (cancelCount >= 3) {
     message.error('未知错误，请联系管理员,错误码：1001')
@@ -66,10 +67,10 @@ const cancelOrder = async (orderId: string) => {
     router.push('/index')
   }
 
-  message.success(res.data.message)
+  message.success(res.msg)
   setTimeout(() => {
     router.go(0)
-  }, 3000)
+  }, 2000)
 }
 </script>
 

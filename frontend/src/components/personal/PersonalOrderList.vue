@@ -36,7 +36,7 @@ onMounted(() => {
     .get('/orders/getByUid/' + localStorage.getItem('uid') ?? '')
     .then((res: Record<string, any>) => {
       spinning.value = false
-      const lists = res.data.data
+      const lists = res.data
       lists.forEach((list: OrderListType) => {
         data.push(formatObject(list) as OrderListType)
       })
@@ -46,7 +46,6 @@ onMounted(() => {
     })
 })
 const getInfo = (orderId: string) => {
-  console.log(orderId)
   router.push({
     name: 'OrderInfo',
     params: {

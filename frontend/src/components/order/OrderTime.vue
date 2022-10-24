@@ -90,7 +90,6 @@ const confirm = (selectId: string) => {
   request
     .post('/orders', toRaw(result[0]))
     .then((res: Record<string, any>) => {
-      console.log(res)
       message.success('预约成功')
     })
     .catch((err: string) => {

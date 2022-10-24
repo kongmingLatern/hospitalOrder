@@ -49,9 +49,8 @@ watchEffect(() => {
   request
     .get('/doctors/getByRid/' + params.rid)
     .then((res: Record<string, any>) => {
-      console.log(res)
       spinning.value = false
-      const lists = res.data.data
+      const lists = res.data
       lists.forEach((list: DoctorType) => {
         data.push(list)
       })

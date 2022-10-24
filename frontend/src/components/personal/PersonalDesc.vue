@@ -32,11 +32,10 @@ onMounted(() => {
   request
     .get('/users/getByUid/' + uid)
     .then((res: Record<string, any>) => {
-      console.log(res)
       let key: string
-      for (key in res.data.data) {
+      for (key in res.data) {
         if (hasOwnProperty(result, key)) {
-          result[key] = res.data.data[key]
+          result[key] = res.data[key]
         }
       }
     })
