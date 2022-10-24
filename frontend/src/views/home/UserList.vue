@@ -1,15 +1,25 @@
 <template>
   <UserForm @addUser="add" text-right />
-  <a-modal v-model:visible="visible" title="Add" ok-text="Create" cancel-text="Cancel" @ok="onOk">
-    <a-form ref="formRef" :model="formState" v-bind="layout" userName="nest-messages"
-      :validate-messages="validateMessages" @finish="onFinish" flex flex-wrap flex-col content-start>
+  <a-modal v-model:visible="visible" title="修改用户" ok-text="修改" cancel-text="取消" @ok="onOk">
+    <a-form
+      ref="formRef"
+      :model="formState"
+      v-bind="layout"
+      userName="nest-messages"
+      :validate-messages="validateMessages"
+      @finish="onFinish"
+      flex
+      flex-wrap
+      flex-col
+      content-start
+    >
       <a-form-item userName="userName" label="Username">
         <a-input v-model:value="formState.userName" />
       </a-form-item>
       <a-form-item name="password" label="Password">
         <a-input v-model:value="formState.password" />
       </a-form-item>
-      <a-form-item name='age' label="Age" :rules="[{ type: 'number', min: 2, max: 99 }]">
+      <a-form-item name="age" label="Age" :rules="[{ type: 'number', min: 2, max: 99 }]">
         <a-input-number v-model:value="formState.age" />
       </a-form-item>
       <a-form-item name="realName" label="realName">
@@ -25,7 +35,11 @@
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'operation'">
           <a-space>
-            <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.uid)">
+            <a-popconfirm
+              v-if="dataSource.length"
+              title="Sure to delete?"
+              @confirm="onDelete(record.uid)"
+            >
               <a-button type="danger">删除</a-button>
             </a-popconfirm>
             <a-button type="primary" @click="changeInfo(record)">修改</a-button>
@@ -36,12 +50,13 @@
   </a-spin>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue';
-import type { UserType } from '@/type';
-import UserForm from '../../components/home/UserForm.vue';
-import { message, type FormInstance } from 'ant-design-vue';
-import { formatObject, hasOwnProperty } from '../../utils';
-import router from '@/router';
+import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue'
+import type { UserType } from '@/type'
+import UserForm from '../../components/home/UserForm.vue'
+import { message, type FormInstance } from 'ant-design-vue'
+import { formatObject, hasOwnProperty } from '../../utils'
+import router from '@/router'
+import { STATUS } from '@/api/status'
 
 const columns = [
   {
@@ -80,24 +95,24 @@ const columns = [
     title: '操作',
     dataIndex: 'operation',
   },
-];
+]
 const spinning = ref<Boolean>(true)
-let dataSource: UserType[] = reactive([]);
+let dataSource: UserType[] = reactive([])
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 const visible = ref<Boolean>(false)
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
-};
+}
 
 const validateMessages = {
   required: '${label} is required!',
   number: {
     type: '${label} is not a validate number!',
-  }
-};
-const formRef = ref<FormInstance>();
+  },
+}
+const formRef = ref<FormInstance>()
 let formState: UserType = reactive({
   uid: '',
   userName: '',
@@ -105,37 +120,48 @@ let formState: UserType = reactive({
   password: '',
   realName: '',
   isAuth: undefined,
-});
+})
 onMounted(() => {
-  request.get('/api/user/selectAll').then((res: Record<string, any>) => {
-    spinning.value = false
-    const lists = res.data
-    lists.forEach((list: UserType) => {
-      dataSource.push(formatObject(list) as UserType)
+  request
+    .get('/users')
+    .then((res: Record<string, any>) => {
+      const { code } = res
+      if (code === STATUS.GET_SUCCESS) {
+        spinning.value = false
+        const lists = res.data
+        lists.forEach((list: UserType) => {
+          dataSource.push(formatObject(list) as UserType)
+        })
+      } else {
+        message.error('获取用户列表失败')
+      }
     })
-  }).catch((e: any) => {
-    console.log(e.message);
-  })
+    .catch((e: any) => {
+      console.log(e.message)
+    })
 })
 const onDelete = (uid: string) => {
-  request.get('api/user/delete', {
-    params: {
-      uid
-    }
-  }).then((res: Record<string, any>) => {
-    const { message: msg } = res.data
-    dataSource = dataSource.filter(item => item.uid !== uid)
-    message.success(msg)
-    setTimeout(() => {
-      router.go(0)
-    }, 0)
-  }).catch((err: Record<string, any>) => {
-    message.error(err.message)
-  })
-};
+  request
+    .delete('/users/' + uid)
+    .then((res: Record<string, any>) => {
+      const { code, msg } = res
+      if (code === STATUS.DELETE_SUCCESS) {
+        dataSource = dataSource.filter(item => item.uid !== uid)
+        message.success(msg)
+        setTimeout(() => {
+          router.go(0)
+        }, 0)
+      } else {
+        message.error(msg)
+      }
+    })
+    .catch((err: Record<string, any>) => {
+      message.error(err.message)
+    })
+}
 
 const add = (formState: UserType) => {
-  console.log('formState', formState);
+  console.log('formState', formState)
   dataSource.push(formatObject(formState) as UserType)
 }
 const changeInfo = (item: Record<string, any>) => {
@@ -151,31 +177,38 @@ const changeInfo = (item: Record<string, any>) => {
   }
 }
 const onOk = () => {
-  (formRef as any)?.value
+  ;(formRef as any)?.value
     .validateFields()
     .then((values: any) => {
-      console.log('Received values of form: ', values);
-      console.log('formState: ', toRaw(formState));
-      request.post('/api/user/change', toRaw(formState)).then((res: any) => {
-        message.success(res.data.message)
-        setTimeout(() => {
-          router.go(0)
-        }, 0)
-      }).catch((err: any) => {
-        message.error(err.data.message)
-      })
-      visible.value = false;
+      console.log('Received values of form: ', values)
+      console.log('formState: ', toRaw(formState))
+      request
+        .put('/users', toRaw(formState))
+        .then((res: any) => {
+          const { code, msg } = res
+          if (code === STATUS.PUT_SUCCESS) {
+            message.success(msg)
+            setTimeout(() => {
+              router.go(0)
+            }, 0)
+          } else {
+            message.error(msg)
+          }
+        })
+        .catch((err: any) => {
+          message.error(err.data.message)
+        })
+      visible.value = false
     })
     .catch((info: string) => {
-      console.log('Validate Failed:', info);
-    });
-};
-
-const onFinish = (e: MouseEvent) => {
-  console.log(e);
-  console.log('onFinish');
+      console.log('Validate Failed:', info)
+    })
 }
 
+const onFinish = (e: MouseEvent) => {
+  console.log(e)
+  console.log('onFinish')
+}
 </script>
 <style lang="scss" scoped>
 .editable-cell {

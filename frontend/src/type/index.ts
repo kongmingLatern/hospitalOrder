@@ -1,7 +1,7 @@
 export interface LoginType {
   username: string;
   password: string;
-  remember: boolean;
+  remember?: boolean;
 }
 export interface RegistType {
   uid: string,

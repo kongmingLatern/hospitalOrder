@@ -1,16 +1,27 @@
 import axios from 'axios';
-// import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-// import axios, from 'axios';
-// import qs from 'qs'
-// import { showMessage } from "./status";
-// import { ElMessage } from 'element-plus'
-// import { IResponse, ILogin } from './type';
-const instance = axios.create({
+import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+// const store =
+const http = axios.create({
   // baseURL: 'https://www.fastmock.site/mock/9bbe2ba655977b9b564d9bfa05371dcc/api',
-  baseURL: '/api'
+  baseURL: '/api',
+  timeout: 5000
 });
 
-export default instance
+
+http.interceptors.request.use((config: AxiosRequestConfig) => {
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+})
+
+http.interceptors.response.use((response: AxiosResponse) => {
+  return response.data
+}, (error) => {
+  const { response } = error;
+  return Promise.reject(response.data)
+})
+
+export default http
 
 // // axios实例拦截响应
 // axiosInstance.interceptors.response.use(

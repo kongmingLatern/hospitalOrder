@@ -2,9 +2,7 @@
   <a-table :columns="columns" :data-source="data" :pagination="false">
     <template #headerCell="{ column }">
       <template v-if="column.key === 'time'">
-        <span>
-          Time
-        </span>
+        <span>Time</span>
       </template>
     </template>
 
@@ -16,10 +14,14 @@
       </template>
       <template v-else-if="column.key === 'action'">
         <span>
-          <a-popconfirm title="是否确定预约" ok-text="是" cancel-text="否" @confirm="confirm(record.key)" @cancel="cancel">
-            <a-button type="primary">
-              预约
-            </a-button>
+          <a-popconfirm
+            title="是否确定预约"
+            ok-text="是"
+            cancel-text="否"
+            @confirm="confirm(record.key)"
+            @cancel="cancel"
+          >
+            <a-button type="primary">预约</a-button>
           </a-popconfirm>
         </span>
       </template>
@@ -27,12 +29,12 @@
   </a-table>
 </template>
 <script lang="ts" setup>
-import { message } from 'ant-design-vue';
-import { getCurrentInstance, reactive, ref, toRaw } from 'vue';
-import { getStartEndTime, randomString } from '../../utils';
+import { message } from 'ant-design-vue'
+import { getCurrentInstance, reactive, ref, toRaw } from 'vue'
+import { getStartEndTime, randomString } from '../../utils'
 
 const props = defineProps<{
-  doctorId: string,
+  doctorId: string
   rid: string
 }>()
 
@@ -46,7 +48,7 @@ const columns = [
     title: 'Action',
     key: 'action',
   },
-];
+]
 
 const data = [
   {
@@ -56,8 +58,8 @@ const data = [
   {
     key: '2',
     time: '13:00 - 18:00',
-  }
-];
+  },
+]
 
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
@@ -84,26 +86,23 @@ const confirm = (selectId: string) => {
   } else if (selectId === '2') {
     // message.success('您预约时间为：13:00 - 18:00');
   }
-  request.post('api/order/add', toRaw(result)).then((res: Record<string, any>) => {
-    const { message: msg } = res.data
-    if (msg === '预约成功') {
-      message.success(msg)
-    } else {
-      message.error(msg);
-    }
-  }).catch((err: string) => {
-    message.error('预约失败');
-  })
-};
+
+  request
+    .post('/orders', toRaw(result[0]))
+    .then((res: Record<string, any>) => {
+      message.success('预约成功')
+    })
+    .catch((err: string) => {
+      message.error('预约失败')
+    })
+}
 
 const cancel = (e: MouseEvent) => {
-  message.success('已取消预约');
-};
-
+  message.success('已取消预约')
+}
 </script>
 
-
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 :deep(.ant-table-cell) {
   padding: 5px;
   text-align: center;

@@ -1,12 +1,25 @@
 <template>
   <a-spin :spinning="spinning">
-    <a-descriptions title="预约信息" bordered class="desc-container" v-for="item in orderList" :key="item.uid" :column="1">
-      <a-descriptions-item label="预约单号">{{item.orderId}}</a-descriptions-item>
-      <a-descriptions-item label="预约时间">{{item.orderTime}}</a-descriptions-item>
-      <a-descriptions-item label="预约医生">{{item.doctorName}}</a-descriptions-item>
+    <a-descriptions
+      title="预约信息"
+      bordered
+      class="desc-container"
+      v-for="item in orderList"
+      :key="item.uid"
+      :column="1"
+    >
+      <a-descriptions-item label="预约单号">{{ item.orderId }}</a-descriptions-item>
+      <a-descriptions-item label="预约时间">{{ item.orderTime }}</a-descriptions-item>
+      <a-descriptions-item label="预约医生">{{ item.doctorName }}</a-descriptions-item>
       <a-descriptions-item label="是否取消预约" :span="3">
-        <span>{{item.isCancel ? '是' : '否'}}</span>
-        <a-button v-if="!item.isCancel" type="danger" class="position" @click="cancelOrder(item.orderId)">取消预约
+        <span>{{ item.isCancel ? '是' : '否' }}</span>
+        <a-button
+          v-if="!item.isCancel"
+          type="danger"
+          class="position"
+          @click="cancelOrder(item.orderId)"
+        >
+          取消预约
         </a-button>
       </a-descriptions-item>
       <a-descriptions-item label="是否完成">
@@ -18,12 +31,12 @@
   </a-spin>
 </template>
 
-<script lang='ts' setup>
-import router from '@/router';
-import { message } from 'ant-design-vue';
-import { getCurrentInstance, reactive, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import type { OrderListType } from '../../type';
+<script lang="ts" setup>
+import router from '@/router'
+import { message } from 'ant-design-vue'
+import { getCurrentInstance, reactive, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import type { OrderListType } from '../../type'
 
 const orderList = reactive<OrderListType[]>([])
 const spinning = ref<Boolean>(true)
@@ -35,29 +48,18 @@ const { params } = useRoute()
 
 getData()
 function getData() {
-  request.get('api/order/selectByOrderId', {
-    params: {
-      orderId: params.orderId
-    }
-  }).then((res: Record<string, any>) => {
-    spinning.value = false;
-    orderList.push(res.data);
-  });
+  request.get('/orders/getByOrderId/' + params.orderId).then((res: Record<string, any>) => {
+    spinning.value = false
+    orderList.push(res.data)
+  })
 }
 const cancelOrder = async (orderId: string) => {
-  const res = await request.get('api/order/changeIsCancel', {
-    params: {
-      orderId,
-      isCancel: 1
-    }
+  const res = await request.post('/orders/cancelOrder', {
+    orderId,
   })
-  const result = await request.get('api/user/selectByUid', {
-    params: {
-      uid: localStorage.getItem('uid') ?? ''
-    }
-  })
+  const result = await request.get('/users/getByUid/' + localStorage.getItem('uid') ?? '')
 
-  const { cancelCount } = result.data
+  const { cancelCount } = result
 
   if (cancelCount >= 3) {
     message.error('未知错误，请联系管理员,错误码：1001')
@@ -65,14 +67,14 @@ const cancelOrder = async (orderId: string) => {
     router.push('/index')
   }
 
-  message.success(res.data.message);
+  message.success(res.msg)
   setTimeout(() => {
     router.go(0)
-  }, 3000)
+  }, 2000)
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .position {
   position: absolute;
   right: 50px;

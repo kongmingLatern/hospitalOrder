@@ -3,9 +3,9 @@
     <a-list bordered :data-source="data" class="left" :pagination="pagination">
       <template #renderItem="{ item, index }">
         <a-list-item>
-          <span>{{index + 1}} :</span>
+          <span>{{ index + 1 }} :</span>
           <span @click="getInfo(item.orderId)">{{ item.orderTime }}</span>
-          <a-tag v-if="item.isFinish ==='是'" color="#87d068">已完成</a-tag>
+          <a-tag v-if="item.isFinish === '是'" color="#87d068">已完成</a-tag>
           <a-tag v-else-if="item.isCancel === '是'" color="#f50">已取消</a-tag>
           <a-tag v-else color="#108ee9">待完成</a-tag>
         </a-list-item>
@@ -20,11 +20,11 @@
   </div>
 </template>
 
-<script setup lang='ts'>
-import router from '@/router';
-import type { OrderListType } from '@/type';
-import { formatObject } from '@/utils';
-import { getCurrentInstance, onMounted, reactive, ref } from 'vue';
+<script setup lang="ts">
+import router from '@/router'
+import type { OrderListType } from '@/type'
+import { formatObject } from '@/utils'
+import { getCurrentInstance, onMounted, reactive, ref } from 'vue'
 
 const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
@@ -32,28 +32,25 @@ const spinning = ref<Boolean>(true)
 const data = reactive<OrderListType[]>([])
 
 onMounted(() => {
-  request.get('/api/order/selectByUid', {
-    params: {
-      uid: localStorage.getItem('uid') ?? ''
-    }
-  }).then((res: Record<string, any>) => {
-    spinning.value = false
-    const lists = res.data
-    lists.forEach((list: OrderListType) => {
-      data.push(formatObject(list) as OrderListType)
+  request
+    .get('/orders/getByUid/' + localStorage.getItem('uid') ?? '')
+    .then((res: Record<string, any>) => {
+      spinning.value = false
+      const lists = res.data
+      lists.forEach((list: OrderListType) => {
+        data.push(formatObject(list) as OrderListType)
+      })
     })
-    console.log(res.data);
-  }).catch((e: any) => {
-    console.log(e.message);
-  })
+    .catch((e: any) => {
+      console.log(e.message)
+    })
 })
 const getInfo = (orderId: string) => {
-  console.log(orderId);
   router.push({
     name: 'OrderInfo',
     params: {
-      orderId
-    }
+      orderId,
+    },
   })
   setTimeout(() => {
     router.go(0)
@@ -61,10 +58,10 @@ const getInfo = (orderId: string) => {
 }
 const pagination = {
   onChange: (page: number) => {
-    console.log(page);
+    console.log(page)
   },
   pageSize: 10,
-};
+}
 </script>
 
 <style scoped>
