@@ -125,10 +125,10 @@ onMounted(() => {
   request
     .get('/users')
     .then((res: Record<string, any>) => {
-      const { code } = res.data
+      const { code } = res
       if (code === STATUS.GET_SUCCESS) {
         spinning.value = false
-        const lists = res.data.data
+        const lists = res.data
         lists.forEach((list: UserType) => {
           dataSource.push(formatObject(list) as UserType)
         })

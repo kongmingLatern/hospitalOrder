@@ -36,11 +36,10 @@ const request = (instance?.proxy as any).$request!
 request
   .get('/users/getByUid/' + localStorage.getItem('uid') ?? '')
   .then((res: Record<string, any>) => {
-    console.log(res)
     let key: string
-    for (key in res.data.data) {
+    for (key in res.data) {
       if (hasOwnProperty(userInfo, key)) {
-        userInfo[key] = res.data.data[key]
+        userInfo[key] = res.data[key]
       }
     }
   })

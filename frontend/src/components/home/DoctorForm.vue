@@ -80,7 +80,7 @@ const onOk = () => {
       request
         .post('/doctors', toRaw(formState))
         .then((res: any) => {
-          const { code, msg } = res.data
+          const { code, msg } = res
           if (code === STATUS.POST_SUCCESS) {
             emit('addDoctor', toRaw(formState))
             message.success(msg)

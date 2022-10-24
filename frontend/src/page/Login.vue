@@ -48,11 +48,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { STATUS } from '@/api/status'
 import type { LoginType } from '@/type'
 import { message } from 'ant-design-vue'
 import { reactive, computed, ref, getCurrentInstance, toRaw } from 'vue'
 import router from '../router'
+import { useLogin } from '../stores/login'
 const formState = reactive<LoginType>({
   username: '',
   password: '',
@@ -60,55 +60,63 @@ const formState = reactive<LoginType>({
 
 const spinning = ref<Boolean>(false)
 const loading = ref<Boolean>(false)
-const instance = getCurrentInstance()
-const request = (instance?.proxy as any).$request!
 
-const onFinish = (values: any) => {
+const onFinish = async (values: any) => {
+  const store = useLogin()
   const { username: userName, password } = formState
-  request
-    .post('/users/login', {
-      userName,
-      password,
-    })
-    .then((res: any) => {
-      console.log(res)
-      const { code } = res.data
-      console.log(code)
-      // 登录成功
-      if (code === STATUS.LOGIN_SUCCESS || code === STATUS.LOGIN_AUTH) {
-        // 展示 Loading 信息
-        loading.value = true
-        const { uid, isAuth, userName } = res.data.data
-        // 存入缓存信息
-        localStorage.setItem('uid', uid)
-        localStorage.setItem('isAuth', isAuth)
-        localStorage.setItem('username', userName)
+  try {
+    await store.loginUser(userName, password)
+    message.success('登录成功')
+    setTimeout(() => {
+      router.push('/doctor')
+    }, 1000)
+  } catch (err: any) {
+    message.error(err.msg)
+  }
+  // request
+  //   .post('/users/login', {
+  //     userName,
+  //     password,
+  //   })
+  //   .then((res: any) => {
+  //     console.log(res)
+  //     const { code } = res.data
+  //     console.log(code)
+  //     // 登录成功
+  //     if (code === STATUS.LOGIN_SUCCESS || code === STATUS.LOGIN_AUTH) {
+  //       // 展示 Loading 信息
+  //       loading.value = true
+  //       const { uid, isAuth, userName } = res.data.data
+  //       // 存入缓存信息
+  //       localStorage.setItem('uid', uid)
+  //       localStorage.setItem('isAuth', isAuth)
+  //       localStorage.setItem('username', userName)
 
-        setTimeout(() => {
-          if (isAuth) {
-            message.success('登录成功，欢迎您管理员，即将跳转到后台管理')
-            router.push('/doctor')
-          } else {
-            message.success('登录成功')
-            router.push('/ordermanager')
-          }
-        }, 2000)
-      } else if (code === STATUS.LOGIN_FAIL) {
-        message.error('账号或密码错误')
-      } else if (code === STATUS.LOGIN_BAN) {
-        message.error('账号异常，请联系管理员')
-      } else if (code === STATUS.UNKNOWN_ERROR) {
-        message.error('未知错误')
-      }
-    })
-    .catch((err: Record<string, any>) => {
-      const { status } = err.response
-      if (status === 400) {
-        console.log(err.response)
-        const { message: msg } = err.response.data
-        message.error(msg)
-      }
-    })
+  //       setTimeout(() => {
+  //         if (isAuth) {
+  //           message.success('登录成功，欢迎您管理员，即将跳转到后台管理')
+  //           router.push('/doctor')
+  //         } else {
+  //           message.success('登录成功')
+  //           router.push('/ordermanager')
+  //         }
+  //       }, 2000)
+  //     } else if (code === STATUS.LOGIN_FAIL) {
+  //       message.error('账号或密码错误')
+  //     } else if (code === STATUS.LOGIN_BAN) {
+  //       message.error('账号异常，请联系管理员')
+  //     } else if (code === STATUS.UNKNOWN_ERROR) {
+  //       message.error('未知错误')
+  //     }
+  //   })
+  //   .catch((err: Record<string, any>) => {
+  //     const { status } = err.response
+  //     if (status === 400) {
+  //       console.log(err.response)
+  //       const { message: msg } = err.response.data
+  //       message.error(msg)
+  //     }
+  //   })
 }
 
 const onFinishFailed = (errorInfo: any) => {

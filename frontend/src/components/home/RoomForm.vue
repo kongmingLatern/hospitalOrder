@@ -53,7 +53,7 @@ const onOk = () => {
       request
         .post('/rooms', toRaw(formState))
         .then((res: any) => {
-          const { code, msg } = res.data
+          const { code, msg } = res
           if (code === STATUS.POST_SUCCESS) {
             emit('addRoom', toRaw(formState))
             message.success(msg)

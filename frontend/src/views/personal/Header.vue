@@ -33,7 +33,7 @@ const realName = ref<string>('')
 onMounted(async () => {
   const res = await request.get('/users/getByUid/' + uid)
   console.log(res)
-  realName.value = res.data.data.realName
+  realName.value = res.data.realName
 })
 
 const exit = () => {

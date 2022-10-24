@@ -75,7 +75,7 @@ const onOk = () => {
       request
         .post('/users/save', toRaw(formState))
         .then((res: any) => {
-          const { code, msg } = res.data
+          const { code, msg } = res
           if (code === STATUS.POST_SUCCESS) {
             emit('addUser', toRaw(formState))
             message.success(msg)

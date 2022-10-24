@@ -67,7 +67,7 @@ onMounted(() => {
     .then((res: Record<string, any>) => {
       console.log(res)
       spinning.value = false
-      const lists = res.data.data
+      const lists = res.data
       lists.forEach((list: OrderListType) => {
         dataSource.push(formatObject(list) as OrderListType)
       })

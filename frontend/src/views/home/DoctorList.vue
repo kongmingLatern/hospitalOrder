@@ -1,6 +1,6 @@
 <template>
   <DoctorForm @addDoctor="add" text-right />
-  <a-modal v-model:visible="visible" title="Add" ok-text="Create" cancel-text="Cancel" @ok="onOk">
+  <a-modal v-model:visible="visible" title="修改医生" ok-text="完成" cancel-text="取消" @ok="onOk">
     <a-form
       ref="formRef"
       :model="formState"
@@ -125,7 +125,7 @@ onMounted(() => {
     .get('/doctors')
     .then((res: Record<string, any>) => {
       spinning.value = false
-      const lists = res.data.data
+      const lists = res.data
       lists.forEach((list: DoctorType) => {
         dataSource.push(list)
       })
@@ -139,8 +139,7 @@ const onDelete = (doctorId: string) => {
   request
     .delete('/doctors/' + doctorId)
     .then((res: Record<string, any>) => {
-      console.log(res)
-      const { message: msg } = res.data
+      const { msg } = res
       dataSource = dataSource.filter(item => item.doctorId !== doctorId)
       message.success(msg)
       setTimeout(() => {
@@ -165,7 +164,7 @@ const onOk = () => {
       request
         .put('/doctors', toRaw(formState))
         .then((res: any) => {
-          const { code, msg } = res.data
+          const { code, msg } = res
           if (code === STATUS.PUT_SUCCESS) {
             message.success(msg)
             setTimeout(() => {

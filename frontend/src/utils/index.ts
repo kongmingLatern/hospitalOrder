@@ -98,3 +98,6 @@ export function isNotEmpty(data: any): boolean {
 export const findTestWrapper = (wrapper: VueWrapper<any>, tag: string): any => {
   return wrapper.findAll(`[data-test="${tag}"]`)
 }
+
+
+export * from './Login'

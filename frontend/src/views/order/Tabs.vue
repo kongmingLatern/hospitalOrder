@@ -22,7 +22,7 @@ const tabs = reactive<TabType[]>([])
 
 onMounted(async () => {
   const res = await request.get('/rooms')
-  const lists = res.data.data
+  const lists = res.data
   lists.forEach((list: TabType) => {
     tabs.push(list)
   })

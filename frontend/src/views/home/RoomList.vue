@@ -82,7 +82,7 @@ onMounted(() => {
     .get('/rooms')
     .then((res: Record<string, any>) => {
       spinning.value = false
-      const lists = res.data.data
+      const lists = res.data
       lists.forEach((list: RoomType) => {
         dataSource.push(list)
       })

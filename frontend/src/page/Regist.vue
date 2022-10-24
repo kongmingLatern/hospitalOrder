@@ -65,8 +65,7 @@ const onFinish = (values: any) => {
   request
     .post('/users/register', toRaw(formState))
     .then((res: Record<string, any>) => {
-      console.log(res.data)
-      const { code } = res.data
+      const { code } = res
       if (code === STATUS.POST_SUCCESS) {
         // 注册成功
         loading.value = true
