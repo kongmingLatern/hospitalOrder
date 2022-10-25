@@ -61,7 +61,6 @@ const instance = getCurrentInstance()
 const request = (instance?.proxy as any).$request!
 
 const onFinish = (values: any) => {
-  console.log('Success:', values)
   request
     .post('/users/register', toRaw(formState))
     .then((res: Record<string, any>) => {
@@ -74,13 +73,12 @@ const onFinish = (values: any) => {
         setTimeout(() => {
           router.push('/login')
         }, 1000)
-      } else if (code === STATUS.POST_FAIL) {
-        // 注册失败
-        message.error('注册失败')
+      } else {
+        message.error(res.msg)
       }
     })
     .catch((e: any) => {
-      console.log(e.message)
+      message.error(e.msg)
     })
 }
 

@@ -33,7 +33,7 @@
 
 <script lang="ts" setup>
 import router from '@/router'
-import { message } from 'ant-design-vue'
+import { message, notification } from 'ant-design-vue'
 import { getCurrentInstance, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import type { OrderListType } from '../../type'
@@ -59,18 +59,27 @@ const cancelOrder = async (orderId: string) => {
   })
   const result = await request.get('/users/getByUid/' + localStorage.getItem('uid') ?? '')
 
-  const { cancelCount } = result
+  const { cancelCount } = result.data
 
   if (cancelCount >= 3) {
     message.error('未知错误，请联系管理员,错误码：1001')
     localStorage.clear()
     router.push('/index')
+  } else if (cancelCount === 2) {
+    // 提示警告信息
+    openNotification()
   }
 
   message.success(res.msg)
   setTimeout(() => {
     router.go(0)
-  }, 2000)
+  }, 3000)
+}
+const openNotification = () => {
+  notification.open({
+    message: '警告',
+    description: '您已取消两次预约了，再次取消预约您的账号会遭到封禁。',
+  })
 }
 </script>
 

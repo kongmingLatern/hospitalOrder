@@ -29,6 +29,7 @@
   </a-table>
 </template>
 <script lang="ts" setup>
+import { STATUS } from '@/api/status'
 import { message } from 'ant-design-vue'
 import { getCurrentInstance, reactive, ref, toRaw } from 'vue'
 import { getStartEndTime, randomString } from '../../utils'
@@ -90,7 +91,12 @@ const confirm = (selectId: string) => {
   request
     .post('/orders', toRaw(result[0]))
     .then((res: Record<string, any>) => {
-      message.success('预约成功')
+      const { code } = res
+      if (code === STATUS.POST_FAIL) {
+        message.error(res.msg)
+      } else {
+        message.success(res.msg)
+      }
     })
     .catch((err: string) => {
       message.error('预约失败')
