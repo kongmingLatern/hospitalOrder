@@ -21,21 +21,22 @@
   </div>
 </template>
 
-<script lang='ts' setup>
-import UserCard from '@/views/order/UserCard.vue';
-import Search from '../views/order/Search.vue';
-import NoticeCard from '../views/order/NoticeCard.vue';
-import Tabs from '../views/order/Tabs.vue';
-import MenuCard from '../views/order/MenuCard.vue';
+<script lang="ts" setup>
+import UserCard from '@/views/order/UserCard.vue'
+import Search from '../views/order/Search.vue'
+import NoticeCard from '../views/order/NoticeCard.vue'
+import Tabs from '../views/order/Tabs.vue'
+import MenuCard from '../views/order/MenuCard.vue'
+import router from '@/router'
 
 const getValue = (value: string) => {
-  console.log('getValue', value);
+  router.push('/ordermanager/search/' + value)
 }
 </script>
 
-<style lang='scss' scoped>
-.ant-tabs>.ant-tabs-nav,
-.ant-tabs>div>.ant-tabs-nav {
+<style lang="scss" scoped>
+.ant-tabs > .ant-tabs-nav,
+.ant-tabs > div > .ant-tabs-nav {
   margin: unset;
 }
 
@@ -78,7 +79,6 @@ const getValue = (value: string) => {
   margin: 0 auto;
   padding-top: 10px;
 }
-
 
 .ant-list {
   background-color: #fff;
