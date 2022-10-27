@@ -30,7 +30,14 @@ import MenuCard from '../views/order/MenuCard.vue'
 import router from '@/router'
 
 const getValue = (value: string) => {
-  router.push('/ordermanager/search/' + value)
+  // 查询结果
+  router.push({
+    name: 'doctorSearch',
+    query: {
+      doctorName: value,
+    },
+    force: true,
+  })
 }
 </script>
 
