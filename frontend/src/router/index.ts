@@ -58,12 +58,12 @@ const router = createRouter({
           name: 'rid',
           component: () => import('@/components/order/RoomInfo.vue'),
         },
-        {
-          path: 'search/:doctorId',
-          name: 'doctorSearch',
-          component: () => import('@/components/order/SearchDoctor.vue'),
-        }
       ]
+    },
+    {
+      path: '/search',
+      name: 'doctorSearch',
+      component: () => import('@/page/SearchDoctor.vue'),
     },
     {
       path: '/personal',
@@ -103,5 +103,6 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
+
 
 export default router

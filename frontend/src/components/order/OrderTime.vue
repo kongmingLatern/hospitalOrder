@@ -2,7 +2,7 @@
   <a-table :columns="columns" :data-source="data" :pagination="false">
     <template #headerCell="{ column }">
       <template v-if="column.key === 'time'">
-        <span>Time</span>
+        <span>时间</span>
       </template>
     </template>
 
@@ -21,7 +21,7 @@
             @confirm="confirm(record.key)"
             @cancel="cancel"
           >
-            <a-button type="primary">预约</a-button>
+            <a-button type="danger" ghost :disabled="leftCount === 0">预约</a-button>
           </a-popconfirm>
         </span>
       </template>
@@ -37,6 +37,7 @@ import { getStartEndTime, randomString } from '../../utils'
 const props = defineProps<{
   doctorId: string
   rid: string
+  leftCount: number
 }>()
 
 const columns = [
@@ -46,7 +47,7 @@ const columns = [
     key: 'time',
   },
   {
-    title: 'Action',
+    title: '操作',
     key: 'action',
   },
 ]
@@ -69,7 +70,11 @@ const confirm = (selectId: string) => {
   const uid = localStorage.getItem('uid')
   const time: number = Number(selectId) === 1 ? 8 : 13
 
-  const { doctorId, rid } = props
+  const { doctorId, rid, leftCount } = props
+  if (leftCount === 0) {
+    message.error('当前预约人数已满')
+    return
+  }
   result.push({
     orderId: randomString(),
     uid,

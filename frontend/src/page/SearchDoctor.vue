@@ -60,12 +60,12 @@
 </template>
 
 <script setup lang="ts">
-import Avatar from './Avatar.vue'
+import Avatar from '../components/order/Avatar.vue'
 import OrderTime from '@/components/order/OrderTime.vue'
 import type { DoctorType } from '@/type'
-import http from '../../api'
-import Header from './Header.vue'
-import Comment from './Comment.vue'
+import http from '../api'
+import Header from '../components/order/Header.vue'
+import Comment from '../components/order/Comment.vue'
 import { useRoute } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { onMounted, reactive, ref } from 'vue'

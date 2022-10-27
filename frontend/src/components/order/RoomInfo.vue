@@ -11,7 +11,7 @@
             <!-- 描述 -->
             <template #description class="description">
               <p>{{ item.info }}</p>
-              <OrderTime :doctorId="item.doctorId" :rid="item.rid" />
+              <OrderTime :doctorId="item.doctorId" :rid="item.rid" :left-count="item.leftCount" />
             </template>
             <!-- 照片 -->
             <template #avatar>
